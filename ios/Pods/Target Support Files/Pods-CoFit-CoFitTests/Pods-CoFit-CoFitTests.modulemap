@@ -1,0 +1,6 @@
+module Pods_CoFit_CoFitTests {
+  umbrella header "Pods-CoFit-CoFitTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

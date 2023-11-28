@@ -1,0 +1,1 @@
+../../../../../node_modules/react-native-google-mobile-ads/ios/RNGoogleMobileAds/common/RNRCTEventEmitter.h

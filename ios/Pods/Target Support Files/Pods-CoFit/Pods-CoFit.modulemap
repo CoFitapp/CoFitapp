@@ -1,0 +1,6 @@
+module Pods_CoFit {
+  umbrella header "Pods-CoFit-umbrella.h"
+
+  export *
+  module * { export * }
+}

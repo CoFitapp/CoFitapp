@@ -1,0 +1,19 @@
+<lint-module
+    format="1"
+    dir="/Users/apple/Desktop/Nitish/CoFit/android/app"
+    name=":app"
+    type="APP"
+    maven="CoFit:app:"
+    gradle="7.0.4"
+    buildFolder="build"
+    bootClassPath="/Users/apple/Library/Android/sdk/platforms/android-33/android.jar:/Users/apple/Library/Android/sdk/build-tools/30.0.2/core-lambda-stubs.jar"
+    javaSourceLevel="1.8"
+    compileTarget="android-33"
+    neverShrinking="true">
+  <lintOptions
+      abortOnError="true"
+      absolutePaths="true"
+      checkReleaseBuilds="true"
+      explainIssues="true"/>
+  <variant name="release"/>
+</lint-module>
