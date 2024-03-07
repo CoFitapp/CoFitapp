@@ -1,4 +1,6 @@
 import { Dimensions, StyleSheet, NativeModules, Platform } from "react-native";
+import fonts from "../../constants/fonts";
+import colors from "../../constants/colors";
 
 const { height, width } = Dimensions.get('window')
 const { StatusBarManager } = NativeModules;
@@ -9,6 +11,64 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#fff",
     },
+    profileView:{
+        marginTop:statusBarHeight+25,
+        height:120,
+        // left:10,
+        width:120,
+        alignItems:'center',
+        borderColor:"#F1F5FC",
+        borderWidth:2,
+        borderRadius:120/2,
+        justifyContent:'center',
+        alignSelf:"center"
+    },
+    profileImage:{
+        height:'100%',
+        width:'100%',
+        borderRadius:60 
+    },
+    name:{
+    textAlign:"center",
+    marginTop:8,
+    color:"#333333",
+    fontFamily:fonts.SfPro_Regular,
+    marginBottom:25
+    },
+    view2:{
+        flexDirection:"row",
+        width:"100%",
+        alignItems:"center",
+        marginHorizontal:"5%"
+    },
+    nextArrowIcon:{
+        height:24,
+        width:24,
+        resizeMode:"contain",
+        alignSelf:"flex-end"
+    },
+    profileIcon:{
+        height:24,
+        width:24,
+        resizeMode:"contain"
+    },
+    profileMainView:{
+        width:"75%",
+        flexDirection:"row",
+        alignItems:"center"
+    },
+    profileText:{
+        fontSize:14,
+        fontFamily:fonts.SfPro_Medium,
+        marginLeft:15,
+        color:"#0D131F"
+    },
+    lineSeperator:{
+      width:"100%",
+      height:1,
+      backgroundColor:"#dbd9d9",
+      marginVertical:15
+    },
     bottomView: {
         flex: 0.1,
         paddingVertical: 10,
@@ -17,13 +77,13 @@ const styles = StyleSheet.create({
         // paddingHorizontal: '5%',
     },
     bottomBtn: {
-        backgroundColor: '#F67045',
+        backgroundColor: colors.orange_dark,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         width: '90%',
         borderRadius: 5,
-        height: 50,
+        height: 40,
         marginLeft:'5%'
 
     },
@@ -36,7 +96,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: "#fff",
         marginLeft: '5%',
-        fontFamily: 'SFProText-Semibold'
+        fontFamily:fonts.SfPro_Semibold
     },
     View1: {
         marginTop: statusBarHeight,
@@ -105,7 +165,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: "#97A0B1",
         marginHorizontal: 12,
-        fontFamily: 'SFProText-Regular'
+        fontFamily: fonts.SfPro_Regular
     },
     locationinput: {
         borderRadius: 10,
@@ -126,13 +186,13 @@ const styles = StyleSheet.create({
         width: "90%",
         color: "#363C49",
         paddingHorizontal: '5%',
-        fontFamily: 'SFProText-Regular'
+        fontFamily: fonts.SfPro_Regular
     },
     locinput1: {
         width: "80%",
         color: "#363C49",
         paddingHorizontal: '5%',
-        fontFamily: 'SFProText-Regular'
+        fontFamily: fonts.SfPro_Regular
     },
     locIcon: {
         height: 19,
@@ -143,7 +203,7 @@ const styles = StyleSheet.create({
         fontSize: 26,
         color: '#363C49',
         marginTop: "10%",
-        fontFamily: "SFProText-Semibold"
+        fontFamily: fonts.SfPro_Semibold
     },
     signUpView: {
         alignItems: 'center',
@@ -154,7 +214,7 @@ const styles = StyleSheet.create({
         color: "#8B93A1",
         marginTop: 10,
         textAlign: 'center',
-        fontFamily: "SFProText-Regular",
+        fontFamily: fonts.SfPro_Regular,
         lineHeight: 21
     },
 

@@ -30,13 +30,13 @@ const Profile = ({navigation}) => {
   const [profileImage,setProfileImage]=useState('')
   const dispatch = useDispatch()
   const userInfo = useSelector((state) => state.user.userInfo);
-
+  console.log('userInforrzxczrrr',userInfo);
   useEffect(()=>{
     getUserDetails();
   },[])
 
   const getUserDetails=async()=>{
-    console.log('dsahsasadffsdfssdfhasgddugugaewwe',userInfo);
+    console.log('dsahsasadffsdfssdcxxzfhasgddugugaewwe',userInfo);
    setEmail(userInfo.email)
    setName(userInfo.name)
    if(userInfo?.phone_no!=null){
@@ -196,7 +196,111 @@ const updateProfileImage=async(imageFile)=>{
 
   return (
     <View style={styles.mainView}>
-        <KeyboardAwareScrollView>
+      
+<KeyboardAwareScrollView>
+<ImageBackground source={images.gradient} style={{height:250,width:'100%'}}>
+<View style={styles.profileView}> 
+
+<FastImage
+style={styles.profileImage}
+source={
+  (userInfo.profile_image==null || userInfo.profile_image=='null') 
+  ? 
+  images.backimg 
+  :
+  {uri: userInfo.profile_image,
+    priority: FastImage.priority.high,
+}}
+/>
+</View>
+<Text style={styles.name}>{userInfo?.first_name + " " + userInfo?.last_name}</Text>
+
+        </ImageBackground>
+
+ <TouchableOpacity onPress={()=>navigation.navigate("EditProfile")} style={styles.view2}>
+  <View style={styles.profileMainView}>
+  <Image source={images.profile3} style={styles.profileIcon}/>
+  <Text style={styles.profileText}>View Profile</Text>
+  </View>
+  <View style={{width:"15%",}}>
+    <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
+  </View>
+ </TouchableOpacity>
+ <View style={styles.lineSeperator}/>
+
+ <TouchableOpacity onPress={()=>navigation.navigate("Payment&PayoutMethod")} style={styles.view2}>
+  <View style={styles.profileMainView}>
+  <Image source={images.payment} style={styles.profileIcon}/>
+  <Text style={styles.profileText}>Payments and Payouts</Text>
+  </View>
+  <View style={{width:"15%",}}>
+    <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
+  </View>
+ </TouchableOpacity>
+ <View style={styles.lineSeperator}/>
+
+ <TouchableOpacity onPress={()=>navigation.navigate("TransactionHistory")} style={styles.view2}>
+  <View style={styles.profileMainView}>
+  <Image source={images.transaction} style={styles.profileIcon}/>
+  <Text style={styles.profileText}>Transaction History</Text>
+  </View>
+  <View style={{width:"15%",}}>
+    <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
+  </View>
+ </TouchableOpacity>
+ <View style={styles.lineSeperator}/>
+
+ <TouchableOpacity style={styles.view2}>
+  <View style={styles.profileMainView}>
+  <Image source={images.refer} style={styles.profileIcon}/>
+  <Text style={styles.profileText}>Refer a Friend</Text>
+  </View>
+  <View style={{width:"15%",}}>
+    <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
+  </View>
+ </TouchableOpacity>
+ <View style={styles.lineSeperator}/>
+
+ <TouchableOpacity style={styles.view2}>
+  <View style={styles.profileMainView}>
+  <Image source={images.star} style={styles.profileIcon}/>
+  <Text style={styles.profileText}>Rate us on the App Store!</Text>
+  </View>
+  <View style={{width:"15%",}}>
+    <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
+  </View>
+ </TouchableOpacity>
+ <View style={styles.lineSeperator}/>
+
+ <TouchableOpacity onPress={()=>navigation.navigate("ViewTicket")} style={styles.view2}>
+  <View style={styles.profileMainView}>
+  <Image source={images.term} style={styles.profileIcon}/>
+  <Text style={styles.profileText}>Terms of Use</Text>
+  </View>
+  <View style={{width:"15%",}}>
+    <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
+  </View>
+ </TouchableOpacity>
+ <View style={styles.lineSeperator}/>
+
+ <TouchableOpacity onPress={()=>navigation.navigate("EditProfile")} style={styles.view2}>
+  <View style={styles.profileMainView}>
+  <Image source={images.settings} style={styles.profileIcon}/>
+  <Text style={styles.profileText}>Settings</Text>
+  </View>
+  <View style={{width:"15%",}}>
+    <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
+  </View>
+ </TouchableOpacity>
+ <View style={styles.lineSeperator}/>
+
+ <TouchableOpacity onPress={()=>onLogout()} style={[styles.bottomBtn,{marginVertical:20}]}>
+<Text style={styles.btnText}>Log Out</Text>
+</TouchableOpacity>
+
+</KeyboardAwareScrollView>
+
+        {/* <KeyboardAwareScrollView>
       <View style={{backgroundColor:'white',flex:1,height:height*1,}}>
        <View style={{height:height*0.4,flex:1,backgroundColor:'#f7ac42',}}>
        <View style={styles.skipView}>
@@ -216,7 +320,6 @@ const updateProfileImage=async(imageFile)=>{
           {uri: userInfo.profile_image,
             priority: FastImage.priority.high,
         }}
-        // resizeMode={FastImage.resizeMode.cover}
     />
         </View>
         <TouchableOpacity onPress={()=>bottomSheet.current.show()} style={{top:40,height:30,width:30,right:20,alignItems:'center',borderRadius:30/2,backgroundColor:'white',justifyContent:'center',}}> 
@@ -285,14 +388,8 @@ onChangeText={(val)=>setPhoneNo(val)}
 
 <TouchableOpacity onPress={()=>onUpdate()} style={[styles.bottomBtn,{marginTop:20}]}>
 <Text style={styles.btnText}>Update</Text>
-{/* <Image style={{height:20,width:20,resizeMode:'contain',marginHorizontal:10}} source={images.logout}></Image> */}
 </TouchableOpacity>
-{/* <View style={styles.bottomView} >
-<TouchableOpacity onPress={()=>onUpdate()} style={styles.bottomBtn}>
-<Text style={styles.btnText}>Update</Text>
-<Image style={{height:20,width:20,resizeMode:'contain',marginHorizontal:10}} source={images.logout}></Image>
-</TouchableOpacity>
-          </View> */}
+
 <View style={styles.bottomView} >
 <TouchableOpacity onPress={()=>onLogout()} style={styles.bottomBtn}>
 <Text style={styles.btnText}>Logout</Text>
@@ -304,7 +401,7 @@ onChangeText={(val)=>setPhoneNo(val)}
         </View>
  
           </View>
-          </KeyboardAwareScrollView>
+          </KeyboardAwareScrollView> */}
 
   
        <BottomSheet  ref={bottomSheet} height={180} width={100} sheetBackgroundColor={colors.background}   >

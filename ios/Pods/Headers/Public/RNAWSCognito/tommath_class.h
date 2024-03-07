@@ -1,1 +1,0 @@
-../../../../../node_modules/amazon-cognito-identity-js/ios/JKBigInteger/LibTomMath/tommath_class.h

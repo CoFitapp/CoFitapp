@@ -1,5 +1,6 @@
 import { Dimensions, StyleSheet, NativeModules, Platform } from "react-native";
 import fonts from '../../constants/fonts';
+import colors from "../../constants/colors";
 const { height, width } = Dimensions.get('window')
 const { StatusBarManager } = NativeModules;
 const statusBarHeight = StatusBarManager.HEIGHT;
@@ -68,11 +69,11 @@ const styles = StyleSheet.create({
         width: 35,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#FFE9E2'
+        backgroundColor: '#EEF3F9'
     },
     calImg: {
-        height: 18,
-        width: 18,
+        height: 20,
+        width: 20,
         resizeMode: 'contain'
     },
     dayTextView: {
@@ -81,9 +82,9 @@ const styles = StyleSheet.create({
         alignSelf: "center"
     },
     dayText: {
-        fontSize: 14,
-        fontFamily: "SFProText-Semibold",
-        color: "#363C49"
+        fontSize: 12,
+        fontFamily:fonts.SfPro_Regular,
+        color: colors.textBlack
     },
     timeText: {
         fontSize: 12,
@@ -97,11 +98,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: '3%'
     },
     eventText: {
-        // marginTop: '5%',
         marginHorizontal: '3%',
-        fontFamily: 'SFProText-Semibold',
-        fontSize: 18,
-        color: "#363C49"
+        fontFamily:fonts.SfPro_Bold,
+        fontSize: 16,
+        color: colors.textBlack
     },
     eventDescription: {
         width: '100%',
@@ -110,10 +110,10 @@ const styles = StyleSheet.create({
         paddingVertical: '1%',
     },
     eventDetailText: {
-        fontSize: 14,
+        fontSize: 12,
         lineHeight: 18,
-        fontFamily: "SFProText-Regular",
-        color: "#69707A"
+        fontFamily: fonts.SfPro_Regular,
+        color: "#666666"
     },
     shareWithFrndsView: {
         width: '94%',
@@ -171,12 +171,12 @@ const styles = StyleSheet.create({
     mapView: {
         width: "100%",
         paddingHorizontal: "3%",
-        height: 350,
+        height: 230,
     },
     mapStyle: {
         width: "100%",
         paddingHorizontal: "3%",
-        height: 320,
+        height: 210,
         marginTop: 15
     },
     mapImg: {
@@ -206,9 +206,10 @@ const styles = StyleSheet.create({
     },
     youMay: {
         marginTop: '5%',
+        marginBottom:10,
         marginHorizontal: '3%',
-        fontFamily: 'SFProText-Semibold',
-        fontSize: 24,
+        fontFamily: fonts.SfPro_Bold,
+        fontSize: 18,
         color: "#363C49"
     },
 
@@ -223,7 +224,7 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     flatListView1: {
-        width: width * 0.94,
+        width: width * 0.7,
         alignItems: 'flex-start',
         justifyContent: 'center'
     },
@@ -262,8 +263,9 @@ const styles = StyleSheet.create({
     dateView: {
         flexDirection: "row",
         alignItems: "center",
-        marginLeft: width * .07,
-        marginTop: 10
+        marginLeft: width * .04,
+        marginTop: 10,
+        // marginBottom:10
     },
     clockIcon: {
         height: 15,
@@ -272,16 +274,17 @@ const styles = StyleSheet.create({
 
     },
     dateText: {
-        color: "#363C49",
+        color:colors.textRegular,
         fontFamily: fonts.SfPro_Regular,
+        fontSize:12,
         marginLeft: 10
     },
     summaryText: {
-        color: "#363C49",
-        fontFamily: fonts.SfPro_Heavy,
+        color: colors.textBlack,
+        fontFamily: fonts.SfPro_Bold,
         marginLeft: 10,
-        fontSize: 18,
-        marginLeft: width * .07,
+        fontSize: 16,
+        marginLeft: width * .04,
         marginRight: width * .1,
         marginTop: 10
     },
@@ -289,12 +292,13 @@ const styles = StyleSheet.create({
         height: 15,
         width: 15,
         resizeMode: "contain",
-        tintColor: "#363C49"
+        // tintColor: "#363C49"
     },
     locText: {
-        color: "#363C49",
-        fontFamily: fonts.SfPro_Medium,
-        paddingHorizontal: 15
+        color: colors.textRegular,
+        fontFamily: fonts.SfPro_Regular,
+        paddingHorizontal: 15,
+        fontSize:12
     },
     view3: {
         height: 1,
@@ -322,13 +326,20 @@ const styles = StyleSheet.create({
         paddingHorizontal: '5%',
     },
     bottomBtn: {
-        backgroundColor: '#F67045',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        width: '100%',
-        borderRadius: 5,
-        height: 50
+        width: '96%',
+        borderRadius: 10,
+        height: 40
+
+    },
+    bottomBtn1: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 10,
+        height: 40
 
     },
     googleicon: {
@@ -340,7 +351,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: "#fff",
         marginLeft: '5%',
-        fontFamily: 'SFProText-Semibold'
+        fontFamily: fonts.SfPro_Bold
     },
     View1: {
         marginTop: statusBarHeight,
@@ -404,16 +415,24 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingHorizontal: 7,
         backgroundColor: "rgba(255, 255, 255, 1)",
-        // borderTopRightRadius: 23,
-        // borderTopLeftRadius: 23,
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
     },
     enterLoc: {
-        // marginVertical: '5%',
         lineHeight: 30,
         fontSize: 22,
-        color: "#363C49",
+        color: colors.textBlack,
         marginHorizontal: 12,
-        fontFamily: 'SFProText-Bold'
+        fontFamily: fonts.SfPro_Bold,
+        marginTop:5
+    },
+    enterLoc1: {
+        lineHeight: 30,
+        fontSize: 22,
+        color: colors.textBlack,
+        marginHorizontal: 12,
+        fontFamily: fonts.SfPro_Bold,
+        marginTop:20
     },
     locationinput: {
         borderRadius: 10,
@@ -468,6 +487,132 @@ const styles = StyleSheet.create({
     View: {
         backgroundColor: "#fff",
         height: height * 0.05
+    },
+    attendEventMainView:{
+        position:"absolute",
+        bottom:0,
+        height:100,
+        width:"100%",
+        backgroundColor:"#fff",
+        justifyContent:"center",
+        alignItems:"center",
+        shadowOffset: { width: 0, height: 4 },
+        shadowColor: 'black',
+        shadowOpacity: 1,
+        elevation: 3,
+    },
+    attendEventMainView1:{
+        position:"absolute",
+        bottom:0,
+        height:100,
+        width:"100%",
+        paddingHorizontal:20,
+        flexDirection:"row",
+        backgroundColor:"#fff",
+        justifyContent:"space-between",
+        alignItems:"center",
+        shadowOffset: { width: 0, height: 4 },
+        shadowColor: 'black',
+        shadowOpacity: 1,
+        elevation: 3,
+    },
+    topHeaderView:{
+        flexDirection:"row",
+        alignItems:"center",
+        marginLeft:"5%"
+    },
+    backImageIcon:{
+        height:15,
+        width:15,
+        resizeMode:"contain"
+    },
+    backImageView:{
+        height:34,
+        width:34,
+        borderRadius:17,
+        justifyContent:"center",
+        alignItems:"center",
+        backgroundColor:"#fff"
+    },
+    bottomSheetTitle:{
+        fontSize:18,
+        fontFamily:fonts.SfPro_Semibold,
+        color:colors.black,
+        textAlign:"center",
+        marginHorizontal:50,
+        marginTop:15
+    },
+    bottomSheetTimeView:{
+      flexDirection:"row",
+      marginHorizontal:70 ,
+      alignItems:"center",
+      marginTop:5
+    //   marginHorizontal:
+    },
+    bottomSheetDateText:{
+        fontSize:12,
+        fontFamily:fonts.SfPro_Regular,
+        color:colors.textRegular,
+        maxWidth:'50%'
+    },
+    seperator:{
+        height:12,
+        width:1,
+        backgroundColor:colors.textRegular,
+        marginHorizontal:10
+    },
+    seperator1:{
+        width:"100%",
+        height:1,
+        backgroundColor:colors.gray,
+        marginVertical:20
+    },
+    ticketSheetView:{
+        flexDirection:"row",
+        marginHorizontal:20,
+        alignItems:"center",
+        justifyContent:"space-between"
+    },
+    ticketType:{
+        fontSize:16,
+        fontFamily:fonts.SfPro_Semibold,
+        color:colors.blackMedium
+    },
+    ticketPrice:{
+        fontSize:14,
+        fontFamily:fonts.SfPro_Medium,
+        color:colors.blackMedium,
+        marginTop:10
+    },
+    addButton:{
+        borderWidth:1,
+        borderRadius:6,
+        borderColor:colors.orange_dark,
+        justifyContent:"center",
+        alignItems:"center"
+    },
+    addText:{
+        fontSize:14,
+        fontFamily:fonts.SfPro_Regular,
+        color:colors.orange_dark,
+        paddingHorizontal:9,
+        paddingVertical:6
+    },
+    quantityText:{
+        fontSize:14,
+        fontFamily:fonts.SfPro_Regular,
+        color:colors.textBlack,
+        marginHorizontal:10
+    },
+    totalAmount:{
+        fontSize:16,
+        fontFamily:fonts.SfPro_Semibold,
+        color:colors.blackMedium
+    },
+    noOfTicket:{
+        fontSize:14,
+        fontFamily:fonts.SfPro_Regular,
+        color:colors.textBlack,
     }
 
 })

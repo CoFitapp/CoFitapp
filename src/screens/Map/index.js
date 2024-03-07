@@ -18,6 +18,7 @@ import getDistance from '../../api/getDistance';
 import { logout } from '../../redux/slices/userSlice';
 import fonts from '../../constants/fonts';
 import moment from 'moment';
+import colors from '../../constants/colors';
 
 const { height, width } = Dimensions.get('window')
 const { StatusBarManager } = NativeModules;
@@ -71,7 +72,13 @@ const Map = ({ navigation }) => {
       'location': "4550 Mueller bivid park, NJ"
     },
   ])
-
+  const [imageArr,setImageArr]=useState([
+    {'id':1,'image':require("../../assets/images/stockImage1.jpg")},
+    {'id':2,'image':require("../../assets/images/stockImage2.jpg")},
+    {'id':3,'image':require("../../assets/images/stockImage3.jpg")},
+    {'id':4,'image':require("../../assets/images/stockImage4.jpg")},
+    {'id':5,'image':require("../../assets/images/stockImage5.jpg")},
+  ])
   useEffect(() => {
     if (isFocused) {
       getCoordinatesForLocation(userInfo.location);
@@ -114,7 +121,7 @@ const Map = ({ navigation }) => {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: 'https://api.cofitapp.com/api/get-event',
+      url: 'https://cofitapp.com/api/get-event',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -128,6 +135,10 @@ const Map = ({ navigation }) => {
           let dis = await getDistance(preciseLocation, location)
           console.log('wqwqwqwqwqwq', dis);
           item.distance = dis
+          if(!item?.image){
+            item.image = 'no image'
+            console.log('54343',images.bottom);
+          }
         })
         await Promise.all(promises).then(async () => {
           console.log('dsjfhkdshgkjhkjashkjf', response.data);
@@ -162,7 +173,7 @@ const Map = ({ navigation }) => {
       let config3 = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'https://api.cofitapp.com/api/get-event',
+        url: 'https://cofitapp.com/api/get-event',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -197,7 +208,7 @@ const Map = ({ navigation }) => {
       console.log('dashdi2h9hdh1289h9d1', data);
       if (data.results.length > 0) {
         const locationData = data.results[0].geometry.location;
-
+      
         let eventDate1 = item.date.start_date + " " + moment().year();
         let eventDate = moment(eventDate1).format("YYYY-MM-DD")
         let eventDate2 = moment(eventDate).unix();
@@ -210,6 +221,10 @@ const Map = ({ navigation }) => {
         // item.distance = dis;
         item.isShow = isSameOrAfter;
         item.timeStampVal = eventDate2;
+        if(!item?.image){
+          item.image = 'no image'
+          console.log('54343',images.bottom);
+        }
         if (isSameOrAfter) {
           return { ...item, isShow: isSameOrAfter, timeStampVal: eventDate2, latitude: locationData.lat, longitude: locationData.lng };
         } else {
@@ -397,24 +412,27 @@ const Map = ({ navigation }) => {
                     coordinate={{ latitude: Number(item.latitude), longitude: Number(item.longitude) }}
                   >
                     <Image
-                      source={images.location3}
+                      source={images.location5}
                       style={{ width: 30, height: 30 }}
                     />
-                    <Callout style={{ width: 200 }} onPress={() => onPressMarker(item)}>
-                      <View style={{}}>
-                        <Text style={{ fontFamily: fonts.SfPro_Bold, fontSize: 14 }}>{item.title}</Text>
-                        <View style={{ flexDirection: 'row', marginTop: 10, alignItems: "center" }}>
-                          <Image source={images.location1} style={{ height: 15, width: 15, resizeMode: 'contain' }}>
-
-                          </Image>
-                          <Text style={{ marginLeft: 5, fontFamily: fonts.SfPro_Regular, fontSize: 12 }}>{item.address}</Text>
+                    <Callout style={{ width: 300 }} onPress={() => onPressMarker(item)}>
+                      <View style={{flexDirection:"row",alignItems:"center"}}>
+                      <View style={{width:200}}>
+                        <Text numberOfLines={1} style={{ fontFamily: fonts.SfPro_Semibold, fontSize: 16,color:colors.textBlack,width:170}}>{item.title}</Text>
+                        
+                        <View style={{ flexDirection: 'row', marginTop: 10, alignItems: "center",width:170 }}>
+                          <Image source={images.clock1} style={{ height: 14, width: 14, resizeMode: 'contain',}}/>
+                          <Text numberOfLines={1} style={{ marginLeft: 5, fontFamily: fonts.SfPro_Regular, fontSize: 12 ,color:colors.textRegular}}>{item.date.when}</Text>
                         </View>
-                        <View style={{ flexDirection: 'row', marginTop: 10, alignItems: "center" }}>
-                          <Image source={images.clock} style={{ height: 14, width: 14, resizeMode: 'contain' }}>
-
-                          </Image>
-                          <Text style={{ marginLeft: 5, fontFamily: fonts.SfPro_Regular, fontSize: 12 }}>{item.date.when}</Text>
+                        <View style={{ flexDirection: 'row', marginTop: 10, alignItems: "center",width:170 }}>
+                          <Image source={images.location1} style={{ height: 15, width: 15, resizeMode: 'contain' }}/>
+                          <Text numberOfLines={2} style={{ marginLeft: 5, fontFamily: fonts.SfPro_Regular, fontSize: 12,color:colors.textRegular }}>{item.address}</Text>
                         </View>
+                      </View>
+                      <View style={{alignItems:"center",justifyContent:"center",width:100}}>
+                      <Image source={item?.image.startsWith("no image") ? imageArr[index % imageArr.length].image  :{uri:item?.image}} style={{height:70,width:90,borderRadius:5}}/>
+
+                      </View>
                       </View>
                     </Callout>
                   </Marker>
@@ -431,7 +449,7 @@ const Map = ({ navigation }) => {
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style=
           {{
-            height: auto == true ? 50 : '100%', width: '90%',
+            height: auto == true ? 45 : '100%', width: '90%',
             borderRadius: 10, alignSelf: 'center', alignItems: "center",
             marginHorizontal: "10%", backgroundColor: 'transparent', justifyContent: "center",
             position: "absolute", top: Platform.OS == "ios" ? statusBarHeight + 20 : 25
@@ -439,20 +457,19 @@ const Map = ({ navigation }) => {
 
           <GooglePlacesAutocomplete
             placeholder='Search events by location'
-            // placeholderTextColor="#fff"
             fetchDetails={true}
             enablePoweredByContainer={false}
             // keepResultsAfterBlur={true}
             styles={styles.autoComplete}
 
             renderLeftButton={() => (
-              <Image source={images.search} style={styles.location1} />
+              <Image source={images.search1} style={styles.location2} />
             )}
-            renderRightButton={() => (
-              <TouchableOpacity onPress={() => navigation.navigate("SignedInStack", { screen: "Profile" })}>
-                <Image source={(userInfo.profile_image == null || userInfo.profile_image == 'null') ? images.user : { uri: userInfo.profile_image }} style={styles.user} />
-              </TouchableOpacity>
-            )}
+            // renderRightButton={() => (
+            //   <TouchableOpacity onPress={() => navigation.navigate("SignedInStack", { screen: "Profile" })}>
+            //     <Image source={(userInfo.profile_image == null || userInfo.profile_image == 'null') ? images.user : { uri: userInfo.profile_image }} style={styles.user} />
+            //   </TouchableOpacity>
+            // )}
             textInputProps={{
               onFocus: () => {
                 setAuto(false);
@@ -460,8 +477,8 @@ const Map = ({ navigation }) => {
               onBlur: () => {
                 setAuto(true);
               },
-              placeholderTextColor: "#666262",
-              
+              placeholderTextColor: colors.textBlack,
+              style:{fontFamily:fonts.SfPro_Regular,width:"90%",paddingLeft:10,height:45},
               errorStyle: { color: 'red' }
             }}
             onPress={(data, details = null) => {

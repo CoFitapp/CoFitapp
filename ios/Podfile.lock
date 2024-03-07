@@ -82,21 +82,21 @@ PODS:
   - Google-Mobile-Ads-SDK (10.10.0):
     - GoogleAppMeasurement (< 11.0, >= 7.0)
     - GoogleUserMessagingPlatform (>= 1.1)
-  - GoogleAppMeasurement (10.16.0):
-    - GoogleAppMeasurement/AdIdSupport (= 10.16.0)
+  - GoogleAppMeasurement (10.20.0):
+    - GoogleAppMeasurement/AdIdSupport (= 10.20.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.11)
     - GoogleUtilities/MethodSwizzler (~> 7.11)
     - GoogleUtilities/Network (~> 7.11)
     - "GoogleUtilities/NSData+zlib (~> 7.11)"
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - GoogleAppMeasurement/AdIdSupport (10.16.0):
-    - GoogleAppMeasurement/WithoutAdIdSupport (= 10.16.0)
+  - GoogleAppMeasurement/AdIdSupport (10.20.0):
+    - GoogleAppMeasurement/WithoutAdIdSupport (= 10.20.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.11)
     - GoogleUtilities/MethodSwizzler (~> 7.11)
     - GoogleUtilities/Network (~> 7.11)
     - "GoogleUtilities/NSData+zlib (~> 7.11)"
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - GoogleAppMeasurement/WithoutAdIdSupport (10.16.0):
+  - GoogleAppMeasurement/WithoutAdIdSupport (10.20.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 7.11)
     - GoogleUtilities/MethodSwizzler (~> 7.11)
     - GoogleUtilities/Network (~> 7.11)
@@ -107,27 +107,27 @@ PODS:
     - GTMAppAuth (< 3.0, >= 1.3)
     - GTMSessionFetcher/Core (< 4.0, >= 1.1)
   - GoogleUserMessagingPlatform (2.1.0)
-  - GoogleUtilities/AppDelegateSwizzler (7.11.5):
+  - GoogleUtilities/AppDelegateSwizzler (7.12.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (7.11.5):
+  - GoogleUtilities/Environment (7.12.0):
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/Logger (7.11.5):
+  - GoogleUtilities/Logger (7.12.0):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (7.11.5):
+  - GoogleUtilities/MethodSwizzler (7.12.0):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (7.11.5):
+  - GoogleUtilities/Network (7.12.0):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (7.11.5)"
-  - GoogleUtilities/Reachability (7.11.5):
+  - "GoogleUtilities/NSData+zlib (7.12.0)"
+  - GoogleUtilities/Reachability (7.12.0):
     - GoogleUtilities/Logger
   - GTMAppAuth (2.0.0):
     - AppAuth/Core (~> 1.6)
     - GTMSessionFetcher/Core (< 4.0, >= 1.5)
-  - GTMSessionFetcher/Core (3.1.1)
+  - GTMSessionFetcher/Core (3.3.1)
   - libevent (2.1.12)
   - libwebp (1.3.2):
     - libwebp/demux (= 1.3.2)
@@ -141,11 +141,11 @@ PODS:
   - libwebp/sharpyuv (1.3.2)
   - libwebp/webp (1.3.2):
     - libwebp/sharpyuv
-  - nanopb (2.30909.0):
-    - nanopb/decode (= 2.30909.0)
-    - nanopb/encode (= 2.30909.0)
-  - nanopb/decode (2.30909.0)
-  - nanopb/encode (2.30909.0)
+  - nanopb (2.30909.1):
+    - nanopb/decode (= 2.30909.1)
+    - nanopb/encode (= 2.30909.1)
+  - nanopb/decode (2.30909.1)
+  - nanopb/encode (2.30909.1)
   - OpenSSL-Universal (1.1.1100)
   - PromisesObjC (2.3.1)
   - RCT-Folly (2021.06.28.00-v2):
@@ -473,7 +473,43 @@ PODS:
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
   - SocketRocket (0.6.1)
-  - Toast (4.0.0)
+  - Stripe (23.21.1):
+    - StripeApplePay (= 23.21.1)
+    - StripeCore (= 23.21.1)
+    - StripePayments (= 23.21.1)
+    - StripePaymentsUI (= 23.21.1)
+    - StripeUICore (= 23.21.1)
+  - stripe-react-native (0.36.0):
+    - React-Core
+    - Stripe (~> 23.21.0)
+    - StripeApplePay (~> 23.21.0)
+    - StripeFinancialConnections (~> 23.21.0)
+    - StripePayments (~> 23.21.0)
+    - StripePaymentSheet (~> 23.21.0)
+    - StripePaymentsUI (~> 23.21.0)
+  - StripeApplePay (23.21.1):
+    - StripeCore (= 23.21.1)
+  - StripeCore (23.21.1)
+  - StripeFinancialConnections (23.21.1):
+    - StripeCore (= 23.21.1)
+    - StripeUICore (= 23.21.1)
+  - StripePayments (23.21.1):
+    - StripeCore (= 23.21.1)
+    - StripePayments/Stripe3DS2 (= 23.21.1)
+  - StripePayments/Stripe3DS2 (23.21.1):
+    - StripeCore (= 23.21.1)
+  - StripePaymentSheet (23.21.1):
+    - StripeApplePay (= 23.21.1)
+    - StripeCore (= 23.21.1)
+    - StripePayments (= 23.21.1)
+    - StripePaymentsUI (= 23.21.1)
+  - StripePaymentsUI (23.21.1):
+    - StripeCore (= 23.21.1)
+    - StripePayments (= 23.21.1)
+    - StripeUICore (= 23.21.1)
+  - StripeUICore (23.21.1):
+    - StripeCore (= 23.21.1)
+  - Toast (4.1.0)
   - TOCropViewController (2.6.1)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -550,6 +586,7 @@ DEPENDENCIES:
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - "stripe-react-native (from `../node_modules/@stripe/stripe-react-native`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -581,6 +618,14 @@ SPEC REPOS:
     - SDWebImage
     - SDWebImageWebPCoder
     - SocketRocket
+    - Stripe
+    - StripeApplePay
+    - StripeCore
+    - StripeFinancialConnections
+    - StripePayments
+    - StripePaymentSheet
+    - StripePaymentsUI
+    - StripeUICore
     - Toast
     - TOCropViewController
     - YogaKit
@@ -678,6 +723,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-crop-picker"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  stripe-react-native:
+    :path: "../node_modules/@stripe/stripe-react-native"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -700,15 +747,15 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 476ee3e89abb49e07f822b48323c51c57124b572
   Google-Mobile-Ads-SDK: 509e53bd31c6accb2d9c33b0eb66df1d54dda622
-  GoogleAppMeasurement: 079d7632810e9d9704a99932547ba1554acc4342
+  GoogleAppMeasurement: bb3c564c3efb933136af0e94899e0a46167466a8
   GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842
   GoogleUserMessagingPlatform: dce302b8f1b84d6e945812ee7a15c3f65a102cbf
-  GoogleUtilities: 13e2c67ede716b8741c7989e26893d151b2b2084
+  GoogleUtilities: 0759d1a57ebb953965c2dfe0ba4c82e95ccc2e34
   GTMAppAuth: 99fb010047ba3973b7026e45393f51f27ab965ae
-  GTMSessionFetcher: e8647203b65cee28c5f73d0f473d096653945e72
+  GTMSessionFetcher: 8a1b34ad97ebe6f909fb8b9b77fba99943007556
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
-  nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
+  nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   RCT-Folly: 4d8508a426467c48885f1151029bc15fa5d7b3b8
@@ -755,7 +802,16 @@ SPEC CHECKSUMS:
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
+  Stripe: d55e7338dabc599eddeee3b09eacd5c13457e1a2
+  stripe-react-native: ee7309aeca7aeb9cabeec8e1434c84f114fdf74b
+  StripeApplePay: 48973391091a96e30e6ef6b9b331dbaa31449dcb
+  StripeCore: 2ad2bf779ed5b34c1af0800d8304222d3a98440f
+  StripeFinancialConnections: d75c000ffe2f09b14f9aebf02a571d91658ae73b
+  StripePayments: 9961532054e6d4176f54d681cab876cefe60de14
+  StripePaymentSheet: 2ef84d80a938e8c6c59ba0639007b4108d0a6bfb
+  StripePaymentsUI: 1f8addf41697d0f298fd8a15e4edf3999fbc66bc
+  StripeUICore: 95c5235db01a2d90b5bb72c85a804eaed4e64f17
+  Toast: ec33c32b8688982cecc6348adeae667c1b9938da
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   Yoga: c4d61225a466f250c35c1ee78d2d0b3d41fe661c
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a

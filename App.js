@@ -8,6 +8,7 @@ import { store } from "./src/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import mobileAds from 'react-native-google-mobile-ads';
 import SplashScreen from 'react-native-splash-screen'
+import { StripeProvider } from '@stripe/stripe-react-native';
 
 const persistor = persistStore(store);
 
@@ -49,12 +50,17 @@ export default function App() {
 
   return (
     <>
+    <StripeProvider
+      publishableKey="pk_test_CWOYTf4SJERP6VyJTChjifbg"
+      merchantIdentifier="merchant.com.cofitnew.app"
+    >
       <Provider store={store}>
         <PersistGate persistor={persistor}>
           <MainApp />
           <StatusBar />
         </PersistGate>
       </Provider>
+      </StripeProvider>
     </>
 
   )
