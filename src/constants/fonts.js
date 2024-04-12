@@ -1,7 +1,7 @@
-export default fonts={
-    SfPro_Medium:"SFProText-Medium",
-    SfPro_Bold:"SFProText-Bold",
-    SfPro_Regular:"SFProText-Regular",
-    SfPro_Semibold:"SFProText-Semibold",
-    SfPro_Heavy:"SFProText-Heavy"
-}
+export default fonts = {
+  SfPro_Medium: "Poppins-Medium",
+  SfPro_Bold: "Poppins-Bold",
+  SfPro_Regular: "Poppins-Regular",
+  SfPro_Semibold: "Poppins-Semibold",
+  SfPro_Heavy: "SFProText-Heavy",
+};

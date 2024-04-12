@@ -23,7 +23,7 @@ export const post = async(url , token , data , type)=>{
         body:type=='json' ? JSON.stringify(data) : data
     });
     let res = await response.json();
-    console.log('dsagdahjsdasasaasgjhasdadads',response);
+    console.log('dsagdahjsdasasaasgjhasdadads',res);
     if(res.status==1){
         return res;
     }else{
@@ -64,7 +64,7 @@ export const patch = async(url , token , data )=>{
 export const get = async(url)=>{
     let completeUrl = Url.BASE_URL + url;
     const response = await fetch(completeUrl, {
-        method: 'get', 
+        method: 'get',
     });
     let res = await response.json();
     console.log('dsagdahjsaasgjhasdadads',res);

@@ -30,13 +30,13 @@ const Profile = ({navigation}) => {
   const [profileImage,setProfileImage]=useState('')
   const dispatch = useDispatch()
   const userInfo = useSelector((state) => state.user.userInfo);
-
+  console.log('userInforrzxczrrr',userInfo);
   useEffect(()=>{
     getUserDetails();
   },[])
 
   const getUserDetails=async()=>{
-    console.log('dsahsasadffsdfssdfhasgddugugaewwe',userInfo);
+    console.log('dsahsasadffsdfssdcxxzfhasgddugugaewwe',userInfo);
    setEmail(userInfo.email)
    setName(userInfo.name)
    if(userInfo?.phone_no!=null){
@@ -64,7 +64,7 @@ const onConfirmLogout=async()=>{
 }
 
 const onUpdate=async()=>{
-  
+
   // return;
   console.log('dsajdgh878912981',name);
   console.log('dsajdgh878912981',email);
@@ -107,17 +107,17 @@ const onUpdate=async()=>{
           width: 300,
           height: 400,
           cropping: false,
-      }); 
+      });
       let imageFile={
           name: new Date().getTime() + ".png",
           type: res.mime,
           uri: res.path
       }
       updateProfileImage(imageFile)
-      console.log("redshjgsdjhgjhdgasjhd",res); 
+      console.log("redshjgsdjhgjhdgasjhd",res);
   }, 750);
-  
-  
+
+
 };
 
 const chooseFromGallery = async () => {
@@ -134,9 +134,9 @@ const chooseFromGallery = async () => {
           uri: res.path
       }
       updateProfileImage(imageFile)
-      console.log("redshjdsdsdsgsdjhgjhdgasjhd",res); 
+      console.log("redshjdsdsdsgsdjhgjhdgasjhd",res);
   }, 750);
-  
+
   console.log(res);
 };
 
@@ -152,12 +152,12 @@ const updateProfileImage=async(imageFile)=>{
      updateUserDetailToStore()
    }
     console.log('d9u2asdsazsaasasdh9hd982',response);
-   
+
   return;
   var data = new FormData();
   data.append('id',userDetail.ID );
   data.append('image',imageFile );
-  
+
   var config = {
     method: 'post',
     url: 'https://stack.brstdev.com/silverfox/index.php/wp-json/silverfox/imageupload',
@@ -186,17 +186,121 @@ const updateProfileImage=async(imageFile)=>{
   .catch(function (error) {
       setLoader(false)
       Alert.alert(title = "Silver Fox", message = response.data.msg)
-  
-  
-    console.log("yugywgey8gd82g8g2",error);  
-  
+
+
+    console.log("yugywgey8gd82g8g2",error);
+
   });
-  
+
       }
 
   return (
     <View style={styles.mainView}>
-        <KeyboardAwareScrollView>
+
+<KeyboardAwareScrollView>
+<ImageBackground source={images.gradient} style={{height:250,width:'100%'}}>
+<View style={styles.profileView}>
+
+<FastImage
+style={styles.profileImage}
+source={
+  (userInfo.profile_image==null || userInfo.profile_image=='null')
+  ?
+  images.backimg
+  :
+  {uri: userInfo.profile_image,
+    priority: FastImage.priority.high,
+}}
+/>
+</View>
+<Text style={styles.name}>{userInfo?.first_name + " " + userInfo?.last_name}</Text>
+
+        </ImageBackground>
+
+ <TouchableOpacity onPress={()=>navigation.navigate("EditProfile")} style={styles.view2}>
+  <View style={styles.profileMainView}>
+  <Image source={images.profile3} style={styles.profileIcon}/>
+  <Text style={styles.profileText}>View Profile</Text>
+  </View>
+  <View style={{width:"15%",}}>
+    <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
+  </View>
+ </TouchableOpacity>
+ <View style={styles.lineSeperator}/>
+
+ <TouchableOpacity onPress={()=>navigation.navigate("Payment&PayoutMethod")} style={styles.view2}>
+  <View style={styles.profileMainView}>
+  <Image source={images.payment} style={styles.profileIcon}/>
+  <Text style={styles.profileText}>Payments and Payouts</Text>
+  </View>
+  <View style={{width:"15%",}}>
+    <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
+  </View>
+ </TouchableOpacity>
+ <View style={styles.lineSeperator}/>
+
+ <TouchableOpacity onPress={()=>navigation.navigate("TransactionHistory")} style={styles.view2}>
+  <View style={styles.profileMainView}>
+  <Image source={images.transaction} style={styles.profileIcon}/>
+  <Text style={styles.profileText}>Transaction History</Text>
+  </View>
+  <View style={{width:"15%",}}>
+    <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
+  </View>
+ </TouchableOpacity>
+ <View style={styles.lineSeperator}/>
+
+ <TouchableOpacity style={styles.view2}>
+  <View style={styles.profileMainView}>
+  <Image source={images.refer} style={styles.profileIcon}/>
+  <Text style={styles.profileText}>Refer a Friend</Text>
+  </View>
+  <View style={{width:"15%",}}>
+    <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
+  </View>
+ </TouchableOpacity>
+ <View style={styles.lineSeperator}/>
+
+ <TouchableOpacity style={styles.view2}>
+  <View style={styles.profileMainView}>
+  <Image source={images.star} style={styles.profileIcon}/>
+  <Text style={styles.profileText}>Rate us on the App Store!</Text>
+  </View>
+  <View style={{width:"15%",}}>
+    <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
+  </View>
+ </TouchableOpacity>
+ <View style={styles.lineSeperator}/>
+
+ <TouchableOpacity style={styles.view2}>
+  <View style={styles.profileMainView}>
+  <Image source={images.term} style={styles.profileIcon}/>
+  <Text style={styles.profileText}>Terms of Use</Text>
+  </View>
+  <View style={{width:"15%",}}>
+    <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
+  </View>
+ </TouchableOpacity>
+ <View style={styles.lineSeperator}/>
+
+ <TouchableOpacity onPress={()=>navigation.navigate("EditProfile")} style={styles.view2}>
+  <View style={styles.profileMainView}>
+  <Image source={images.settings} style={styles.profileIcon}/>
+  <Text style={styles.profileText}>Settings</Text>
+  </View>
+  <View style={{width:"15%",}}>
+    <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
+  </View>
+ </TouchableOpacity>
+ <View style={styles.lineSeperator}/>
+
+ <TouchableOpacity onPress={()=>onLogout()} style={[styles.bottomBtn,{marginVertical:20}]}>
+<Text style={styles.btnText}>Log Out</Text>
+</TouchableOpacity>
+
+</KeyboardAwareScrollView>
+
+        {/* <KeyboardAwareScrollView>
       <View style={{backgroundColor:'white',flex:1,height:height*1,}}>
        <View style={{height:height*0.4,flex:1,backgroundColor:'#f7ac42',}}>
        <View style={styles.skipView}>
@@ -205,21 +309,20 @@ const updateProfileImage=async(imageFile)=>{
 </TouchableOpacity>
       </View>
       <View style={{flex:0.7,alignItems:'center',justifyContent:'center',flexDirection:'row'}}>
-        <View style={{height:120,left:10,width:120,alignItems:'center',borderColor:"#F1F5FC",borderWidth:2,borderRadius:120/2,justifyContent:'center',}}> 
+        <View style={{height:120,left:10,width:120,alignItems:'center',borderColor:"#F1F5FC",borderWidth:2,borderRadius:120/2,justifyContent:'center',}}>
         <FastImage
         style={{height:'100%',width:'100%',borderRadius:60 }}
         source={
-          (userInfo.profile_image==null || userInfo.profile_image=='null') 
-          ? 
-          images.backimg 
+          (userInfo.profile_image==null || userInfo.profile_image=='null')
+          ?
+          images.backimg
           :
           {uri: userInfo.profile_image,
             priority: FastImage.priority.high,
         }}
-        // resizeMode={FastImage.resizeMode.cover}
     />
         </View>
-        <TouchableOpacity onPress={()=>bottomSheet.current.show()} style={{top:40,height:30,width:30,right:20,alignItems:'center',borderRadius:30/2,backgroundColor:'white',justifyContent:'center',}}> 
+        <TouchableOpacity onPress={()=>bottomSheet.current.show()} style={{top:40,height:30,width:30,right:20,alignItems:'center',borderRadius:30/2,backgroundColor:'white',justifyContent:'center',}}>
         <Image style={{height:20,width:20,resizeMode:"contain", }}  source={images.camera}></Image>
 
         </TouchableOpacity>
@@ -227,13 +330,13 @@ const updateProfileImage=async(imageFile)=>{
 
 </View>
        </View>
-    
+
       <View style={{}}>
 
           <View style={styles.logoView}>
           </View>
-          <View style={styles.backView}>  
-        
+          <View style={styles.backView}>
+
           </View>
           <View style={styles.startedView}>
 
@@ -242,8 +345,8 @@ const updateProfileImage=async(imageFile)=>{
 <View style={styles.locationinput}>
 
 
-<TextInput 
-style={styles.locinput} 
+<TextInput
+style={styles.locinput}
 placeholder='Your name'
 value={name}
 onChangeText={(val)=>setName(val)}
@@ -252,9 +355,9 @@ onChangeText={(val)=>setName(val)}
 <Text style={styles.enterLoc}>Email</Text>
 <View style={styles.locationinput}>
 
-<TextInput 
+<TextInput
 editable={false}
-style={styles.locinput} 
+style={styles.locinput}
 placeholder='Email'
 value={email}
 />
@@ -270,10 +373,10 @@ value={email}
   <Text style={styles.locinput}>+1</Text>
 </View>
 </View>
-<TextInput 
+<TextInput
 editable={true}
 placeholder='Phone number'
-style={styles.locinput} 
+style={styles.locinput}
 maxLength={10}
 keyboardType='number-pad'
 returnKeyType='done'
@@ -285,14 +388,8 @@ onChangeText={(val)=>setPhoneNo(val)}
 
 <TouchableOpacity onPress={()=>onUpdate()} style={[styles.bottomBtn,{marginTop:20}]}>
 <Text style={styles.btnText}>Update</Text>
-{/* <Image style={{height:20,width:20,resizeMode:'contain',marginHorizontal:10}} source={images.logout}></Image> */}
 </TouchableOpacity>
-{/* <View style={styles.bottomView} >
-<TouchableOpacity onPress={()=>onUpdate()} style={styles.bottomBtn}>
-<Text style={styles.btnText}>Update</Text>
-<Image style={{height:20,width:20,resizeMode:'contain',marginHorizontal:10}} source={images.logout}></Image>
-</TouchableOpacity>
-          </View> */}
+
 <View style={styles.bottomView} >
 <TouchableOpacity onPress={()=>onLogout()} style={styles.bottomBtn}>
 <Text style={styles.btnText}>Logout</Text>
@@ -302,15 +399,15 @@ onChangeText={(val)=>setPhoneNo(val)}
 </View>
           </View>
         </View>
- 
-          </View>
-          </KeyboardAwareScrollView>
 
-  
+          </View>
+          </KeyboardAwareScrollView> */}
+
+
        <BottomSheet  ref={bottomSheet} height={180} width={100} sheetBackgroundColor={colors.background}   >
            <View style={{height:'100%',marginHorizontal:'2%',backgroundColor:colors.background,}}>
              <View style={{height:'60%',borderRadius:10,marginHorizontal:'2%',backgroundColor:"#fff",}}>
-               
+
 <TouchableOpacity onPress={() => takeAphoto()} style={{marginHorizontal:'2%',backgroundColor:"#fff",height:'50%',alignItems:'center',justifyContent:'center',borderBottomColor:colors.placeholderColor,borderBottomWidth:0.5}}>
  <Text style={{fontSize:18,fontFamily:fonts.SfPro_Medium,color:colors.current}}>Take a photo</Text>
 

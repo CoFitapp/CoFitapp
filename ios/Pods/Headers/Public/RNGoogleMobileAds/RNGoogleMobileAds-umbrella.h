@@ -1,1 +1,0 @@
-../../../Target Support Files/RNGoogleMobileAds/RNGoogleMobileAds-umbrella.h

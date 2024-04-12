@@ -58,6 +58,8 @@ const LoginScreen = ({ navigation }) => {
           console.log('dadgqwgdu8821gdssa87dsd1278t128',data.signInUserSession.idToken.payload.given_name);
           let userObject = {
             "name":data.signInUserSession.idToken.payload.given_name + " " + data.signInUserSession.idToken.payload.family_name,
+            "first_name":data.signInUserSession.idToken.payload.given_name,
+            "last_name":data.signInUserSession.idToken.payload.family_name,
             "email":data.signInUserSession.idToken.payload.email,
             "google_id":data.username
         }
@@ -79,6 +81,7 @@ const LoginScreen = ({ navigation }) => {
 
   const googleLogin = async () => {
     // await Auth.signOut();
+    // return;
     await Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Google})
   }
 

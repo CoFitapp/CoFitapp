@@ -65,15 +65,32 @@ const UpdateEvent = ({ navigation }) => {
     { label: 'Item 8', value: '8' },
   ];
   const eventTypeArr = [
-    { label: 'Yoga', value: 'Yoga' },
-    { label: 'Running', value: 'Running' },
-    { label: 'Music', value: 'Music' },
-    { label: 'Sports & Fitness', value: 'Sports & Fitness' },
-    { label: 'Fashion & Beauty', value: 'Fashion & Beauty' },
-    { label: 'Business & Professional', value: 'Business & Professional' },
-    { label: 'Charity & Causes', value: 'Charity & Causes' },
-    { label: 'Health & Wellness', value: 'Health & Wellness' },
-    { label: 'Other', value: 'Other' },
+    { label: 'Yoga Class', value: 'Yoga Class' },
+    { label: 'Running Meetup', value: 'Running Meetup' },
+    { label: 'Basketball Runs', value: 'Basketball Runs' },
+    { label: 'Cycling Ride', value: 'Cycling Ride' },
+    { label: 'Outdoor Bootcamp', value: 'Outdoor Bootcamp' },
+    { label: 'Dance Fitness', value: 'Dance Fitness' },
+    { label: 'Swimming Challenge', value: 'Swimming Challenge' },
+    { label: 'Zumba Session', value: 'Zumba Session' },
+    { label: 'HIIT Workout', value: 'HIIT Workout' },
+    { label: 'Pilates Class', value: 'Pilates Class' },
+    { label: 'Walking Group', value: 'Walking Group' },
+    { label: 'Mindfulness Meditation', value: 'Mindfulness Meditation' },
+    { label: 'Weightlifting Workshop', value: 'Weightlifting Workshop' },
+    { label: 'Family Fitness Day', value: 'Family Fitness Day' },
+    { label: 'Soccer Runs', value: 'Soccer Runs' },
+    { label: 'Group Hike', value: 'Group Hike' },
+    { label: 'CrossFit Workout', value: 'CrossFit Workout' },
+    { label: '5K Fun Run', value: '5K Fun Run' },
+    { label: 'Wellness Workshop', value: 'Wellness Workshop' },
+    { label: 'Team Sports Day', value: 'Team Sports Day' },
+    { label: 'Fitness Charity Run', value: 'Fitness Charity Run' },
+    { label: 'Bodyweight Workout', value: 'Bodyweight Workout' },
+    { label: 'Tai Chi Class', value: 'Tai Chi Class' },
+    { label: 'Local Park Workout', value: 'Local Park Workout' },
+    { label: 'Stretching Session', value: 'Stretching Session' },
+    { label: 'Football', value: 'Football' }
   ];
 
 
@@ -149,9 +166,11 @@ const UpdateEvent = ({ navigation }) => {
       Toast.show('Please add event image.')
     } else if (eventType.length == 0) {
       Toast.show('Please select event type.')
-    } else if (isOffline == null) {
-      Toast.show('Please choose event type.')
-    } else if (isOffline && location.trim().length == 0) {
+    } 
+    // else if (isOffline == null) {
+    //   Toast.show('Please choose event type.')
+    // } 
+    else if (location.trim().length == 0) {
       Toast.show('Please add event location.')
     } else if (startDate.length == 0) {
       Toast.show('Please add event start date.')
@@ -400,7 +419,7 @@ const UpdateEvent = ({ navigation }) => {
             fontFamily: fonts.SfPro_Bold, marginTop: 20
           }}>Location</Text>
 
-          <View style={{ flexDirection: 'row', width: width * 1, marginTop: 10 }}>
+          {/* <View style={{ flexDirection: 'row', width: width * 1, marginTop: 10 }}>
 
             <TouchableOpacity onPress={() => setIsOffline(false)} style={{
               height: 40, alignItems: 'center', justifyContent: 'center', borderRadius: 5, width: width * 0.45,
@@ -414,20 +433,16 @@ const UpdateEvent = ({ navigation }) => {
               <Text style={{ color: (isOffline && isOffline != null) ? '#fff' : "#000", fontFamily: fonts.SfPro_Medium }}>Offline Events</Text>
             </TouchableOpacity>
 
-            {/* <TouchableOpacity onPress={()=>setIsOffline(true)} style={{ height: 40, alignItems: 'center', justifyContent: 'center', borderRadius: 5, width: width * 0.45, borderColor: "#8B93A1", borderWidth: 1, marginLeft: width * 0.04 }}>
-              <Text>Offline Events</Text>
 
-            </TouchableOpacity> */}
-
-          </View>
-          {
+          </View> */}
+          {/* {
             isOffline &&
             <View style={{ justifyContent: 'center', marginTop: 10, borderColor: "#8B93A1", }}>
               <Text style={{
                 color: "#363C49",
                 fontSize: 18,
                 fontFamily: fonts.SfPro_Bold,
-              }}>Venue</Text>
+              }}>Venue</Text> */}
 
 
               <View style={{ borderRadius: 10, flexDirection: 'row', width: width * 1, alignItems: "flex-start", }}>
@@ -471,8 +486,8 @@ const UpdateEvent = ({ navigation }) => {
                   }}
                 />
               </View>
-            </View>
-          }
+            {/* </View>
+          } */}
           <View>
             <Text style={{
               color: "#363C49",
@@ -1033,10 +1048,17 @@ const UpdateEvent = ({ navigation }) => {
 
                   <View>
 
+                  <View style={{flexDirection:"row",justifyContent:"space-between"}}>
+                  <TouchableOpacity onPress={() => setModalVisible(!isModalVisible)} style={styles.bottomBtn1}>
+                      <Text style={styles.btnText}>Edit</Text>
+                    </TouchableOpacity>
+
                     <TouchableOpacity onPress={() => onConfirmSubmit()} style={styles.bottomBtn1}>
                       <Text style={styles.btnText}>Submit</Text>
-                      {/* <Image style={{height:20,width:20,resizeMode:'contain',marginHorizontal:10}} source={images.logout}></Image> */}
                     </TouchableOpacity>
+
+
+                  </View>
 
 
                   </View>
