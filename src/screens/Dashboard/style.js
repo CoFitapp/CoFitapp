@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     mainView: {
         backgroundColor: "#fff",
         flex: 1,
-        paddingTop: Platform.OS == "ios" ? statusBarHeight : 0
+        paddingTop: Platform.OS == "ios" ? statusBarHeight+10 : 0
     },
     view1: {
         flexDirection: "row",
@@ -20,31 +20,33 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     findText: {
-        color: "#363C49",
-        fontSize: 16,
-        fontFamily: fonts.SfPro_Medium
+        color: "#020A23",
+        fontSize: 14,
+        fontFamily: fonts.SfPro_Regular
     },
     newJersyView: {
         flexDirection: "row",
         alignItems: "center", width: '100%'
     },
     newJersyText: {
-        color: "#363C49",
-        fontSize: 24,
-        fontFamily: fonts.SfPro_Bold
+        color: "#020A23",
+        fontSize: 16,
+        marginLeft:5,
+        fontFamily: fonts.SfPro_Bold,
+       maxWidthwidth:'80%'
     },
     locicon: {
-        height: 20,
-        width: 15,
-        marginLeft: 5,
+        height: 24,
+        width: 24,
+        // marginLeft: 5,
         resizeMode: "contain",
-        tintColor: "#F67045",
-        marginTop: 5
+        // tintColor: "#F67045",
+        // marginTop: 5
     },
     profileImg: {
-        height: 50,
-        width: 50,
-        borderRadius: 15
+        height: 45,
+        width: 45,
+        borderRadius:7
     },
     searchView: {
         flexDirection: "row",
@@ -57,8 +59,8 @@ const styles = StyleSheet.create({
         width: width * .94,
         flexDirection: "row",
         borderRadius: 10,
-        height: 50,
-        backgroundColor: "#F1F5FC",
+        height: 37,
+        backgroundColor: "#F2F2F2",
         alignItems: "center"
     },
     searchIcon: {
@@ -70,8 +72,9 @@ const styles = StyleSheet.create({
     searchTextInput: {
         flex: 1,
         paddingLeft: 10,
-        fontFamily: fonts.SfPro_Medium,
-        color: "#B2BAC7"
+        fontFamily: fonts.SfPro_Regular,
+        fontSize:14,
+        color: "#49454F"
     },
     filterView: {
         paddingHorizontal: 10,
@@ -109,12 +112,10 @@ const styles = StyleSheet.create({
     //     borderColor: "#DCE1E9"
     // },
     eventsText: {
-        fontSize: 30,
-        width: width * 0.61,
-        fontFamily: fonts.SfPro_Semibold,
-        color: "#363C49",
-        // marginTop:20,
-        marginLeft: width * .03
+        fontSize: 18,
+        fontFamily: fonts.SfPro_Bold,
+        color: "#0D131F",marginBottom:10
+        // marginLeft: width * .03
     },
     flatListView: {
         borderTopWidth: 0,
@@ -124,19 +125,20 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 20,
         borderColor: "#DCE1E9",
         marginHorizontal: width * .03,
-        marginTop: 10
+        marginTop: 20
     },
     flatListView1: {
         width: width * 0.94,
         alignItems: 'flex-start',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        // borderRadius:11
     },
     flatListItem: {
         height: 185,
         width: '100%',
         backgroundColor: "#F1F5FC",
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20
+        borderTopLeftRadius: 11,
+        borderTopRightRadius: 11
     },
     flatListImg: {
         height: '100%',
@@ -152,8 +154,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5,
         justifyContent: "center",
         alignSelf: "flex-end",
-        marginTop: Platform.OS == "ios" ? 5 : 5,
-        marginRight: 10
+        marginTop: Platform.OS == "ios" ? 15 : 15,
+        marginRight: 15
     },
     carImg: {
         height: 20,
@@ -163,43 +165,54 @@ const styles = StyleSheet.create({
     kmText: {
         fontFamily: fonts.SfPro_Medium,
         color: "#fff",
+        fontSize:12,
         marginLeft: 5
     },
     dateView: {
         flexDirection: "row",
         alignItems: "center",
-        marginLeft: width * .07,
-        marginTop: 10
+        marginLeft: width * .05,
+        marginTop: 10,
+        marginBottom:15
+    },
+    dateView1: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginLeft: width * .05,
+        // marginTop: 10,
+        marginBottom:15
     },
     clockIcon: {
-        height: 15,
-        width: 15,
-        resizeMode: "contain"
-
+        height: 18,
+        width: 18,
+        resizeMode: "contain",
+        // tintColor:"#25C3F4"
     },
     dateText: {
-        color: "#363C49",
+        color: "#333333",
         fontFamily: fonts.SfPro_Regular,
+        fontSize:12,
         marginLeft: 10
     },
     summaryText: {
-        color: "#363C49",
-        fontFamily: fonts.SfPro_Heavy,
+        color: "#020A23",
+        fontFamily: fonts.SfPro_Bold,
         marginLeft: 10,
-        fontSize: 18,
-        marginLeft: width * .07,
+        fontSize: 16,
+        marginLeft: width * .05,
         marginRight: width * .1,
         marginTop: 10
     },
     locIconB: {
-        height: 15,
-        width: 15,
+        height: 18,
+        width: 18,
         resizeMode: "contain",
-        tintColor: "#363C49"
+        // tintColor: "#363C49"
     },
     locText: {
-        color: "#363C49",
-        fontFamily: fonts.SfPro_Medium,
+        color: "#333333",
+        fontFamily: fonts.SfPro_Regular,
+        fontSize:12,
         paddingHorizontal: 15
         // marginLeft: 10
     },

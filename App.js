@@ -8,6 +8,7 @@ import { store } from "./src/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import mobileAds from 'react-native-google-mobile-ads';
 import SplashScreen from 'react-native-splash-screen'
+import { StripeProvider } from '@stripe/stripe-react-native';
 
 const persistor = persistStore(store);
 
@@ -44,46 +45,25 @@ export default function App() {
     setTimeout(() => {
       SplashScreen.hide()
     }, 1000);
-  
+
   },[])
 
   return (
     <>
+    <StripeProvider
+      publishableKey="pk_test_CWOYTf4SJERP6VyJTChjifbg"
+      merchantIdentifier="merchant.com.cofitnew.app"
+    >
       <Provider store={store}>
         <PersistGate persistor={persistor}>
           <MainApp />
           <StatusBar />
         </PersistGate>
       </Provider>
+      </StripeProvider>
     </>
 
   )
 }
 
 const styles = StyleSheet.create({})
-
-
-// import { StyleSheet, Text, View } from 'react-native'
-// import React from 'react'
-// import { useEffect } from 'react';
-// import SplashScreen from 'react-native-splash-screen';
-
-// const App = () => {
-
-//     useEffect(()=>{
-//     setTimeout(() => {
-//       SplashScreen.hide()
-//     }, 1000);
-  
-//   },[])
-
-//   return (
-//     <View>
-//       <Text>App</Text>
-//     </View>
-//   )
-// }
-
-// export default App
-
-// const styles = StyleSheet.create({})

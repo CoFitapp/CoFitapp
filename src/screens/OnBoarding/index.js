@@ -12,7 +12,8 @@ const statusBarHeight = StatusBarManager.HEIGHT;
 
 const fontScale = PixelRatio.getFontScale();
 const fontSize = size => size / fontScale;
-const onBoardingScreen = () => {
+
+const OnBoardingScreen = () => {
     const navigation = useNavigation();
     const { height, width } = useWindowDimensions();
     const swiperRef = useRef(null)
@@ -76,5 +77,5 @@ const onBoardingScreen = () => {
     )
 }
 
-export default onBoardingScreen
+export default OnBoardingScreen
 

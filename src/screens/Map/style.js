@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       width: '93%',
       justifyContent: "center",
-      height: 50, alignItems: "center",
+      height: 45, alignItems: "center",
       marginHorizontal: 12,
       marginTop: 10,
       backgroundColor: '#fff',
@@ -154,6 +154,13 @@ const styles = StyleSheet.create({
   location1: {
     width: 25,
     height: 25,
+    marginLeft: '3%',
+    resizeMode: 'contain',
+    alignSelf: 'center'
+  },
+  location2: {
+    width: 20,
+    height: 20,
     marginLeft: '3%',
     resizeMode: 'contain',
     alignSelf: 'center'
