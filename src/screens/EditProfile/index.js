@@ -101,11 +101,12 @@ const EditProfile = ({ navigation }) => {
 
   const updateUserDetailToStore = async () => {
     let url = `${Url.GET_USER_DETAILS}/${userInfo.id}`
+    console.log('dsdsdssadasdasdssas', url);
     let res = await services.get(url)
     if (res.status) {
       dispatch(updateUser(res.user))
     }
-    console.log('updated User Details>>>>>', res.user);
+    console.log('updated User Details>>>>>', res);
   }
 
   const takeAphoto = async () => {
@@ -236,7 +237,7 @@ const EditProfile = ({ navigation }) => {
           <View style={styles.locationView1}>
             <Text style={styles.locationText}>My Home Location</Text>
           </View>
-          <TouchableOpacity style={styles.locationView2}>
+          <TouchableOpacity onPress={() => navigation.navigate('ChangeLocation',{value:2})} style={styles.locationView2}>
             <Image source={images.location3} style={styles.locationIcon} />
             <Text style={styles.locationName}>{userInfo?.location}</Text>
             <Image source={images.arrNew1} style={styles.nextArrowIcon1} />

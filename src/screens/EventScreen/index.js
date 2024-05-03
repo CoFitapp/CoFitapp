@@ -386,7 +386,6 @@ const EventScreen = () => {
 
       <FastImage
         source={event?.image ? { uri: event?.image } : {uri:event?.eventPic}}
-        // resizeMode="contain"
         style={styles.eventImage}
       >
         {selectTab == 2 && (
@@ -555,7 +554,7 @@ const EventScreen = () => {
             ></TextInput>
           </View>
           <View style={styles.attendeesContainer}>
-            <Text style={styles.attendeesCount}>20 Attendees</Text>
+            <Text style={styles.attendeesCount}>{attendeesList && attendeesList.length > 0 ? `${attendeesList.length} Attendees` : undefined}</Text>
             <View style={[styles.sortByContainer]}>
               <Text style={styles.sortByText}>Sort by : {sortSelected}</Text>
               <TouchableOpacity
@@ -594,7 +593,7 @@ const EventScreen = () => {
             renderItem={({ item, index }) => {
               return (
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("UserDetails")}
+                  // onPress={() => navigation.navigate("UserDetails")}
                   activeOpacity={0.5}
                   style={[
                     styles.usersView,
@@ -622,7 +621,7 @@ const EventScreen = () => {
                     { alignSelf: "center", marginVertical: 40 },
                   ]}
                 >
-                  No Data Found
+                  Oh no, no attendees yet
                 </Text>
               );
             }}

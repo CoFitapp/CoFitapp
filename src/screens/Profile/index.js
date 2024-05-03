@@ -60,6 +60,8 @@ const Profile = ({navigation}) => {
 const onConfirmLogout=async()=>{
     Auth.signOut()
     dispatch(logout())
+    dispatch(savedPaymentMethod(''))
+
     navigation.navigate("LoginScreen")
 }
 

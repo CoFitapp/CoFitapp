@@ -102,13 +102,13 @@ const styles = StyleSheet.create({
         marginLeft: width * .03
     },
     // scrollItem:{
-    //     justifyContent: "center", 
-    //     alignItems: "center", 
-    //     backgroundColor: selectedIndex == 0 ? "#25C3F4" : "#fff", 
-    //     borderRadius: 5, 
-    //     height: 38, 
-    //     marginLeft: 5, 
-    //     borderWidth: 1, 
+    //     justifyContent: "center",
+    //     alignItems: "center",
+    //     backgroundColor: selectedIndex == 0 ? "#25C3F4" : "#fff",
+    //     borderRadius: 5,
+    //     height: 38,
+    //     marginLeft: 5,
+    //     borderWidth: 1,
     //     borderColor: "#DCE1E9"
     // },
     eventsText: {
@@ -143,7 +143,9 @@ const styles = StyleSheet.create({
     flatListImg: {
         height: '100%',
         width: '100%',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        borderTopLeftRadius: 11,
+        borderTopRightRadius:11
     },
     kmbutton: {
         flexDirection: "row",
@@ -235,8 +237,80 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginLeft: 5,
     },
-
-
+    centeredView: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+      },
+      modalView: {
+        backgroundColor: 'white',
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        elevation: 5,
+        height: Dimensions.get('window').height / 2,
+        width: '100%'
+      },
+      handle: {
+        height: 5,
+        width: 45,
+        backgroundColor: '#3C3C43',
+        borderRadius: 2,
+        alignSelf: 'center',
+        marginTop: 10
+      },
+      pickCity: {
+        textAlign: 'center',
+        fontSize: 18,
+        fontFamily: fonts.SfPro_Semibold,
+        marginTop: 20
+      },
+      seperator: {
+        height: 1,
+        width: '100%',
+        marginVertical: 15,
+        backgroundColor: '#E6E0E9'
+      },
+      seperator1: {
+        height: 1,
+        width: '100%',
+        backgroundColor: '#E6E0E9'
+      },
+      bottomBtn: {
+        backgroundColor: colors.orange_dark,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '90%',
+        borderRadius: 5,
+        height: 40,
+        marginLeft:'5%'
+    },
+    btnText: {
+        fontSize: 16,
+        color: "#fff",
+        marginLeft: '5%',
+        fontFamily:fonts.SfPro_Semibold
+    },
+    returnText: {
+        fontSize: 14,
+        fontFamily: fonts.SfPro_Medium,
+        color: colors.textRegular,
+        marginLeft: '5%'
+    },
+    returnText1: {
+        fontSize: 14,
+        fontFamily: fonts.SfPro_Medium,
+        color: colors.textRegular,
+        marginLeft: '5%',
+        paddingVertical: 15
+    },
+    homeLocation: {
+      fontSize: 16,
+      fontFamily: fonts.SfPro_Semibold,
+      color: colors.black,
+      marginLeft: '5%',
+      marginTop: 5
+    }
 })
 
 export default styles;

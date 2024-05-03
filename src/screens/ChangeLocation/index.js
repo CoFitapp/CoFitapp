@@ -149,7 +149,13 @@ const SelectLocation = ({ navigation, route }) => {
 
 
   const onChooseLocation = async (data) => {
-    let body = { location: data }
+    let body;
+    if (route.params.value == 1) {
+       body = {search_location: data }
+    } else {
+       body = {location: data }
+    }
+
     let url = `${Url.UPDATE_USER_DETAILS}/${userInfo.id}`
     let response = await services.post(url, "", body, 'json')
     console.log('d9u2h9hd982', response);
@@ -198,6 +204,7 @@ const SelectLocation = ({ navigation, route }) => {
                 <GooglePlacesAutocomplete
                   placeholder='Enter Location'
                   fetchDetails={true}
+                  enablePoweredByContainer={false}
                   keepResultsAfterBlur={true}
                   styles={{
                     textInputContainer: {
@@ -214,7 +221,7 @@ const SelectLocation = ({ navigation, route }) => {
                   }}
                   renderLeftButton={() => (
                     <Image source={images.location} style={{ alignSelf: 'center', width: 15, height: 25, marginHorizontal: '3%', resizeMode: 'contain' }} />
-                  )} 
+                  )}
                   textInputProps={{
                     onFocus: () => {
                       setAuto(false);
@@ -228,6 +235,7 @@ const SelectLocation = ({ navigation, route }) => {
                     key: "AIzaSyBpVX6Xl4OEftECYrN-wauMw7dpUyl6GiI",
                     language: 'en',
                     components: "country:us",
+                    type: '(cities)'
                   }}
                 />
               </View>

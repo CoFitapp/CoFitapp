@@ -24,6 +24,7 @@ const StandardTicketAddAdvance = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [eventPic, setEventPic] = useState("");
   const [eventDate, setEventDate] = useState("");
+  const [eventDate1, setEventDate1] = useState("");
   const [eventName, setEventName] = useState("");
   const [isPaid, setIsPaid] = useState("");
   const [eventDiscription, setEventDiscription] = useState("");
@@ -35,6 +36,7 @@ const StandardTicketAddAdvance = () => {
   const [eventTickets, setEventTickets] = useState("");
   const [eventCity, setEventCity] = useState('')
   const [newStartDate, setNewStartDate] = useState("");
+  const [newEndDate, setNewEndDate] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [isOffline, setIsOffline] = useState(null);
@@ -100,21 +102,28 @@ const StandardTicketAddAdvance = () => {
     if (eventName) {
       setEventName(eventName);
     }
-    var eventDate = await AsyncStorage.getItem("eventDate");
 
+    var eventDate = await AsyncStorage.getItem("eventDate");
     if (eventDate) {
       setEventDate(eventDate);
     }
-    var eventStartDate = await AsyncStorage.getItem("eventStartTime");
 
+    var eventDate1 = await AsyncStorage.getItem("eventEndDate");
+    if (eventDate1) {
+      setEventDate1(eventDate1);
+    }
+
+eventEndDate
+    var eventStartDate = await AsyncStorage.getItem("eventStartTime");
     if (eventStartDate) {
       setEventStartDate(eventStartDate);
     }
-    var eventEndTime = await AsyncStorage.getItem("eventEndTime");
 
+    var eventEndTime = await AsyncStorage.getItem("eventEndTime");
     if (eventEndTime) {
       setEventEndDate(eventEndTime);
     }
+
     var eventIsPaid = await AsyncStorage.getItem("isPaid");
     console.log('bcjwegf892ey892y91', eventIsPaid);
     if (eventIsPaid) {
@@ -137,6 +146,12 @@ const StandardTicketAddAdvance = () => {
     if (date) {
       setNewStartDate(JSON.parse(date));
     }
+
+    var endDate1 = await AsyncStorage.getItem("EndDate");
+    if (date) {
+      setNewEndDate(JSON.parse(endDate1));
+    }
+
     var startDate = await AsyncStorage.getItem("startDate");
 
     if (startDate) {
@@ -177,6 +192,7 @@ const StandardTicketAddAdvance = () => {
     await AsyncStorage.removeItem("eventName");
     await AsyncStorage.removeItem('SelectedCity')
     await AsyncStorage.removeItem("eventDate");
+    await AsyncStorage.removeItem("eventEndDate");
     await AsyncStorage.removeItem("eventStartTime");
     await AsyncStorage.removeItem("eventEndTime");
     await AsyncStorage.removeItem("isPaid");
@@ -232,19 +248,21 @@ const StandardTicketAddAdvance = () => {
   const onPublishPress = async () => {
     let newDate;
     let date = moment(eventDate).format("MMM D");
-    newDate = {
-      start_date: date,
-      when: `${eventDate}, ${eventStartDate} - ${eventEndDate}`,
-    };
+    if (newStartDate == newEndDate){
+      newDate = {
+        start_date: date,
+        when: `${eventDate}, ${eventStartDate} - ${eventEndDate}`,
+      };
+    } else {
+      newDate = {
+        start_date: date,
+        when: `${eventDate}, ${eventStartDate} - ${eventDate1}, ${eventEndDate}`,
+      };
+    }
+
     let data = {
-      // events: {
         date: newDate,
         title: eventName,
-        // venue: {
-        //   link: "https://www.google.com/search?sca_esv=577764723&hl=en&q=Pinnacle+Fitness+Center&ludocid=12328716643884496808&ibp=gwp%3B0,7",
-        //   name: "Pinnacle Fitness Center",
-        //   reviews: 127,
-        // },
         address: [eventLoc],
         description: eventDiscription,
         event_type: eventType,
@@ -257,7 +275,8 @@ const StandardTicketAddAdvance = () => {
         instructions: eventInstructions,
         eventTickets: isPaid ? eventTickets : [],
         startDate: newStartDate,
-        endDate: newStartDate,
+        endDate: newEndDate,
+        year: moment(newStartDate).format('YYYY'),
         startTime: startDate,
         endTime: endDate,
         accountId:userInfo?.stripeAccountId,
@@ -265,7 +284,9 @@ const StandardTicketAddAdvance = () => {
       user_id: userInfo.id,
       event_category:null
     };
-    console.log("42342asasddsaas3432e232d2", data);
+    console.log("newStartDatenewStartDate",data );
+    console.log('eventDateeventDate', newDate);
+    // return;
     setIsLoader(true);
     let response = await services.post(Url.ADD_EVENTS_NEW, "", data, "json");
     console.log("rtuyer839dassasdsadsa4y9238", response);

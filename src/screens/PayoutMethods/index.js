@@ -44,7 +44,7 @@ const PayoutMethod = () => {
   }
 
   const onsubmit = async () => {
-    console.log('skldfhkdshfhkshlkklsdh', userInfo);
+    console.log('skldfhkdshfhkshlkklsdh', userInfo.stripeAccountId);
     let data = {
       "account": userInfo?.stripeAccountId,
       "refresh_url": "https://apple.cofitapp.com?id=assdf",

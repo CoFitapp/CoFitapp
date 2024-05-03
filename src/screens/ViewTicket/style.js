@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
         width:"100%",
         alignItems:"center",
         paddingTop: Platform.OS == "ios" ? statusBarHeight+10 : 25,
-        // backgroundColor:"green"
+        backgroundColor:"#fff",
+        paddingBottom: 15
     },
     seperator:{
         width:"100%",
@@ -89,6 +90,12 @@ const styles = StyleSheet.create({
         fontFamily:fonts.SfPro_Medium,
         textAlign:"center",
         marginTop:10
+      },
+      ticketType2:{
+        fontSize:14,
+        fontFamily:fonts.SfPro_Regular,
+        textAlign:"center",
+        // marginTop:10
       },
       ticketType1:{
         fontSize:12,

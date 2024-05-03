@@ -33,6 +33,7 @@ export default images = {
   map_active: require("../assets/images/map-active.png"),
   profile_active: require("../assets/images/profile-active.png"),
   logo: require("../assets/images/Logo1.png"),
+  cofit: require("../assets/images/cofit.png"),
   cofitLogo: require("../assets/images/Cofit-logo.png"),
   google: require("../assets/images/google-icon.png"),
   skip: require("../assets/images/skip.png"),

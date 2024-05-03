@@ -20,6 +20,7 @@ import BottomSheet from 'react-native-gesture-bottom-sheet';
 import { current } from '@reduxjs/toolkit'
 import * as services from '../../constants/services'
 import * as Url from '../../constants/url'
+import FastImage from "react-native-fast-image";
 
 const { StatusBarManager } = NativeModules;
 const statusBarHeight = StatusBarManager.HEIGHT;
@@ -33,14 +34,13 @@ const EventDetail = () => {
   const route = useRoute();
   const scrollRef = useRef()
   const navigation = useNavigation();
-  const [event, setEvent] = useState(route.params.item)
+  const [event, setEvent] = useState(route?.params?.item || {})
   const [ticketArr, setTicketArr] = useState([])
-  // const [ticketArr, setTicketArr] = useState(route.params.item?.eventTickets || [])
   const { height, width } = useWindowDimensions();
   const [latitude, setLatitude] = useState(0)
   const [longitude, setLongitude] = useState(0)
   const [isMapVisible, setIsMapVisible] = useState(true)
-  const [similarEvents, setSimilarEvents] = useState(route.params.event)
+  const [similarEvents, setSimilarEvents] = useState(route?.params?.event || [])
   const [selectedTicketQuantity, setSelectedTicketQuantity] = useState(0)
   const [totalAmount, setTotalAmount] = useState(0)
   const [test, setTest] = useState(false)
@@ -260,15 +260,15 @@ const EventDetail = () => {
           </View>
           <View style={styles.startedView}>
 
-            <Text style={styles.enterLoc1}>{event.title}</Text>
+            <Text style={styles.enterLoc1}>{event?.title}</Text>
             <View style={styles.shareWithFrndsView} />
             <View style={styles.DayView}>
               <View style={styles.calBg}>
                 <Image source={images.clock1} style={styles.calImg}></Image>
               </View>
               <View style={styles.dayTextView}>
-                <Text style={styles.dayText}>{moment(event.date.start_date, "MMM D").format('dddd, MMMM D, YYYY')}</Text>
-                <Text style={styles.timeText}>{event.date.when}</Text>
+                <Text style={styles.dayText}>{moment(event?.date?.start_date, "MMM D").format('dddd, MMMM D, YYYY')}</Text>
+                <Text style={styles.timeText}>{event?.date?.when}</Text>
                 {/* <Text style={styles.timeText}>Times are displayed in your time zone</Text> */}
 
               </View>
@@ -279,7 +279,7 @@ const EventDetail = () => {
                 <Image source={images.location3} style={styles.calImg}></Image>
               </View>
               <View style={styles.dayTextView}>
-                <Text style={styles.dayText}>{event.address[0] + " " + event.address[1]}</Text>
+                <Text style={styles.dayText}>{event.address ? event?.address[0] + " " + event?.address[1] : ''}</Text>
 
               </View>
             </TouchableOpacity>
@@ -288,7 +288,7 @@ const EventDetail = () => {
               Event Details
             </Text>
             <View style={styles.eventDescription}>
-              <Text style={styles.eventDetailText}>{event.description}</Text>
+              <Text style={styles.eventDetailText}>{event?.description}</Text>
             </View>
 
             <View style={styles.shareWithFrndsView}></View>
@@ -455,9 +455,9 @@ const EventDetail = () => {
             <View style={{ height: 5, width: 35, backgroundColor: "#3C3C43", marginTop: 10, borderRadius: 3, alignSelf: "center" }} />
             <Text numberOfLines={1} style={styles.bottomSheetTitle}>{event.title}</Text>
             <View style={styles.bottomSheetTimeView}>
-              <Text numberOfLines={1} style={styles.bottomSheetDateText}>{moment(event.date.start_date, "MMM D").format('ddd, MMM D')}</Text>
+              <Text numberOfLines={1} style={styles.bottomSheetDateText}>{moment(event?.date?.start_date, "MMM D").format('ddd, MMM D')}</Text>
               <View style={styles.seperator} />
-              <Text numberOfLines={1} style={styles.bottomSheetDateText}>{event.address[0] + " " + event.address[1]} daa</Text>
+              <Text numberOfLines={1} style={styles.bottomSheetDateText}>{event.address ? event.address[0] + " " + event.address[1] : ''} daa</Text>
 
             </View>
             <View style={styles.seperator1} />

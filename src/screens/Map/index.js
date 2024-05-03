@@ -81,8 +81,9 @@ const Map = ({ navigation }) => {
   ])
   useEffect(() => {
     if (isFocused) {
-      getCoordinatesForLocation(userInfo.location);
-      getEventCoords(userInfo.location);
+      let loc = userInfo && userInfo.search_location ? userInfo.search_location : userInfo.location
+      getCoordinatesForLocation(loc);
+      getEventCoords(loc);
       // requestLocationPermission();
     }
   }, [isFocused])
@@ -336,6 +337,25 @@ const Map = ({ navigation }) => {
   }
 
   const getCurrentLocation = async () => {
+    const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(userInfo?.location)}&key=${apiKey}`);
+    const data = await response.json()
+    if (data.results.length > 0) {
+      const locationData = data.results[0].geometry.location;
+      console.log('duy23y723y8y328', locationData);
+      setLatitude(0);
+      setLongitude(0);
+      setLatitude(locationData.lat);
+      setLongitude(locationData.lng);
+      setMapVisible(true)
+    } else {
+      console.error(`No results found for the provided location: ${userInfo?.location}`);
+
+    }
+    console.log('2332323dss2131212', data);
+    setPreciseLocation(userInfo?.location)
+    getEventCoords(userInfo?.location)
+
+    return
     let cityName = ""
     if(Platform.OS=='ios'){
       await Geolocation.requestAuthorization('always')

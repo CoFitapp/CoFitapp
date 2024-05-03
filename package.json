@@ -49,6 +49,7 @@
     "react-native-splash-screen": "^3.3.0",
     "react-native-svg": "^15.1.0",
     "react-native-swiper": "^1.6.0",
+    "react-native-walkthrough-tooltip": "^1.6.0",
     "react-native-webview": "^13.6.2",
     "react-redux": "^8.1.2",
     "redux-persist": "^6.0.0"

@@ -52,6 +52,7 @@ import AttendeeRegistration from "../screens/AttendeeRegistration";
 import OrderDetails from "../screens/OrderDetails";
 import AddCard from "../screens/AddCard";
 import ViewTicket from "../screens/ViewTicket";
+import ChoosePaymentOption from "../screens/ChoosePaymentOption";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -267,6 +268,7 @@ export default function navigation() {
         <Stack.Screen name="OrderDetails" component={OrderDetails} />
         <Stack.Screen name="AddCard" component={AddCard} />
         <Stack.Screen name="ViewTicket" component={ViewTicket} />
+        <Stack.Screen name="ChoosePaymentOption" component={ChoosePaymentOption} />
       </Stack.Navigator>
     </NavigationContainer>
   );

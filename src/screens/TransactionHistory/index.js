@@ -8,6 +8,7 @@ import * as Url from '../../constants/url'
 import { useSelector } from 'react-redux'
 import fonts from '../../constants/fonts'
 import colors from '../../constants/colors'
+import FastImage from "react-native-fast-image";
 
 const TransactionHistory = () => {
   const [type, setType] = useState('all');
@@ -128,7 +129,7 @@ const TransactionHistory = () => {
                     <View style={styles.flatlistMainView}>
                       <View style={{ width: '70%' }}>
                         <View style={{ flexDirection: 'row', width: '100%', }}>
-                          <Image source={{uri: item.eventImage}} style={styles.eventImage} />
+                          <FastImage source={{uri: item.eventImage}} style={styles.eventImage} />
                           <View style={{ flexDirection: "column", paddingLeft: 10, width: '70%' }}>
                             <Text numberOfLines={1} style={styles.titleText}>{item.eventName}</Text>
                             <Text numberOfLines={1} style={styles.timeText}>{item.eventDate}</Text>
@@ -148,7 +149,7 @@ const TransactionHistory = () => {
                       </View>
                       <View style={{ width: '30%', flexDirection: "row", justifyContent: "flex-end" }}>
                         <Text style={styles.amount}>${item.amount / 100}</Text>
-                        <Image source={item.type == 'payment' ? images.arrow1 : images.arrow2} style={styles.arrow} />
+                        <FastImage source={item.type == 'payment' ? images.arrow1 : images.arrow2} style={styles.arrow} />
                       </View>
 
                     </View>

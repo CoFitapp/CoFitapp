@@ -4,7 +4,8 @@ const initialState = {
     userInfo: {},
     status: null,
     location:'',
-    profileImage:''
+    profileImage:'',
+    savedPaymentMethod: ''
 };
 
 const userSlice = createSlice({
@@ -33,8 +34,12 @@ const userSlice = createSlice({
             console.log('dwh8y23d823y89dy89y92y98',payload.payload);
         (state.userInfo=payload.payload)
         },
+        setSavedPaymentMethod: (state, payload) => {
+            console.log('savedPaymentMethodsavedPaymentMethod',payload.payload);
+        (state.savedPaymentMethod=payload.payload)
+        },
     },
 });
 
-export const { login, logout,profileImage, updateUser,updateSensor,location } = userSlice.actions;
+export const { login, logout,profileImage, updateUser,updateSensor,location, setSavedPaymentMethod } = userSlice.actions;
 export default userSlice.reducer;

@@ -8,14 +8,19 @@ import colors from '../../constants/colors'
 import * as services from '../../constants/services'
 import * as Url from '../../constants/url'
 import { useEffect } from 'react'
+import Tooltip from 'react-native-walkthrough-tooltip';
 import { PlatformPayButton, isPlatformPaySupported, confirmPlatformPayPayment, PlatformPay, useStripe, } from '@stripe/stripe-react-native';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { setSavedPaymentMethod } from '../../redux/slices/userSlice'
 import { useIsFocused } from '@react-navigation/native'
 import Modal from "react-native-modal";
-
+import FastImage from 'react-native-fast-image'
 const OrderDetails = ({ navigation, route }) => {
   const isFocused = useIsFocused();
+  const dispatch = useDispatch()
   const userInfo = useSelector((state) => state.user.userInfo);
+  const savedPaymentMethod = useSelector((state) => state.user.savedPaymentMethod);
+  // console.log('76725476532dddsasa4623675543276', route.params.userObj.selectedTicketQuantity)
   const [isApplePaySelected, setIsApplePaySelected] = useState(false)
   const [isPaypalSelected, setIsPaypalSelected] = useState(false)
   const [savedCards, setSavedCards] = useState([])
@@ -23,13 +28,21 @@ const OrderDetails = ({ navigation, route }) => {
   const [paymentMethodId, setPaymentMethodId] = useState('')
   const [isModalVisible, setModalVisible] = useState(false)
   const [promoCode, setPromoCode] = useState('')
+  const [toolTipVisible, settoolTipVisible] = useState(false)
+  const [promoCodes, setPromoCodes] = useState([])
+  const [appliedPromoCode, setAppliedPromoCode] = useState({})
+  const [promoError, setPromoError] = useState('')
+  const [bookingFee, setBookingFee] = useState(0)
   // const [loader,setLoader] = useState
+
   const { confirmPayment, } = useStripe();
   console.log('rwexasdiodsadurwesaosadiewr', userInfo);
 
   useEffect(() => {
     if (isFocused) {
       fetchCustomerPaymentMethods();
+      fetchPromoCodes()
+      getBookingFee()
     }
 
   }, [isFocused])
@@ -40,6 +53,32 @@ const OrderDetails = ({ navigation, route }) => {
     }
     checkApplePayAvailable();
   }, [])
+
+  const getBookingFee =()=>{
+    let amount = route.params?.userObj?.totalAmount
+    let PlatformAndStripeFee;
+
+    if (amount <= 100) {
+      PlatformAndStripeFee = (amount * 12.9 / 100 + 0.30).toFixed(2)
+    } else if (amount <= 500) {
+      PlatformAndStripeFee = (amount * 10.9 / 100 + 0.30).toFixed(2)
+    } else if (amount <= 1000) {
+      PlatformAndStripeFee = (amount * 8.9 / 100 + 0.30).toFixed(2)
+    } else {
+      PlatformAndStripeFee = (amount * 7.9 / 100 + 0.30).toFixed(2)
+    }
+    setBookingFee(Number(PlatformAndStripeFee))
+  }
+
+  const fetchPromoCodes = async () => {
+    const res = await services.get(Url.GET_PROMO_CODES)
+    console.log('dsasdsadsdasdsa', res);
+    if (res.status && res.promoCodes && res.promoCodes.length > 0) {
+      setPromoCodes(res.promoCodes)
+    } else {
+      setPromoCode([])
+    }
+  }
 
   const fetchCustomerPaymentMethods = async () => {
 
@@ -83,42 +122,40 @@ const OrderDetails = ({ navigation, route }) => {
   }
 
   const onPurchaseTicket = async () => {
-    console.log('payment method id113211', paymentMethodId);
-    if (paymentMethodId?.length == 0 && !isApplePaySelected && !isPaypalSelected) {
-      alert("Please select any payment method.")
-      return;
-    }
+    console.log('payment method id1132ewqewq11', savedPaymentMethod);
+    // return;
+    // if (paymentMethodId?.length == 0 && !isApplePaySelected && !isPaypalSelected) {
+    //   alert("Please select any payment method.")
+    //   return;
+    // }
 
-    if (isApplePaySelected) {
+    // if (isApplePaySelected) {
+    //   payWithApplePay()
+    //   return;
+    // }
+    if (Object.keys(savedPaymentMethod).length <= 0) {
       payWithApplePay()
       return;
     }
     setLoader(true)
-    let amount  = route.params?.userObj?.totalAmount
-    let PlatformAndStripeFee;
 
-    if(amount<=100){
-    PlatformAndStripeFee = (amount* 12.9/100 +0.30).toFixed(2)
-    }else if(amount<=500){
-      PlatformAndStripeFee = (amount* 10.9/100 +0.30).toFixed(2)
-    }else if(amount<=1000){
-      PlatformAndStripeFee = (amount* 8.9/100 +0.30).toFixed(2)
-    }else{
-      PlatformAndStripeFee = (amount* 7.9/100 +0.30).toFixed(2)
+    let amount = route.params?.userObj?.totalAmount
+    let discount = 0
+    if(Object.keys(appliedPromoCode).length > 0) {
+      discount = (amount * Number(appliedPromoCode.value) / 100) * 100
     }
-    console.log('amountttttttdsdsad',amount);
-    console.log('PlatformAndSdstripeFeesasdsadsd',JSON.stringify(route.params?.userObj));
-
+     console.log('discountdiscountdiscount', discount);
+    //  return
     let data = {
-      "amount": route.params?.userObj?.totalAmount * 100,
+      "amount": (amount * 100) + (bookingFee * 100) - discount ,
       "currency": "usd",
-      "payment_method": paymentMethodId,
+      "payment_method": savedPaymentMethod?.id,
       // "on_behalf_of": route.params?.userObj?.event?.accountId,
       "transfer_data": {
-        "amount": (route.params?.userObj?.totalAmount * 100) - (PlatformAndStripeFee*100),
-        "destination":route.params?.userObj?.event?.accountId
+        "amount": (amount * 100) - discount,
+        "destination": route.params?.userObj?.event?.accountId
       },
-      "metadata":{
+      "metadata": {
         "eventId": route?.params?.userObj?.event?.id
       },
       // "return_url": "https://apple.cofitapp.com?id=1212",
@@ -131,7 +168,7 @@ const OrderDetails = ({ navigation, route }) => {
     // return;
     if (response.status) {
       // confirmPaymentIntent(response?.client_secret);
-      bookTicket(response?.client_secret, response?.payment_intent_id ,1)
+      bookTicket(response?.client_secret, response?.payment_intent_id, 1)
     } else {
       setLoader(false)
       alert(response?.error)
@@ -144,7 +181,7 @@ const OrderDetails = ({ navigation, route }) => {
 
     const { paymentIntent, error } = await confirmPayment(paymentSecret, {
       paymentMethodType: "Card",
-      paymentMethodData: { paymentMethodId: paymentMethodId },
+      paymentMethodData: { paymentMethodId: savedPaymentMethod?.id },
       billingDetails: {
         email: 'test@gmail.com',
         name: 'test user',
@@ -168,40 +205,33 @@ const OrderDetails = ({ navigation, route }) => {
 
   const payWithApplePay = async () => {
     setLoader(true)
-    let amount  = route.params?.userObj?.totalAmount
-    let PlatformAndStripeFee;
-
-    if(amount<=100){
-    PlatformAndStripeFee = (amount* 12.9/100 +0.30).toFixed(2)
-    }else if(amount<=500){
-      PlatformAndStripeFee = (amount* 10.9/100 +0.30).toFixed(2)
-    }else if(amount<=1000){
-      PlatformAndStripeFee = (amount* 8.9/100 +0.30).toFixed(2)
-    }else{
-      PlatformAndStripeFee = (amount* 7.9/100 +0.30).toFixed(2)
+    let amount = route.params?.userObj?.totalAmount
+    let discount = 0
+    if(Object.keys(appliedPromoCode).length > 0) {
+      discount = (amount * Number(appliedPromoCode.value) / 100) * 100
     }
 
     let data = {
-      "amount": route.params?.userObj?.totalAmount * 100,
+      "amount": (amount * 100) + (bookingFee * 100) - discount,
       "currency": "usd",
       // "on_behalf_of": route.params?.userObj?.event?.accountId,
       "transfer_data": {
-        "amount": (route.params?.userObj?.totalAmount * 100) - (PlatformAndStripeFee*100),
+        "amount": (amount * 100) - discount,
         "destination": route.params?.userObj?.event?.accountId
       }
     }
-    let response = await services.post(Url.CREATE_PAYMENT_INTENT_NEW, "",data , "json")
-    console.log('create payment intent new api response11111',response);
-    if(response?.status){
+    let response = await services.post(Url.CREATE_PAYMENT_INTENT_NEW, "", data, "json")
+    console.log('create payment intent new api response11111', response);
+    if (response?.status) {
       bookTicket(response?.client_secret, response?.payment_intent_id, 2)
-    }else{
-     alert(response?.message)
-     setLoader(false)
+    } else {
+      alert(response?.message)
+      setLoader(false)
     }
 
   };
 
-   const paymentWithApple =async(paymentIntentId)=> {
+  const paymentWithApple = async (paymentIntentId) => {
 
     const { error, paymentIntent } = await confirmPlatformPayPayment(
       paymentIntentId,
@@ -215,7 +245,7 @@ const OrderDetails = ({ navigation, route }) => {
             },
             {
               label: 'Total',
-              amount:`${route.params?.userObj?.totalAmount}.00`,
+              amount: `${route.params?.userObj?.totalAmount}.00`,
               paymentType: PlatformPay.PaymentType.Immediate,
             },
           ],
@@ -234,27 +264,27 @@ const OrderDetails = ({ navigation, route }) => {
       // handle error
     } else {
       alert('event booked successfully.')
-    navigation.navigate('MyEvents')
-    setLoader(false)
+      navigation.navigate('MyEvents')
+      setLoader(false)
       console.log("apple pay response11111", JSON.stringify(paymentIntent));
     }
-   }
-  const bookTicket =async(paymentSecret,paymentIntentId,val)=> {
-    console.log('daskjhdaskahkjahk',JSON.stringify(route.params));
-    console.log('paymentIDDDDDDD>>>>>',paymentIntentId);
-    const {firstName,lastName,email,phoneNumber,ticketArr,event,totalAmount} = route?.params?.userObj
-    ticketArr.map(item=> {
+  }
+  const bookTicket = async (paymentSecret, paymentIntentId, val) => {
+    console.log('daskjhdaskahkjahk', JSON.stringify(route.params));
+    console.log('paymentIDDDDDDD>>>>>', paymentIntentId);
+    const { firstName, lastName, email, phoneNumber, ticketArr, event, totalAmount } = route?.params?.userObj
+    ticketArr.map(item => {
       item.eventId = event?.id
-      if(!item?.planId) {
+      if (!item?.planId) {
         item['planId'] = item['planName']
       }
     })
-    const filterArr = ticketArr.filter(itm=> itm?.quantity)
-    console.log('filterrererererere',filterArr);
+    const filterArr = ticketArr.filter(itm => itm?.quantity)
+    console.log('filterrererererere', filterArr);
     // return;
-    let data={
-      "userId":userInfo?.id,
-      'firstName':firstName,
+    let data = {
+      "userId": userInfo?.id,
+      'firstName': firstName,
       'lastName': lastName,
       'email': email,
       'phoneNumber': phoneNumber,
@@ -262,26 +292,26 @@ const OrderDetails = ({ navigation, route }) => {
       'transactionId': paymentIntentId,
       // 'amount':totalAmount
     }
-    console.log('book event Dataaaaa',data);
+    console.log('book event Dataaaaa', data);
     // return;
     let res = await services.post(Url.BOOK_EVENT, '', data, 'json')
-    if(res.status){
+    if (res.status) {
       if (val == 1) {
         confirmPaymentIntent(paymentSecret)
       } else {
         paymentWithApple(paymentSecret)
       }
 
-    }else{
+    } else {
       alert(res?.error)
       setLoader(false)
     }
-    console.log('response of book event api1111',res);
+    console.log('response of book event api1111', res);
     // console.log('booking Details111111',data);
   }
 
   const renderBrandImage = (brand) => {
-    console.log('djakshjkdahkshkahk',brand);
+    console.log('djakshjkdahkshkahk', brand);
     let image = images.Visa;
     if (brand == "mastercard") {
       image = images.Mastercard
@@ -292,18 +322,31 @@ const OrderDetails = ({ navigation, route }) => {
     } else if (brand == 'discover') {
       image = images.Discover
     }
-    return (
-      <Image source={image} style={styles.cardView1} />
-    )
+    return image
+  }
+
+  const onAppliedPromoCode = () => {
+    const isAvailable = promoCodes.some(code => code.code == promoCode)
+    if (!isAvailable) {
+      setPromoError('This code is invalid.')
+      setAppliedPromoCode({})
+    } else {
+      const index = promoCodes.findIndex(code => code.code == promoCode)
+      setAppliedPromoCode(promoCodes[index])
+      setPromoError('')
+      setPromoCode('')
+      setModalVisible(!isModalVisible)
+    }
+    console.log('ddasasdsadsadassa', isAvailable);
   }
 
   return (
     <View style={styles.mainView}>
       <Header title="Order Details" />
       <View style={{ flex: 1 }}>
-        <ScrollView style={{}}>
+        <ScrollView keyboardShouldPersistTaps='handled' style={{}}>
           <View style={styles.flatlistMainView}>
-            <Image source={{ uri: route?.params?.userObj?.event?.image }} style={styles.eventImage} />
+            <FastImage source={{ uri: route?.params?.userObj?.event?.image }} style={styles.eventImage} />
             <View style={{ flexDirection: "column", paddingLeft: 10, width: '75%' }}>
               <Text numberOfLines={1} style={styles.titleText}>{route?.params?.userObj?.event?.title}</Text>
               <Text numberOfLines={1} style={styles.timeText}>{route?.params?.userObj?.event?.date?.when}</Text>
@@ -338,9 +381,20 @@ const OrderDetails = ({ navigation, route }) => {
 
           </View>
           <Text style={styles.name}>{`${route?.params?.userObj?.firstName} ${route?.params?.userObj?.lastName}`}</Text>
-          <Text style={styles.name}>{`${route?.params?.userObj?.email}, ${route?.params?.userObj?.phoneNumber}`}</Text>
+          <Text style={styles.name}>{`${route?.params?.userObj?.phoneNumber}`}</Text>
           <View style={styles.seperator} />
-          <TouchableOpacity onPress={ () => setModalVisible(!isModalVisible)}  style={styles.couponView}>
+
+          <View style={styles.editDetailView}>
+            <Text style={styles.detailText}>Email</Text>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Text style={styles.editText}>Change</Text>
+            </TouchableOpacity>
+
+          </View>
+          <Text style={styles.name}>{`${route?.params?.userObj?.email}`}</Text>
+          <View style={styles.seperator} />
+
+          {/* <TouchableOpacity onPress={ () => setModalVisible(!isModalVisible)}  style={styles.couponView}>
             <View style={styles.couponSubView}>
               <Image source={images.coupon} style={styles.couponImage} />
               <Text style={styles.couponText}>Apply Coupon</Text>
@@ -348,27 +402,79 @@ const OrderDetails = ({ navigation, route }) => {
             <Image source={images.backArrow} style={styles.nextImage} />
 
           </TouchableOpacity>
-          <View style={styles.seperator} />
-          <Text style={styles.orderSummaryText}>Order Summary</Text>
+          <View style={styles.seperator} /> */}
+
+          <Tooltip
+            isVisible={toolTipVisible}
+            showChildInTooltip={false}
+            content={
+            <View style={{alignItems: 'center',justifyContent: 'center'}}>
+              <Text style={{ fontSize: 12, fontFamily: fonts.SfPro_Regular }}>Payment process: 2.9% + $0.30</Text>
+              <Text style={{ fontSize: 12, fontFamily: fonts.SfPro_Regular }}>Cofit Service Fee: 5%</Text>
+              </View>
+            }
+            placement="top"
+            onClose={() => settoolTipVisible(!toolTipVisible)}
+          >
+            <TouchableOpacity onPress={() => settoolTipVisible(!toolTipVisible)}>
+              <Text style={styles.orderSummaryText}>Order Summary</Text>
+            </TouchableOpacity>
+          </Tooltip>
           <View style={styles.ticketPriceView}>
-            <Text style={styles.priceText}>1x Ticket price</Text>
+            <Text style={styles.priceText}>{route.params?.userObj?.selectedTicketQuantity}x Ticket price</Text>
             <Text style={styles.priceValue}>${route.params?.userObj?.totalAmount}</Text>
           </View>
 
-          {/* <View style={styles.bookingFeeView}>
+          <View style={styles.bookingFeeView}>
             <View style={styles.bookingFeeSubView}>
               <Text style={styles.bookingText}>Booking Fee</Text>
-              <Image source={images.info} style={styles.infoImage} />
+              <TouchableOpacity>
+                <Image source={images.info} style={styles.infoImage} />
+              </TouchableOpacity>
             </View>
-            <Text style={styles.priceValue}>{"$2"}</Text>
-          </View> */}
+            <Text style={styles.priceValue}>${bookingFee}</Text>
+          </View>
+
+          {
+            appliedPromoCode && Object.keys(appliedPromoCode).length > 0 &&
+            <View style={styles.ticketPriceView}>
+              <Text style={styles.promoApply}>Promo Code Applied</Text>
+              <Text style={styles.priceValue}>- ${route.params?.userObj?.totalAmount * Number(appliedPromoCode.value) / 100}</Text>
+            </View>
+          }
 
           <View style={styles.ticketPriceView}>
             <Text style={styles.TotalPriceText}>Total</Text>
-            <Text style={styles.TotalPriceText}>${route.params?.userObj?.totalAmount}</Text>
+            {
+              appliedPromoCode && Object.keys(appliedPromoCode).length > 0
+                ?
+                <Text style={styles.TotalPriceText}>${route.params?.userObj?.totalAmount + bookingFee - route.params?.userObj?.totalAmount * Number(appliedPromoCode.value) / 100}</Text>
+                :
+                <Text style={styles.TotalPriceText}>${route.params?.userObj?.totalAmount + bookingFee}</Text>
+            }
           </View>
           <View style={styles.seperator} />
-          <Text style={styles.orderSummaryText}>Payment methods</Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: 20, alignItems: 'center' }}>
+            <Text style={styles.orderSummaryText}>Payment</Text>
+            {
+              appliedPromoCode && Object.keys(appliedPromoCode).length > 0
+                ?
+                <View>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', padding: 8, borderWidth: 2, borderRadius: 6, borderColor: '#E25F3C' }}>
+                    <Text style={{ color: '#E25F3C', fontSize: 14, fontFamily: fonts.SfPro_Regular, marginRight: 10 }}>{appliedPromoCode.value}% OFF Applied</Text>
+                    <TouchableOpacity onPress={() => setAppliedPromoCode({})}>
+                      <Image source={images.close} style={{ height: 15, width: 15, resizeMode: 'contain', tintColor: '#E25F3C' }} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                :
+                <TouchableOpacity onPress={() => setModalVisible(!isModalVisible)}>
+                  <Text style={styles.editText}>Promo Code</Text>
+                </TouchableOpacity>
+            }
+
+          </View>
+          {/* <View style={styles.seperator} />
           <FlatList
             data={savedCards}
             style={{ marginVertical: 20 }}
@@ -412,7 +518,7 @@ const OrderDetails = ({ navigation, route }) => {
               </View>
             </View>
           </TouchableOpacity>
-          <View style={styles.seperator} />
+          <View style={styles.seperator} /> */}
           {/* <TouchableOpacity onPress={() => { setIsPaypalSelected(!isPaypalSelected), setIsApplePaySelected(false), onSelectPaymentMethod1() }} style={[styles.cardView]}>
             <View style={styles.subView1}>
               <Image source={images.paypal} style={styles.cardView1} />
@@ -426,17 +532,31 @@ const OrderDetails = ({ navigation, route }) => {
                 }
               </View>
             </View>
-          </TouchableOpacity>
-          <View style={styles.seperator} /> */}
-          <TouchableOpacity onPress={() => navigation.navigate("AddCard")} style={styles.cardView}>
-            <View style={styles.subView1}>
-              <Image source={images.card1} style={styles.cardView1} />
-              <Text style={styles.text}>Add Debit/Credit card</Text>
-            </View>
-            <View style={styles.subView2}>
-              <Image source={images.backArrow} style={styles.nextImage} />
-            </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <View style={styles.seperator} />
+          {
+            savedPaymentMethod && Object.keys(savedPaymentMethod).length > 0
+              ?
+              <View style={styles.cardView}>
+                <View style={styles.subView1}>
+                  <Image source={renderBrandImage(savedPaymentMethod?.card?.brand)} style={styles.cardView1} />
+                  <Text style={styles.text}>{`${savedPaymentMethod?.card?.brand} ...${savedPaymentMethod?.card?.last4}`}</Text>
+                </View>
+                <TouchableOpacity onPress={() => navigation.navigate("ChoosePaymentOption")} style={styles.subView2}>
+                  <Image source={images.backArrow} style={styles.nextImage} />
+                </TouchableOpacity>
+              </View>
+              :
+              <View style={styles.cardView}>
+                <View style={styles.subView1}>
+                  <Image source={images.applePay} style={styles.cardView1} />
+                  <Text style={styles.text}>Apple Pay</Text>
+                </View>
+                <TouchableOpacity onPress={() => navigation.navigate("ChoosePaymentOption")} style={styles.subView2}>
+                  <Image source={images.backArrow} style={styles.nextImage} />
+                </TouchableOpacity>
+              </View>
+          }
           {/* <View style={styles.seperator}/> */}
 
         </ScrollView>
@@ -444,14 +564,14 @@ const OrderDetails = ({ navigation, route }) => {
       <View style={styles.seperator} />
       <TouchableOpacity
         onPress={() => onPurchaseTicket()}
-        style={[styles.button,{backgroundColor:(isApplePaySelected || paymentMethodId?.length !=0 ) ? colors.orange_dark : colors.buttonUnselect}]}
+        style={[styles.button, { backgroundColor: colors.orange_dark }]}
       >
         {
           loader
             ?
             <ActivityIndicator size={"small"} color={"#fff"} />
             :
-            <Text style={styles.buttonText}>Purchase Ticket(s)</Text>
+            <Text style={styles.buttonText}>{savedPaymentMethod && Object.keys(savedPaymentMethod).length > 0 ? `Buy with ${savedPaymentMethod?.card?.brand}` : "Buy with Apple Pay"}</Text>
         }
       </TouchableOpacity>
 
@@ -464,23 +584,28 @@ const OrderDetails = ({ navigation, route }) => {
           <Text style={styles.promoText}>Add Promo Code</Text>
           <View style={styles.inputView}>
             <TextInput
-            placeholder='Promo Code'
-            style={styles.input}
-            placeholderTextColor={'#A1A5AC'}
-            value={promoCode}
-            onChangeText={ (val)=> setPromoCode(val)}
+              placeholder='Promo Code'
+              style={styles.input}
+              placeholderTextColor={'#A1A5AC'}
+              autoCapitalize='characters'
+              value={promoCode}
+              onChangeText={(val) => setPromoCode(val)}
             />
           </View>
-          <View style={{flexDirection:"row",width:"100%",justifyContent:"space-between",marginTop:20}}>
-        <TouchableOpacity
-        disabled={promoCode.length == 0 ? true : false}
-        onPress={() => setModalVisible(!isModalVisible)} style={[styles.CancelBtn,{backgroundColor:promoCode.length ==0 ? colors.buttonUnselect  : colors.orange_dark,}]}>
-          <Text style={styles.btnText1}>Apply</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setModalVisible(!isModalVisible)} style={[styles.DeleteBtn]}>
-          <Text style={styles.btnText}>Cancel</Text>
-        </TouchableOpacity>
-        </View>
+          {
+            promoError.length > 0 &&
+            <Text style={styles.promoError}>{promoError}</Text>
+          }
+          <View style={{ flexDirection: "row", width: "100%", justifyContent: "space-between", marginTop: 20 }}>
+            <TouchableOpacity
+              disabled={promoCode.length == 0 ? true : false}
+              onPress={() => onAppliedPromoCode()} style={[styles.CancelBtn, { backgroundColor: promoCode.length == 0 ? colors.buttonUnselect : colors.orange_dark, }]}>
+              <Text style={styles.btnText1}>Apply</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => { setModalVisible(!isModalVisible), setPromoError(''), setPromoCode('') }} style={[styles.DeleteBtn]}>
+              <Text style={styles.btnText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
 

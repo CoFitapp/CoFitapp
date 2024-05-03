@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     editText: {
         fontSize: 14,
         fontFamily: fonts.SfPro_Medium,
-        textDecorationLine: "underline",
+        // textDecorationLine: "underline",
         color: colors.blue
     },
     name: {
@@ -344,5 +344,16 @@ const styles = StyleSheet.create({
         marginLeft: '5%',
         fontFamily: fonts.SfPro_Semibold
     },
+    promoError: {
+      marginLeft:20,
+      fontSize: 12,
+      fontFamily: fonts.SfPro_Regular,
+      color: '#D66972'
+    },
+    promoApply: {
+        color: '#E25F3C',
+        fontSize: 12,
+        fontFamily: fonts.SfPro_Regular
+    }
 })
 export default styles;

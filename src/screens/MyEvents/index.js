@@ -44,13 +44,13 @@ import {
   RewardedAdEventType,
 } from "react-native-google-mobile-ads";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import FastImage from "react-native-fast-image";
 import { useRef } from "react";
 import Geolocation from "react-native-geolocation-service";
 import Geocoder from "react-native-geocoding";
 import colors from "../../constants/colors";
 import * as services from "../../constants/services";
 import * as Url from "../../constants/url";
+import FastImage from "react-native-fast-image";
 // import * as Animatable from "react-native-animatable";
 
 const adUnitId = "ca-app-pub-3940256099942544/2435281174";
@@ -80,7 +80,7 @@ const MyEvents = () => {
   const scrollRef = useRef(null);
   const [preciseLocation, setPreciseLocation] = useState("");
   const [isShowUpcomingEvents, setIsShowUpcomingEvents] = useState(true);
-  const [isShowBookedEvents, setIsBookedEvents] = useState(false);
+  const [isShowBookedEvents, setIsBookedEvents] = useState(true);
   const [accountInfo, setAccountInfo] = useState(null)
   console.log('dsajkdsahkhshdkjah', userInfo.id);
   useScrollToTop(scrollRef);
@@ -252,7 +252,7 @@ const MyEvents = () => {
               return b.timeStampVal - a.timeStampVal;
             }
           });
-          console.log("sjkfhdfsasawsfsasasassdzsdfshkhkshk", JSON.stringify(pastEvents1));
+          console.log("sjkfhdfsasawsfsasasassdssadzsdfshkhkshk", newArr);
           setNewEvents(newArr);
           setNewEvents1(newArr);
           setPastEvents(pastEvents1);
@@ -332,6 +332,7 @@ const MyEvents = () => {
   };
 
   const onPressAdd =()=> {
+    console.log('ACCOUNT INFOOOO>>>>>>', accountInfo);
     if(accountInfo?.account?.capabilities?.transfers != "active") {
       Alert.alert("Cofit App",
       "Please complete your account setup to create any event.", [
@@ -676,7 +677,7 @@ const MyEvents = () => {
 
         {!isFetchingBookedEvents && bookedUpcomingEvents.length == 0 && isShowBookedEvents && isShowUpcomingEvents && (
           <View>
-            <Image source={images.noevent} style={styles.noEventImage} />
+            <FastImage source={images.noevent} style={styles.noEventImage} />
             <Text style={styles.noEventText}>No Upcoming Events</Text>
             <Text style={styles.exploreText}>Explore events near you</Text>
             <TouchableOpacity
@@ -701,7 +702,11 @@ const MyEvents = () => {
                   <View style={{ width: '100%', padding: '5%', backgroundColor: "#fff", borderRadius: 11 }}>
                     <View style={{ flexDirection: "row", height: 75 }}>
                       <View style={{ width: "30%", }}>
-                        <Image source={{ uri: item.image }} style={{ height: '100%', width: '100%', borderRadius: 6 }} />
+                        <FastImage
+                        source={{ uri: item.image }}
+                        style={{ height: '100%', width: '100%', borderRadius: 6 }}
+                        />
+                        {/* <Image source={{ uri: item.image }} style={{ height: '100%', width: '100%', borderRadius: 6 }} /> */}
                       </View>
                       <View style={{ width: "70%", flexDirection: "column", paddingLeft: 10 }}>
                         <Text numberOfLines={1} style={{ fontSize: 16, color: colors.textBlack, fontFamily: fonts.SfPro_Bold }}>{item.title}</Text>
@@ -790,7 +795,11 @@ const MyEvents = () => {
                   <View style={{ width: '100%', padding: '5%', backgroundColor: "#fff", borderRadius: 10 }}>
                     <View style={{ flexDirection: "row", height: 75 }}>
                       <View style={{ width: "30%", }}>
-                        <Image source={{ uri: item.image }} style={{ height: '100%', width: '100%', borderRadius: 6 }} />
+                        <FastImage
+                        source={{ uri: item.image }}
+                        style={{ height: '100%', width: '100%', borderRadius: 6 }}
+                        />
+                        {/* <Image source={{ uri: item.image }} style={{ height: '100%', width: '100%', borderRadius: 6 }} /> */}
                       </View>
                       <View style={{ width: "70%", flexDirection: "column", paddingLeft: 10 }}>
                         <Text numberOfLines={1} style={{ fontSize: 16, color: colors.textBlack, fontFamily: fonts.SfPro_Bold }}>{item.title}</Text>
@@ -884,7 +893,11 @@ const MyEvents = () => {
                   <View style={{ width: '100%', padding: '5%', backgroundColor: "#fff", borderRadius: 11 }}>
                     <View style={{ flexDirection: "row", }}>
                       <View style={{ width: "30%", }}>
-                        <Image source={{ uri: item?.eventDetails?.events?.image }} style={{ height: 85, width: '100%', borderRadius: 6 }} />
+                        <FastImage
+                        source={{ uri: item?.eventDetails?.events?.image }}
+                        style={{ height: 85, width: '100%', borderRadius: 6 }}
+                        />
+                        {/* <Image source={{ uri: item?.eventDetails?.events?.image }} style={{ height: 85, width: '100%', borderRadius: 6 }} /> */}
                       </View>
                       <View style={{ width: "70%", flexDirection: "column", paddingLeft: 10 }}>
                         <Text numberOfLines={1} style={{ fontSize: 16, color: colors.textBlack, fontFamily: fonts.SfPro_Bold }}>{item?.eventDetails?.events?.title}</Text>
@@ -930,7 +943,11 @@ const MyEvents = () => {
                   <View style={{ width: '100%', padding: '5%', backgroundColor: "#fff", borderRadius: 11 }}>
                     <View style={{ flexDirection: "row", }}>
                       <View style={{ width: "30%", }}>
-                        <Image source={{ uri: item?.eventDetails?.events?.image }} style={{ height: 85, width: '100%', borderRadius: 6 }} />
+                        <FastImage
+                        source={{ uri: item?.eventDetails?.events?.image }}
+                        style={{ height: 85, width: '100%', borderRadius: 6 }}
+                        />
+                        {/* <Image source={{ uri: item?.eventDetails?.events?.image }} style={{ height: 85, width: '100%', borderRadius: 6 }} /> */}
                       </View>
                       <View style={{ width: "70%", flexDirection: "column", paddingLeft: 10 }}>
                         <Text numberOfLines={1} style={{ fontSize: 16, color: colors.textBlack, fontFamily: fonts.SfPro_Bold }}>{item?.eventDetails?.events?.title}</Text>
@@ -949,7 +966,7 @@ const MyEvents = () => {
                       </View>
 
                     </View>
-                    <TouchableOpacity onPress={() => navigation.navigate("ViewTicket", { item: item?.eventDetails?.events })}
+                    <TouchableOpacity onPress={() => navigation.navigate("ViewTicket", { item: item?.eventDetails?.events, bookEvents: item?.bookedEvents })}
                       style={{ justifyContent: "center", alignItems: "center", height: 40, width: "100%", borderWidth: 1, borderColor: colors.orange_dark, borderRadius: 11, marginTop: 35 }}>
                       <Text style={{ fontFamily: fonts.SfPro_Bold, fontSize: 16, color: colors.orange_dark }}>View Ticket</Text>
                     </TouchableOpacity>
@@ -975,7 +992,7 @@ const MyEvents = () => {
           alignItems: "flex-end",
         }}
       >
-        <TouchableOpacity onPress={() => onPressAdd()} style={{ justifyContent: "center", alignItems: "center", height: 48, width: 48, borderRadius: 24, backgroundColor: "#25C3F4" }}>
+        <TouchableOpacity disabled={accountInfo === null ? true : false} onPress={() => onPressAdd()} style={{ justifyContent: "center", alignItems: "center", height: 48, width: 48, borderRadius: 24, backgroundColor: "#25C3F4" }}>
           <Image source={images.add} style={{ height: 22, width: 22, resizeMode: 'contain', tintColor: "#fff", }} />
 
         </TouchableOpacity>

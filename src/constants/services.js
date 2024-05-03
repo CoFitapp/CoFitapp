@@ -63,11 +63,12 @@ export const patch = async(url , token , data )=>{
 
 export const get = async(url)=>{
     let completeUrl = Url.BASE_URL + url;
+    console.log('complete url>>>>', completeUrl);
     const response = await fetch(completeUrl, {
         method: 'get',
     });
     let res = await response.json();
-    console.log('dsagdahjsaasgjhasdadads',res);
+    console.log('res>>>>>>>>>>>>>>',res);
     if(res.status==1){
         return res;
     }else{

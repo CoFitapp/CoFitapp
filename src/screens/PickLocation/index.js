@@ -36,9 +36,11 @@ const PickLocation = () => {
   const route = useRoute();
   const [date, setDate] = useState(new Date());
   const [birthdate, setBirthdate] = useState("");
+  const [birthdate1, setBirthdate1] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [picker, setShowPicker] = useState(false);
+  const [picker1, setShowPicker1] = useState(false);
   const [startPicker, setStartPicker] = useState(false);
   const [endPicker, setEndPicker] = useState(false);
   const [auto, setAuto] = useState(true);
@@ -72,6 +74,12 @@ const PickLocation = () => {
       let date = moment(JSON.parse(eventDate)).format("DD/MM/YYYY")
       setBirthdate(date)
       console.log('dsddasaddasashkhasa', eventDate);
+    }
+    let eventDate1 = await AsyncStorage.getItem("EndDate")
+    if (eventDate1 != null && route?.params?.edit == true) {
+      let date = moment(JSON.parse(eventDate1)).format("DD/MM/YYYY")
+      setBirthdate1(date)
+      console.log('dsddasaddasashkhasa', eventDate1);
     }
     let startTime = await AsyncStorage.getItem("startDate")
     if (startTime != null && route?.params?.edit == true) {
@@ -148,13 +156,14 @@ const PickLocation = () => {
   };
 
   const nextPress = (val) => {
-    console.log('daskjskhdjkhkj', birthdate);
     let eventDate = moment(birthdate, "DD/MM/YYYY").format("ddd, MMM D");
+    let eventDate1 = moment(birthdate1, "DD/MM/YYYY").format("ddd, MMM D");
     AsyncStorage.setItem("eventDate", eventDate);
+    AsyncStorage.setItem("eventEndDate", eventDate1);
     AsyncStorage.setItem("eventLocation", search);
     AsyncStorage.setItem("eventStartTime", startDate);
     AsyncStorage.setItem("eventEndTime", endDate);
-    AsyncStorage.setItem("SelectedCity",selectedCity)
+    AsyncStorage.setItem("SelectedCity", selectedCity)
     if (val == 1) {
       navigation.navigate("FreeOrPaid", { edit: route?.params?.edit });
     } else {
@@ -289,7 +298,7 @@ const PickLocation = () => {
                   fontFamily: fonts.SfPro_Regular,
                 }}
               >
-                {birthdate ? birthdate : "Pick a date"}
+                {birthdate ? birthdate : "Start Date"}
               </Text>
               <FastImage
                 source={images.arrDown}
@@ -307,7 +316,8 @@ const PickLocation = () => {
                 // maximumDate={new Date()}
                 value={birthdate}
                 onConfirm={(selectedDate) => {
-                  console.log("saddsafdfa", moment(selectedDate.toISOString()).format("DD/MM/YYYY"));
+                  console.log("sadsasassasadaasadsafdfa", new Date());
+                  console.log("sadsasassasadaasadsafdfa", moment(''));
                   setShowPicker(false);
                   setBirthdate(
                     moment(selectedDate.toISOString()).format("DD/MM/YYYY")
@@ -317,6 +327,57 @@ const PickLocation = () => {
                 }}
                 onCancel={() => {
                   setShowPicker(false);
+                }}
+                mode={"date"}
+              />
+            )}
+
+            <TouchableOpacity
+              onPress={() => setShowPicker1(true)}
+              activeOpacity={0.8}
+              style={[
+                styles.dropdown,
+                {
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginTop: 15
+                },
+              ]}
+            >
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: birthdate1 ? "black" : "#999999",
+                  fontFamily: fonts.SfPro_Regular,
+                }}
+              >
+                {birthdate1 ? birthdate1 : "End Date"}
+              </Text>
+              <FastImage
+                source={images.arrDown}
+                style={{ height: 18, width: 18 }}
+              ></FastImage>
+            </TouchableOpacity>
+
+            {picker1 && (
+              <DatePicker
+                modal
+                open={picker1}
+                date={date}
+                format="DD/MM/YYYY"
+                minimumDate={new Date()}
+                // maximumDate={new Date()}
+                value={birthdate}
+                onConfirm={(selectedDate) => {
+                  console.log("saddsafdfa", moment(selectedDate.toISOString()).format("DD/MM/YYYY"));
+                  setShowPicker1(false);
+                  setBirthdate1(moment(selectedDate.toISOString()).format("DD/MM/YYYY"))
+                  console.log('sbakjhshdjkakdhah', selectedDate.getTime());
+                  AsyncStorage.setItem("EndDate", JSON.stringify(selectedDate.getTime()));
+                }}
+                onCancel={() => {
+                  setShowPicker1(false);
                 }}
                 mode={"date"}
               />
@@ -444,16 +505,17 @@ const PickLocation = () => {
             disabled={
               search.length < 1 ||
               birthdate.length < 1 ||
+              birthdate1.length < 1 ||
               startDate.length < 1 ||
               endDate.length < 1 ||
-              selectedCity ==null
+              selectedCity == null
             }
             onPress={() => nextPress(1)}
             style={[
               styles.button,
               {
                 backgroundColor:
-                  search && birthdate && startDate && endDate && selectedCity
+                  search && birthdate && birthdate1 && startDate && endDate && selectedCity
                     ? "#E25F3C"
                     : "#C9C9C9",
               },

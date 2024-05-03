@@ -160,7 +160,7 @@ const SelectLocation = ({ navigation, route }) => {
   };
 
   const onChooseLocation = async (data) => {
-    let body = { ...route.params.userDetails, location: data };
+    let body = { ...route.params.userDetails, location: data,search_location: data };
     console.log('fsdlkfhdshjkfhjkhjkshkhsjk',body);
     let response = await services.post(Url.REGISTER, "", body, "json");
 
@@ -264,6 +264,7 @@ const SelectLocation = ({ navigation, route }) => {
                     key: "AIzaSyBpVX6Xl4OEftECYrN-wauMw7dpUyl6GiI",
                     language: "en",
                     components: "country:us",
+                    type: '(cities)'
                   }}
                 />
               </View>
