@@ -1,32 +1,32 @@
 export default [
   {
     id: 1,
-    image: "https://picsum.photos/200",
-    title: "Dana Elvis",
+    image: 'https://picsum.photos/200',
+    title: 'Dana Elvis',
   },
   {
     id: 2,
-    image: "https://picsum.photos/200",
-    title: "Heather Dawson",
+    image: 'https://picsum.photos/200',
+    title: 'Heather Dawson',
   },
   {
     id: 3,
-    image: "https://picsum.photos/200",
-    title: "Andrew Knight",
+    image: 'https://picsum.photos/200',
+    title: 'Andrew Knight',
   },
   {
     id: 4,
-    image: "https://picsum.photos/200",
-    title: "Steve Smith",
+    image: 'https://picsum.photos/200',
+    title: 'Steve Smith',
   },
   {
     id: 5,
-    image: "https://picsum.photos/200",
-    title: "Elena Davidson",
+    image: 'https://picsum.photos/200',
+    title: 'Elena Davidson',
   },
   {
     id: 6,
-    image: "https://picsum.photos/200",
-    title: "Katy Pears",
+    image: 'https://picsum.photos/200',
+    title: 'Katy Pears',
   },
 ];

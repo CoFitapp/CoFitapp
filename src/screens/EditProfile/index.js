@@ -1,4 +1,4 @@
-import { NativeModules, StyleSheet, Text, View, useWindowDimensions, Image, Touchable, TouchableOpacity, TextInput, ImageBackground, Platform, Alert } from 'react-native'
+import { NativeModules, StyleSheet, Text, View, useWindowDimensions, Image, Touchable, TouchableOpacity, TextInput, ImageBackground, Platform, Alert, FlatList, ScrollView } from 'react-native'
 import React from 'react'
 import styles from './style'
 import images from '../../constants/images'
@@ -18,12 +18,15 @@ import { useRef } from 'react'
 import { useEffect } from 'react'
 import fonts from '../../constants/fonts'
 import FastImage from 'react-native-fast-image'
+import { AppMainButton } from '../../components/AppButton'
+import Toast from "react-native-simple-toast";
 
 const { StatusBarManager } = NativeModules;
 const statusBarHeight = StatusBarManager.HEIGHT;
 
 const EditProfile = ({ navigation }) => {
   const bottomSheet = useRef();
+  const bottomSheet1 = useRef();
   const { height, width } = useWindowDimensions();
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
@@ -34,10 +37,49 @@ const EditProfile = ({ navigation }) => {
   const dispatch = useDispatch()
   const userInfo = useSelector((state) => state.user.userInfo);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
+  const [text, setText] = useState('')
+  const [searchCity, setSearchCity] = useState('')
+  const [cities, setCities] = useState([])
+  const [cities1, setCities1] = useState([])
+  const [selectedCityId, setSelectedCityId] = useState(null)
+
+  useEffect(()=>{
+    if(cities1?.length!=0){
+      const filtered = cities1.filter((item) =>
+      item.city.toLowerCase().includes(searchCity.toLowerCase())
+    );
+    setCities(filtered);
+    }
+  },[searchCity, cities1])
 
   useEffect(() => {
     getUserDetails();
+    getAllCities()
   }, [])
+
+  const getAllCities = async () => {
+    let res = await services.get(Url.GET_ALL_CITIES)
+    console.log('GET ALL CITIES RESPONSEEEEE111', res);
+    if (res.status) {
+      if (res?.cities) {
+        setCities(res.cities.sort((a, b) => a.city.localeCompare(b.city)))
+        setCities1(res.cities.sort((a, b) => a.city.localeCompare(b.city)))
+      }
+    }
+  }
+
+  const onChooseLocation = async (data) => {
+    let body = {homeLocation: data }
+    let url = `${Url.ADD_PROFILE}/${userInfo.id}`
+    let response = await services.post(url, "", body, 'json')
+    console.log('d9u2h9sdasdsadsadshd982', response);
+    if (response.status) {
+      updateUserDetailToStore()
+      bottomSheet1?.current.close()
+      // setLoader(true)
+    }
+  }
 
   const getUserDetails = async () => {
     console.log('23324cxzxz322r32r', userInfo);
@@ -75,22 +117,24 @@ const EditProfile = ({ navigation }) => {
     console.log('dsajdgh878912981', name);
     console.log('dsajdgh878912981', email);
     console.log('dsajdgh878912981', phoneNo);
-    if (name.trim().length == 0 || email.length == 0 || phoneNo.trim().length == 0 || firstName.trim().length==0 || lastName.trim().length==0) {
+    if (email.length == 0 || phoneNo.trim().length == 0 || firstName.trim().length==0 || lastName.trim().length==0) {
       alert("Please fill all the field")
     }
-    else if (phoneNo.trim().length < 10) {
+    else if (phoneNo.trim().length < 14) {
       alert("Invalid phone no")
     }
     else {
+      setIsLoading(true)
       let data = new FormData();
-      data.append('full_name', firstName + " " + lastName);
-      data.append('first_name', firstName);
-      data.append('last_name', lastName);
-      data.append('location', userInfo.location);
-      data.append('phone_no', phoneNo);
-      let url = `${Url.UPDATE_USER_DETAILS}/${userInfo.id}`
+      // data.append('full_name', firstName + " " + lastName);
+      data.append('firstName', firstName);
+      data.append('lastName', lastName);
+      // data.append('location', userInfo.location);
+      data.append('phoneNo', phoneNo);
+      console.log('dasdasdsadsadas', data);
+      let url = `${Url.ADD_PROFILE}/${userInfo.id}`
       let response = await services.post(url, "", data, 'formdata')
-
+      setIsLoading(false)
       console.log('d9u2zsaasasdh9hd982', response);
       if (response.status) {
         alert(response.message)
@@ -152,8 +196,8 @@ const EditProfile = ({ navigation }) => {
   const updateProfileImage = async (imageFile) => {
     console.log('yiweruiweyrwey', imageFile);
     let body = new FormData();
-    body.append('profile_image', imageFile);
-    let url = `${Url.UPDATE_USER_DETAILS}/${userInfo.id}`
+    body.append('profilePhoto', imageFile);
+    let url = `${Url.ADD_PROFILE}/${userInfo.id}`
     console.log('url1ds1dsds111', url);
     let response = await services.post(url, "", body, 'formdata')
     if (response.status) {
@@ -203,6 +247,45 @@ const EditProfile = ({ navigation }) => {
 
   }
 
+  const formatPhoneNumber = (number) => {
+    // Remove all non-digit characters
+    number = number.replace(/\D/g, '');
+    // Format the number
+    let formattedNumber = '';
+    if (number.length > 0) {
+      formattedNumber += '(' + number.substring(0, 3);
+    }
+    if (number.length > 3) {
+      formattedNumber += ') ' + number.substring(3, 6);
+    }
+    if (number.length > 6) {
+      formattedNumber += '-' + number.substring(6, 10);
+    }
+    return formattedNumber;
+  };
+
+  const deleteAccount =async()=> {
+    if(text.trim() != 'DELETE') {
+      Toast.show('Please type DELETE to delete your account.')
+      return;
+    }
+    const url = `${Url.DELETE_ACCOUNT}/${userInfo.id}`
+    const response = await services.get(url)
+    console.log('DELETE ACCOUNT API RESPONSE', response)
+    Toast.show(response.message)
+    if(response.status) {
+      setModalVisible(!isModalVisible)
+      dispatch(logout())
+      navigation.navigate("SignUp")
+    }
+  }
+
+  const onSave =()=>{
+    let cityy = cities.find(city => city.id == selectedCityId).city
+    console.log('sfsadasdsadsadas', cityy);
+    onChooseLocation(cityy)
+  }
+
   return (
     <View style={styles.mainView}>
       <KeyboardAwareScrollView>
@@ -212,9 +295,9 @@ const EditProfile = ({ navigation }) => {
             <Image source={images.arrNew1} style={[styles.nextArrowIcon, { transform: [{ rotate: "180deg" }] }]} />
           </TouchableOpacity>
 
-          <Text style={{ fontFamily: fonts.SfPro_Bold, fontSize: 20 }}>Profile</Text>
-          <TouchableOpacity>
-            <Image source={images.settings} style={styles.profileIcon} />
+          <Text style={{ fontFamily: fonts.SfPro_Semibold, fontSize: 20 }}>Edit Profile</Text>
+          <TouchableOpacity activeOpacity={1}>
+            {/* <Image source={images.settings} style={styles.profileIcon} /> */}
           </TouchableOpacity>
         </View>
         <View style={styles.lineSeperator} />
@@ -237,7 +320,7 @@ const EditProfile = ({ navigation }) => {
           <View style={styles.locationView1}>
             <Text style={styles.locationText}>My Home Location</Text>
           </View>
-          <TouchableOpacity onPress={() => navigation.navigate('ChangeLocation',{value:2})} style={styles.locationView2}>
+          <TouchableOpacity onPress={() => bottomSheet1.current.show()} style={styles.locationView2}>
             <Image source={images.location3} style={styles.locationIcon} />
             <Text style={styles.locationName}>{userInfo?.location}</Text>
             <Image source={images.arrNew1} style={styles.nextArrowIcon1} />
@@ -292,35 +375,33 @@ const EditProfile = ({ navigation }) => {
               editable={true}
               placeholder='Phone number'
               placeholderTextColor={"#020A23"}
-              maxLength={10}
+              maxLength={14}
               keyboardType='number-pad'
               returnKeyType='done'
               value={phoneNo}
-              onChangeText={(val)=>setPhoneNo(val)}
+              onChangeText={(val)=>setPhoneNo(formatPhoneNumber(val))}
               style={{ flex: 1, paddingLeft: 10, fontFamily: fonts.SfPro_Medium ,color:"#020A23"}}
             />
           </View>
         </View>
-
-        <TouchableOpacity onPress={()=>onUpdate()} style={[styles.bottomBtn1,{marginTop:20}]}>
+        <AppMainButton title="Update" isLoading={isLoading} disable={false} onPress={onUpdate}/>
+        {/* <TouchableOpacity onPress={()=>onUpdate()} style={[styles.bottomBtn1,{marginTop:20}]}>
 <Text style={styles.btnText1}>Update</Text>
-</TouchableOpacity>
+</TouchableOpacity> */}
 
-        <TouchableOpacity onPress={() => setModalVisible(!isModalVisible)} style={[styles.bottomBtn, { marginVertical: 40 }]}>
+         <AppMainButton title='Delete Account' textStyle={{color: colors.orange_dark}} styles={styles.button} onPress={() => setModalVisible(!isModalVisible)}/>
+
+        {/* <TouchableOpacity onPress={() => setModalVisible(!isModalVisible)} style={[styles.bottomBtn, { marginVertical: 40 }]}>
           <Text style={styles.btnText}>Delete Account</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
       </KeyboardAwareScrollView>
-
-
       <Modal
         style={styles.modal}
         backdropOpacity={0.6}
         isVisible={isModalVisible}
       >
         <View style={styles.modalContainer}>
-
-
 
           <Text style={styles.status}>Are you Sure?</Text>
           <Text style={styles.detailsText}>
@@ -331,6 +412,8 @@ const EditProfile = ({ navigation }) => {
             <View style={styles.emailInputView}>
               <TextInput
                 // placeholder='Email'
+                value={text}
+                onChangeText={(val)=>setText(val)}
                 autoCapitalize='characters'
                 placeholderTextColor={""}
                 style={{ flex: 1, paddingLeft: 10, fontFamily: fonts.SfPro_Medium }}
@@ -342,13 +425,118 @@ const EditProfile = ({ navigation }) => {
         <TouchableOpacity onPress={() => setModalVisible(!isModalVisible)} style={[styles.CancelBtn]}>
           <Text style={styles.btnText1}>Cancel</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setModalVisible(!isModalVisible)} style={[styles.DeleteBtn]}>
-          <Text style={styles.btnText}>Delete</Text>
+        <TouchableOpacity onPress={() => deleteAccount()} style={[styles.DeleteBtn]}>
+          <Text style={styles.btnText2}>Delete</Text>
         </TouchableOpacity>
         </View>
         </View>
       </Modal>
 
+      {/* <BottomSheet draggable={false} ref={bottomSheet1} height={400} width={100} sheetBackgroundColor={"#fff"}>
+        <View style={{ flex: 1 }}>
+          <View style={styles.handle}/>
+          <Text style={styles.pickCity}>Change Home Location</Text>
+          <View style={styles.seperator} />
+          <TouchableOpacity onPress={()=> onChooseLocation(userInfo?.location)} style={[styles.bottomBtn, { marginVertical: 10 }]}>
+            <Text style={styles.btnText}>My Home Location</Text>
+          </TouchableOpacity>
+          <View style={styles.seperator} />
+
+          <ScrollView>
+          <Text style={styles.returnText}>Return to</Text>
+          <TouchableOpacity onPress={()=> onChooseLocation(userInfo?.location)}>
+          <Text style={styles.homeLocation}>{userInfo?.location}</Text>
+          </TouchableOpacity>
+          <View style={styles.seperator} />
+            <FlatList
+            data={cities}
+            scrollEnabled={false}
+            ItemSeparatorComponent={()=> <View style={styles.seperator1} />}
+            renderItem={({item, index})=> {
+              return(
+                <TouchableOpacity onPress={()=> onChooseLocation(item?.city)}>
+                  <Text style={styles.returnText1}>{item?.city}</Text>
+                </TouchableOpacity>
+              )
+            }}
+            />
+          </ScrollView>
+        </View>
+      </BottomSheet> */}
+
+      <BottomSheet draggable={false} ref={bottomSheet1} height={height * 0.8} width={100} sheetBackgroundColor={"#fff"}>
+        <View style={{ flex: 1 }}>
+          <View style={styles.handle}/>
+          <Text style={styles.pickCity}>Change Home Location</Text>
+          <View style={styles.seperator} />
+
+         <View style={styles.searchView3}>
+          <View style={styles.searchView1}>
+            <Image source={images.search1} style={styles.searchIcon} />
+            <TextInput
+              placeholder='Search for city'
+              placeholderTextColor={"#1C274C"}
+              value={searchCity}
+              keyboardType='web-search'
+              clearButtonMode='while-editing'
+              onChangeText={(val)=> setSearchCity(val)}
+              style={styles.searchTextInput}
+            />
+          </View>
+
+        </View>
+        <View style={styles.seperator}/>
+
+          <View>
+
+          {
+            searchCity.length != 0 && cities.length !=0 &&
+            <>
+            <Text style={{fontFamily: fonts.SfPro_Semibold, fontSize: 16, color: colors.textBlack, paddingLeft: 15}}>Search Results</Text>
+            </>
+          }
+
+          {
+            searchCity.length != 0 && cities.length == 0 &&
+            <View style={{}}>
+              <FastImage
+              resizeMode='contain'
+              style={{height: 150, width: 250, marginTop: 30, alignSelf: 'center'}}
+              source={images.noResults}
+              />
+              <Text style={{paddingHorizontal: 40, fontSize: 14, fontFamily: fonts.SfPro_Regular, color: colors.textRegular}}>Sorry! No results found. Please check your spelling or try searching for a different city.</Text>
+            </View>
+          }
+
+            <FlatList
+            data={cities}
+            scrollEnabled={true}
+            contentContainerStyle={{ paddingBottom: 300 }}
+            ItemSeparatorComponent={()=> <View style={styles.seperator1} />}
+            renderItem={({item, index})=> {
+              return(
+                <TouchableOpacity
+                style={{flexDirection: 'row', alignItems:'center', justifyContent: 'space-between'}}
+                onPress={()=> setSelectedCityId(item.id)}>
+                  <Text style={styles.returnText1}>{item?.city}</Text>
+                  {
+                    selectedCityId == item.id &&
+                    <FastImage resizeMode='contain' source={images.checkCircle} style={{ height: 20, width: 20, marginRight: '5%' }}/>
+                  }
+                </TouchableOpacity>
+              )
+            }}
+            />
+
+          </View>
+
+        </View>
+        <View style={{ backgroundColor: '#fff', paddingBottom: 25, paddingTop: 15 }}>
+        <TouchableOpacity onPress={()=> onSave()} style={[styles.bottomBtn, {  }]}>
+            <Text style={styles.btnText}>Save</Text>
+          </TouchableOpacity>
+        </View>
+      </BottomSheet>
 
       <BottomSheet ref={bottomSheet} height={180} width={100} sheetBackgroundColor={colors.background}   >
         <View style={{ height: '100%', marginHorizontal: '2%', backgroundColor: colors.background, }}>

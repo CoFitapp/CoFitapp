@@ -12,21 +12,22 @@ const styles = StyleSheet.create({
     flex: 1
   },
   view1: {
-    marginTop: statusBarHeight
+    // marginTop: statusBarHeight
   },
   swiperView: {
-    height: height * 0.8,
-    marginTop: height * .05
+    height: height,
+    // marginTop: height * .05
   },
   img: {
-    height: height * 0.45,
+    height: height,
     width: width,
     resizeMode: "contain"
   },
   browse: {
-    color: "#363C49",
-    fontSize: fontSize(32),
-    textAlign: "center",
+    color: "#fff",
+    fontSize: fontSize(24),
+    marginLeft: 15,
+    // textAlign: "center",
     marginTop: height * .04,
     fontFamily: fonts.SfPro_Semibold
   },
@@ -37,12 +38,14 @@ const styles = StyleSheet.create({
     fontFamily: fonts.SfPro_Semibold
   },
   mission: {
-    color: "#8B93A1",
-    fontSize: fontSize(16),
+    color: "#FCFCFC",
+    fontSize: fontSize(14),
     marginHorizontal: 30,
     lineHeight: fontSize(22),
     marginTop: 10,
-    textAlign: 'center',
+    marginBottom: 50,
+    marginLeft: 15,
+    // textAlign: 'center',
     fontFamily: fonts.SfPro_Medium
   },
   choose: {
@@ -62,7 +65,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.SfPro_Medium
   },
   bottom: {
-    bottom: 0,
+    marginBottom: 30,
     justifyContent: "space-between",
     flexDirection: "row",
     paddingHorizontal: 20
@@ -71,7 +74,7 @@ const styles = StyleSheet.create({
     height: 48,
     width: width * 0.9,
     borderRadius: 10,
-    backgroundColor: "#25C3F4",
+    backgroundColor: "#E25F3C",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
@@ -107,6 +110,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
+  },
+
+  dot: {
+    height: 8,
+    width: 8,
+    borderRadius: 4,
+    backgroundColor: '#fff',
+    marginHorizontal: 2
+  },
+  activeDot: {
+    height: 8,
+    width: 22,
+    borderRadius: 4,
+    borderColor: '#fff',
+    backgroundColor: '#25C3F4',
+    marginHorizontal: 2
   }
 })
 export default styles

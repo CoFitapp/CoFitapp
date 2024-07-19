@@ -16,7 +16,9 @@ export const post = async(url , token , data , type)=>{
         }
     }
     let completeUrl = Url.BASE_URL + url;
-    console.log('url',completeUrl);
+    console.log('url>>>>>>>>>',completeUrl);
+    console.log('headerss>>>>>', headers);
+
     const response = await fetch(completeUrl, {
         method: 'POST',
         headers,

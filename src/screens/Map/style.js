@@ -60,13 +60,17 @@ const styles = StyleSheet.create({
     textInputContainer: {
       borderRadius: 10,
       flexDirection: 'row',
-      width: '93%',
+      width: '100%',
       justifyContent: "center",
-      height: 45, alignItems: "center",
+      height: 45,
+      alignItems: "center",
       marginHorizontal: 12,
       marginTop: 10,
       backgroundColor: '#fff',
       color: "#000",
+      paddingHorizontal: 25,
+      shadowColor: '#8d8f91', elevation: 3, shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 1
     },
     textInput: {
       alignSelf: 'center',
@@ -88,7 +92,7 @@ const styles = StyleSheet.create({
       color:"#000",
       fontFamily:fonts.SfPro_Medium
     }
-    
+
   },
   locIcon: {
     width: 15,

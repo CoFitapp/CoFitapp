@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     profileImage:{
         height:'100%',
         width:'100%',
-        borderRadius:60 
+        borderRadius:60
     },
     locationView:{
       flexDirection:"row",
@@ -73,9 +73,9 @@ const styles = StyleSheet.create({
      marginRight:5
     },
     locationText:{
-      fontFamily:fonts.SfPro_Bold,
+      fontFamily:fonts.SfPro_Semibold,
       fontSize:16,
-      color:"#020A23"
+      color:"#000"
     },
     name:{
     textAlign:"center",
@@ -103,6 +103,12 @@ const styles = StyleSheet.create({
       borderWidth:1.5,
       borderColor:"#A1A5AC",
       borderRadius:11
+    },
+    seperator: {
+      height: 1,
+      width: '100%',
+      marginVertical: 15,
+      backgroundColor: '#E6E0E9'
     },
     phoneInputView1:{
         flexDirection:"row",
@@ -208,7 +214,7 @@ const styles = StyleSheet.create({
       backgroundColor:"#dbd9d9",
       marginVertical:15
     },
-    
+
     bottomBtn: {
         borderColor: colors.orange_dark,
         borderWidth:1,
@@ -251,7 +257,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         height: 40,
     },
-    btnText: {
+    btnText2: {
         fontSize: 16,
         color: colors.orange_dark,
         marginLeft: '5%',
@@ -267,7 +273,94 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         height: height * 0.05
     },
-
+    handle: {
+      height: 5,
+      width: 45,
+      backgroundColor: '#3C3C43',
+      borderRadius: 2,
+      alignSelf: 'center',
+      marginTop: 10
+    },
+    pickCity: {
+      textAlign: 'center',
+      fontSize: 18,
+      fontFamily: fonts.SfPro_Semibold,
+      marginTop: 20
+    },
+    bottomBtn: {
+      backgroundColor: colors.orange_dark,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '90%',
+      borderRadius: 5,
+      height: 40,
+      marginLeft:'5%'
+  },
+  btnText: {
+      fontSize: 16,
+      color: "#fff",
+      marginLeft: '5%',
+      fontFamily:fonts.SfPro_Semibold
+  },
+  returnText: {
+      fontSize: 14,
+      fontFamily: fonts.SfPro_Medium,
+      color: colors.textRegular,
+      marginLeft: '5%'
+  },
+  homeLocation: {
+    fontSize: 16,
+    fontFamily: fonts.SfPro_Semibold,
+    color: colors.black,
+    marginLeft: '5%',
+    marginTop: 5
+  },
+  returnText1: {
+    fontSize: 14,
+    fontFamily: fonts.SfPro_Medium,
+    color: colors.textRegular,
+    marginLeft: '5%',
+    paddingVertical: 15
+},
+button: {
+  borderWidth: 1,
+  borderColor: colors.orange_dark,
+  backgroundColor: colors.background
+},
+searchView3: {
+  flexDirection: "row",
+  marginHorizontal: width * .03,
+  justifyContent: "space-between",
+  alignItems: "center",
+  // marginTop: 5
+},
+searchView1: {
+  width: width * .94,
+  flexDirection: "row",
+  borderRadius: 10,
+  height: 37,
+  backgroundColor: "#F2F2F2",
+  alignItems: "center"
+},
+searchIcon: {
+  height: 20,
+  width: 20,
+  resizeMode: "contain",
+  marginLeft: 10
+},
+searchTextInput: {
+  flex: 1,
+  paddingLeft: 10,
+  fontFamily: fonts.SfPro_Regular,
+  fontSize:14,
+  color: "#49454F"
+},
+seperator1: {
+  height: 1,
+  width: '100%',
+  backgroundColor: '#E6E0E9'
+},
 
 })
 

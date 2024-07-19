@@ -21,6 +21,8 @@ import { current } from '@reduxjs/toolkit'
 import * as services from '../../constants/services'
 import * as Url from '../../constants/url'
 import FastImage from "react-native-fast-image";
+import Modal from "react-native-modal";
+import { AppMainButton } from '../../components/AppButton'
 
 const { StatusBarManager } = NativeModules;
 const statusBarHeight = StatusBarManager.HEIGHT;
@@ -30,11 +32,13 @@ const apiKey = "AIzaSyBpVX6Xl4OEftECYrN-wauMw7dpUyl6GiI";
 
 const EventDetail = () => {
   const bottomSheet = useRef();
+  const [isModalVisible, setModalVisible] = useState(false);
   const userLocation = useSelector(state => state.user.location)
   const route = useRoute();
   const scrollRef = useRef()
   const navigation = useNavigation();
   const [event, setEvent] = useState(route?.params?.item || {})
+  console.log('3141241saas24241412', event)
   const [ticketArr, setTicketArr] = useState([])
   const { height, width } = useWindowDimensions();
   const [latitude, setLatitude] = useState(0)
@@ -44,6 +48,7 @@ const EventDetail = () => {
   const [selectedTicketQuantity, setSelectedTicketQuantity] = useState(0)
   const [totalAmount, setTotalAmount] = useState(0)
   const [test, setTest] = useState(false)
+  const [imageRatio, setImageRatio] = useState(0)
   const [imageArr, setImageArr] = useState([
     { 'id': 1, 'image': require("../../assets/images/stockImage1.jpg") },
     { 'id': 2, 'image': require("../../assets/images/stockImage2.jpg") },
@@ -55,28 +60,46 @@ const EventDetail = () => {
   useEffect(() => {
     getCoordinates();
     checkTicketAvailability()
+    getImageRatio()
     // getSimilarEvents()
   }, [])
 
+  const getImageRatio =()=> {
+    Image.getSize(event.image, (width, height)=>{
+      let ratio = height / width
+      console.log('3278et71t1ddwqwsada2das87t8t8',width)
+      console.log('3eyt7821te7128t81t', height)
+      setImageRatio(ratio.toFixed(2))
+    })
+  }
+  // console.log('392183712312qjgqejhqw', width);
   const getCoordinates = async () => {
-
-    try {
-      const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(event.address[0])}&key=${apiKey}`);
-      const data = await response.json();
-
-      if (data.results.length > 0) {
-        const locationData = data.results[0].geometry.location;
-        console.log('duy23y723y8y328', locationData);
-        setLatitude(locationData.lat);
-        setLongitude(locationData.lng);
-        setIsMapVisible(true)
-      } else {
-        console.error(`No results found for the provided location: ${event.location}`);
-
-      }
-    } catch (error) {
-      console.error(`Error fetching geocode data for location: ${event.location}`, error);
+    console.log('312311232321321321312', event)
+    if(event.latitude) {
+      setLatitude(event.latitude)
+      setIsMapVisible(true)
     }
+    if(event.longitude) {
+      setLongitude(event.longitude)
+      setIsMapVisible(true)
+    }
+    // try {
+    //   const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(event.address[0])}&key=${apiKey}`);
+    //   const data = await response.json();
+
+    //   if (data.results.length > 0) {
+    //     const locationData = data.results[0].geometry.location;
+    //     console.log('duy23y723y8y328', locationData);
+    //     setLatitude(locationData.lat);
+    //     setLongitude(locationData.lng);
+    //     setIsMapVisible(true)
+    //   } else {
+    //     console.error(`No results found for the provided location: ${event.location}`);
+
+    //   }
+    // } catch (error) {
+    //   console.error(`Error fetching geocode data for location: ${event.location}`, error);
+    // }
   };
 
   const checkTicketAvailability = async () => {
@@ -152,7 +175,7 @@ const EventDetail = () => {
     const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${route.params.preciseLocation}&destination=${event.address[0]}`;
     Linking.openURL(googleMapsUrl)
   }
-
+// Currently we are only getting event address from SERP api response not the Lat Long. And we are getting the distance between user location and event address while getting events. For reducing the google apis hits now we can get the lat long of the event address in backend while fetching events from serp and save lat long into databse. Then we don't need to use google distance api.
   const onAddTicket = async (item, index, value) => {
     console.log('itemememee', item);
     //  return;
@@ -202,22 +225,22 @@ const EventDetail = () => {
             <View style={styles.topHeaderView}>
               <View style={{ width: "47.5%" }}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backImageView}>
-                  <Image source={images.backArrow} style={styles.backImageIcon} />
+                  <FastImage source={images.backArrow} resizeMode='contain' style={styles.backImageIcon} />
                 </TouchableOpacity>
               </View>
               <View style={{ width: "47.5%", flexDirection: "row", justifyContent: "flex-end" }}>
                 <TouchableOpacity onPress={() => onShareEvent()} style={[styles.backImageView, { marginRight: 15 }]}>
-                  <Image source={images.share} style={styles.backImageIcon} />
+                  <FastImage source={images.share} style={styles.backImageIcon} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.backImageView}>
-                  <Image source={images.heart} style={styles.backImageIcon} />
+                  <FastImage source={images.heart} style={styles.backImageIcon} />
                 </TouchableOpacity>
               </View>
             </View>
           </View>
         }
         TopNavBarComponent={
-          <View style={{ width: "100%" }}>
+          <View style={{ width: "100%", }}>
             <View style={{ width: "100%", flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: Platform.OS == 'ios' ? 30 : 0 }}>
               <TouchableOpacity onPress={() => navigation.goBack()} style={styles.skipbtn}>
                 <Image style={styles.skipimg} source={images.back}></Image>
@@ -230,8 +253,15 @@ const EventDetail = () => {
           </View>
         }
         // topBarHeight={70}
-        headerImage={{ uri: event.image }}
-        imageStyle={{ width: "100%", height: height * 0.4 }}
+        // headerImage={()=>
+        //   <FastImage
+        //     source={event.image.startsWith("no image") ? require("../../assets/images/stockImage1.jpg") : { uri: event.image }}
+        //     style={{ width: width, height: imageRatio == 0 ? 200 : width * imageRatio }}
+        //     // resizeMode={FastImage.resizeMode.cover}
+        //   />
+        // }
+        headerImage={ event.image.startsWith("no image") ? require("../../assets/images/stockImage1.jpg") : { uri: event.image }}
+        imageStyle={{ width: width, height: imageRatio == 0 ? 200 : width * imageRatio }}
       >
         <View style={styles.view1}>
           {/* <View style={styles.bgImgView}>
@@ -255,9 +285,9 @@ const EventDetail = () => {
 
 
 
-          <View style={styles.backView}>
+          {/* <View style={styles.backView}>
 
-          </View>
+          </View> */}
           <View style={styles.startedView}>
 
             <Text style={styles.enterLoc1}>{event?.title}</Text>
@@ -267,7 +297,7 @@ const EventDetail = () => {
                 <Image source={images.clock1} style={styles.calImg}></Image>
               </View>
               <View style={styles.dayTextView}>
-                <Text style={styles.dayText}>{moment(event?.date?.start_date, "MMM D").format('dddd, MMMM D, YYYY')}</Text>
+                <Text style={styles.dayText}>{moment(event?.date?.start_date, "MMM D").format('ddd, MMMM D, YYYY')}</Text>
                 <Text style={styles.timeText}>{event?.date?.when}</Text>
                 {/* <Text style={styles.timeText}>Times are displayed in your time zone</Text> */}
 
@@ -410,26 +440,30 @@ const EventDetail = () => {
               style={{ marginBottom: 80 }}
               renderItem={({ item, index }) => {
                 return (
-                  <TouchableOpacity onPress={() => { setEvent(item), scrollRef.current?.scrollTo({ y: 0, animated: false }) }} activeOpacity={0.8} style={styles.flatListView}>
+                  <TouchableOpacity onPress={() => { setEvent(item), scrollRef.current?.scrollTo({ y: 0, animated: false }), getImageRatio() }} activeOpacity={0.8} style={styles.flatListView}>
                     <View style={styles.flatListView1}>
                       <View style={styles.flatListItem} >
                         <ImageBackground imageStyle={{ borderRadius: 6 }} style={styles.flatListImg} resizeMode="stretch" source={item?.image.startsWith("no image") ? imageArr[index % imageArr.length].image : { uri: item.image }}>
                           <View style={styles.kmbutton}>
-                            <Image source={images.car} style={styles.carImg} />
-                            <Text style={styles.kmText}>{item.distance}</Text>
+                            {/* <Image source={images.car} style={styles.carImg} /> */}
+                            <Text style={styles.kmText}>{`${item.distance} mi`}</Text>
                           </View>
                         </ImageBackground>
                       </View>
                       <Text numberOfLines={1} style={styles.summaryText}>{item.title}</Text>
                       <View style={styles.dateView}>
-                        <Image source={images.time} style={styles.clockIcon} />
+                        {/* <Image source={images.time} style={styles.clockIcon} /> */}
                         <Text style={styles.dateText}>{moment(item.date.start_date, "MMM D").format('ddd, MMM DD | h:mma')}</Text>
                       </View>
 
                       <View style={styles.dateView}>
-                        <Image source={images.location} style={styles.locIconB} />
+                        {/* <Image source={images.location} style={styles.locIconB} /> */}
                         <Text style={styles.locText}>{item.address[0] + " " + item.address[1]}</Text>
                       </View>
+                      <View style={{flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start', paddingTop: 8}}>
+                          <Text style={{fontFamily: fonts.SfPro_Regular, fontSize: 12, color: colors.textRegular, paddingRight: 5, }}>Powered by</Text>
+                          <FastImage source={images.google} resizeMode='contain' style={{height: 12, width: 12,}}/>
+                        </View>
                       {/* <View style={styles.view3} /> */}
                       {/* <TouchableOpacity onPress={() => {
                         let shareLink = `https://apple.cofitapp.com?id=${item.id}`
@@ -548,10 +582,29 @@ const EventDetail = () => {
       </AnimatedScrollView>
 
       <View style={styles.attendEventMainView}>
-        <TouchableOpacity onPress={() => bottomSheet?.current.show()} style={[styles.bottomBtn, { backgroundColor: '#E25F3C' }]}>
-          <Text style={styles.btnText}>Attend</Text>
+        <TouchableOpacity
+        onPress={() => setModalVisible(true)}
+        // onPress={() => bottomSheet?.current.show()}
+        style={[styles.bottomBtn, { backgroundColor: '#E25F3C' }]}>
+          <Text style={styles.btnText}>View Event</Text>
         </TouchableOpacity>
       </View>
+
+      <Modal
+        style={styles.modal}
+        backdropOpacity={0.6}
+        isVisible={isModalVisible}
+      >
+        <View style={styles.modalContainer}>
+          <Text style={styles.status}>Proceed to External Site</Text>
+          <Text style={styles.detailsText}>
+          You’re about to leave the CoFit app. You will be redirected to an external site for more details on this event.
+          </Text>
+          <AppMainButton title="Proceed" onPress={()=> Linking.openURL(event?.link)}/>
+          <AppMainButton title="Cancel" textStyle={{color: colors.orange_dark}} styles={styles.button} onPress={()=> setModalVisible(false)}/>
+        </View>
+      </Modal>
+
     </View>
   )
 }

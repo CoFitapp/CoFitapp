@@ -439,7 +439,7 @@ const OrderDetails = ({ navigation, route }) => {
             appliedPromoCode && Object.keys(appliedPromoCode).length > 0 &&
             <View style={styles.ticketPriceView}>
               <Text style={styles.promoApply}>Promo Code Applied</Text>
-              <Text style={styles.priceValue}>- ${route.params?.userObj?.totalAmount * Number(appliedPromoCode.value) / 100}</Text>
+              <Text style={styles.priceValue}>- ${(route.params?.userObj?.totalAmount * Number(appliedPromoCode.value) / 100).toFixed(2)}</Text>
             </View>
           }
 
@@ -448,9 +448,9 @@ const OrderDetails = ({ navigation, route }) => {
             {
               appliedPromoCode && Object.keys(appliedPromoCode).length > 0
                 ?
-                <Text style={styles.TotalPriceText}>${route.params?.userObj?.totalAmount + bookingFee - route.params?.userObj?.totalAmount * Number(appliedPromoCode.value) / 100}</Text>
+                <Text style={styles.TotalPriceText}>${(route.params?.userObj?.totalAmount + bookingFee - route.params?.userObj?.totalAmount * Number(appliedPromoCode.value) / 100).toFixed(2)}</Text>
                 :
-                <Text style={styles.TotalPriceText}>${route.params?.userObj?.totalAmount + bookingFee}</Text>
+                <Text style={styles.TotalPriceText}>${(route.params?.userObj?.totalAmount + bookingFee).toFixed(2)}</Text>
             }
           </View>
           <View style={styles.seperator} />

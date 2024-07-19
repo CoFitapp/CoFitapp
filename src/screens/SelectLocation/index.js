@@ -82,7 +82,7 @@ const SelectLocation = ({ navigation, route }) => {
           console.log("asnbmbmbnmbmbdsnkljmbmnbmdasd", JSON.stringify(json));
           let addressComponent = json.results[0].address_components;
           for (const component of addressComponent) {
-            if (component.types.includes("locality")) {
+            if (component.types.includes("administrative_area_level_1")) {
               cityName = component.long_name;
               break;
             }

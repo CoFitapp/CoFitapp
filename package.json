@@ -10,7 +10,9 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@invertase/react-native-apple-authentication": "^2.3.0",
     "@kanelloc/react-native-animated-header-scroll-view": "^1.0.0",
+    "@notifee/react-native": "^7.8.2",
     "@react-native-async-storage/async-storage": "^1.19.3",
     "@react-native-community/netinfo": "^9.4.1",
     "@react-native-google-signin/google-signin": "^10.0.1",
@@ -23,6 +25,7 @@
     "aws-amplify": "^5.3.11",
     "aws-amplify-react-native": "^7.0.7",
     "axios": "^1.5.0",
+    "geolib": "^3.3.4",
     "moment": "^2.29.4",
     "react": "17.0.2",
     "react-native": "0.68.5",
@@ -33,6 +36,7 @@
     "react-native-device-info": "^10.11.0",
     "react-native-element-dropdown": "^2.10.0",
     "react-native-fast-image": "^8.6.3",
+    "react-native-fs": "^2.20.0",
     "react-native-geocoding": "^0.5.0",
     "react-native-geolocation-service": "^5.3.1",
     "react-native-gesture-bottom-sheet": "^1.1.0",
@@ -43,16 +47,19 @@
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-maps": "^1.7.1",
     "react-native-modal": "^13.0.1",
+    "react-native-render-html": "^6.3.4",
     "react-native-safe-area-context": "^4.6.3",
     "react-native-screens": "^3.22.0",
     "react-native-simple-toast": "^3.0.1",
+    "react-native-sound": "^0.11.2",
     "react-native-splash-screen": "^3.3.0",
     "react-native-svg": "^15.1.0",
     "react-native-swiper": "^1.6.0",
     "react-native-walkthrough-tooltip": "^1.6.0",
     "react-native-webview": "^13.6.2",
     "react-redux": "^8.1.2",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "rn-fetch-blob": "^0.12.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

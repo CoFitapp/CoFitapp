@@ -30,6 +30,14 @@
 				<string>cofit</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.1065079397050-7q3rbeb6gjh5mj0sbgabk65i4747v0o1</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1.0.0</string>
@@ -51,13 +59,13 @@
 	<key>NSCameraUsageDescription</key>
 	<string>This app requires access to the camera for uploading user profile picture</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>We need location permission to show user current location.</string>
+	<string>We need location permission to show user current location and nearby events.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>We need location permission to show user current location.</string>
+	<string>We need location permission to show user current location and nearby events.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We need location permission to show user current location.</string>
+	<string>We need location permission to show user current location and nearby events.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app uses photo library for uploading user images</string>
+	<string>This app uses photo library for uploading user profile picture.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>SFProText-Bold.ttf</string>

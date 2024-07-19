@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { SafeAreaView, ImageBackground, FlatList, Dimensions, NativeModules, Image, PermissionsAndroid, StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
+import { SafeAreaView, ImageBackground, FlatList, Dimensions, NativeModules, Image, PermissionsAndroid, StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Platform, ActivityIndicator } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import MapView, { Marker, AnimatedRegion, Animated, Callout } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
@@ -79,6 +79,7 @@ const Map = ({ navigation }) => {
     {'id':4,'image':require("../../assets/images/stockImage4.jpg")},
     {'id':5,'image':require("../../assets/images/stockImage5.jpg")},
   ])
+
   useEffect(() => {
     if (isFocused) {
       let loc = userInfo && userInfo.search_location ? userInfo.search_location : userInfo.location
@@ -94,21 +95,42 @@ const Map = ({ navigation }) => {
     // return;
     // getEventsOnSearch()
     try {
-      const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(locationn)}&key=${apiKey}`);
-      const data = await response.json();
+let config = {
+  method: 'get',
+  maxBodyLength: Infinity,
+  url: `https://nominatim.openstreetmap.org/search?q=${locationn}&format=json`,
+  headers: { }
+};
 
-      if (data.results.length > 0) {
-        const locationData = data.results[0].geometry.location;
-        console.log('duy23y723y8y328', locationData);
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
         setLatitude(0);
         setLongitude(0);
-        setLatitude(locationData.lat);
-        setLongitude(locationData.lng);
+        setLatitude(response.data[0].lat);
+        setLongitude(response.data[0].lon);
         setMapVisible(true)
-      } else {
-        console.error(`No results found for the provided location: ${userLocation}`);
+})
+.catch((error) => {
+  console.log(error);
+});
 
-      }
+
+      // const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(locationn)}&key=${apiKey}`);
+      // const data = await response.json();
+
+      // if (data.results.length > 0) {
+      //   const locationData = data.results[0].geometry.location;
+      //   console.log('duy23y723y8y328', locationData);
+      //   setLatitude(0);
+      //   setLongitude(0);
+      //   setLatitude(locationData.lat);
+      //   setLongitude(locationData.lng);
+      //   setMapVisible(true)
+      // } else {
+      //   console.error(`No results found for the provided location: ${userLocation}`);
+
+      // }
     } catch (error) {
       console.error(`Error fetching geocode data for location: ${userLocation}`, error);
     }
@@ -131,36 +153,65 @@ const Map = ({ navigation }) => {
 
     axios.request(config)
       .then(async (response) => {
-        let promises = response.data.map(async (item, index) => {
-          let location = item.address[0] + " " + item.address[1]
-          let dis = await getDistance(preciseLocation, location)
-          console.log('wqwqwqwqwqwq', dis);
-          item.distance = dis
-          if(!item?.image){
-            item.image = 'no image'
-            console.log('54343',images.bottom);
-          }
-        })
-        await Promise.all(promises).then(async () => {
-          console.log('dsjfhkdshgkjhkjashkjf', response.data);
-          const coordinatesPromises = response.data.map((itemm) => fetchCoordinatesForLocation(itemm));
-          if (coordinatesPromises != null) {
-            const coordinates = await Promise.all(coordinatesPromises);
+        console.log('dajnkshajskhhkdah', response.data);
+        let newArr = [];
 
-            console.log("763126xzxas688168", coordinates);
-            const arr1 = coordinates.filter(val => val != null)
-            setEventCoords(arr1)
-          }
-          //   setTimeout(() => {
-          //     console.log('hiuewh983y928ye8y23ye2',response.data.events_results);
-          // setNewEvents(response.data.events_results)
-          // setNewEvents1(response.data.events_results)
-          // setLoader(false)
-          //   }, 500);
-        })
+          let promises = response.data.map(async (item, index) => {
+            console.log('dskjhdsaasi2y9sadas3y9y198e', item.address);
+            let eventDate1 = item.date.start_date + " " + item?.year;
+            let eventDate = moment(eventDate1).format("YYYY-MM-DD")
+            let eventDate2 = moment(eventDate).unix();
+            let currentDay = moment().format("YYYY-MM-DD")
+            let isSameOrAfter = moment(eventDate).isSameOrAfter(currentDay)
+
+            item.isShow = isSameOrAfter;
+            item.timeStampVal = eventDate2;
+            if (item?.image) {
+               Image.getSize(item.image, (width, height)=>{
+                let ratio = height / width
+                item.ratio = ratio.toFixed(2)
+               })
+              // console.log('54343',images.bottom);
+            }else {
+              item.image = 'no image'
+            }
+
+            if (isSameOrAfter) {
+              newArr.push(item)
+            }
+          })
+
+          await Promise.all(promises).then(() => {
+            setTimeout(() => {
+             setEventCoords(newArr)
+            }, 500);
+          })
+
+          return
+        // let promises = response.data.map(async (item, index) => {
+        //   let location = item.address[0] + " " + item.address[1]
+        //   let dis = await getDistance(preciseLocation, location)
+        //   console.log('wqwqwqwqwqwq', dis);
+        //   item.distance = dis
+        //   if(!item?.image){
+        //     item.image = 'no image'
+        //     console.log('54343',images.bottom);
+        //   }
+        // })
+        // await Promise.all(promises).then(async () => {
+        //   console.log('dsjfhkdshgkjhkjashkjf', response.data);
+        //   const coordinatesPromises = response.data.map((itemm) => fetchCoordinatesForLocation(itemm));
+        //   if (coordinatesPromises != null) {
+        //     const coordinates = await Promise.all(coordinatesPromises);
+
+        //     console.log("763126xzxas688168", coordinates);
+        //     const arr1 = coordinates.filter(val => val != null)
+        //     setEventCoords(arr1)
+        //   }
+        // })
       })
       .catch((error) => {
-        console.log("errrriiiiiiddiii", error);
+        console.log("errrriiiiiisasddiii", error);
       });
   }
 
@@ -183,6 +234,41 @@ const Map = ({ navigation }) => {
 
       axios.request(config3)
         .then(async (response) => {
+          let newArr = [];
+
+          let promises = response.data.map(async (item, index) => {
+            console.log('dskjhdsaasi2y9sadas3y9y198e', item.address);
+            let eventDate1 = item.date.start_date + " " + item?.year;
+            let eventDate = moment(eventDate1).format("YYYY-MM-DD")
+            let eventDate2 = moment(eventDate).unix();
+            let currentDay = moment().format("YYYY-MM-DD")
+            let isSameOrAfter = moment(eventDate).isSameOrAfter(currentDay)
+
+            item.isShow = isSameOrAfter;
+            item.timeStampVal = eventDate2;
+            if (item?.image) {
+               Image.getSize(item.image, (width, height)=>{
+                let ratio = height / width
+                item.ratio = ratio.toFixed(2)
+               })
+              // console.log('54343',images.bottom);
+            }else {
+              item.image = 'no image'
+            }
+
+            if (isSameOrAfter) {
+              newArr.push(item)
+            }
+          })
+
+          await Promise.all(promises).then(() => {
+            setTimeout(() => {
+             setEventCoords(newArr)
+            }, 500);
+          })
+
+
+          return
           const coordinatesPromises = response.data.map((itemm) => fetchCoordinatesForLocation(itemm));
           if (coordinatesPromises != null) {
             const coordinates = await Promise.all(coordinatesPromises);
@@ -216,10 +302,7 @@ const Map = ({ navigation }) => {
         let currentDay = moment().format("YYYY-MM-DD")
         let isSameOrAfter = moment(eventDate).isSameOrAfter(currentDay)
 
-        // let destination = item.address[0] + " " + item.address[1]
-        // console.log('fdsjfkhkshfhjhdasaksssd',preciseLocation);
-        // let dis = await getDistance(location, destination)
-        // item.distance = dis;
+
         item.isShow = isSameOrAfter;
         item.timeStampVal = eventDate2;
         if(!item?.image){
@@ -337,21 +420,41 @@ const Map = ({ navigation }) => {
   }
 
   const getCurrentLocation = async () => {
-    const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(userInfo?.location)}&key=${apiKey}`);
-    const data = await response.json()
-    if (data.results.length > 0) {
-      const locationData = data.results[0].geometry.location;
-      console.log('duy23y723y8y328', locationData);
-      setLatitude(0);
-      setLongitude(0);
-      setLatitude(locationData.lat);
-      setLongitude(locationData.lng);
-      setMapVisible(true)
-    } else {
-      console.error(`No results found for the provided location: ${userInfo?.location}`);
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `https://nominatim.openstreetmap.org/search?q=${userInfo?.location}&format=json`,
+      headers: { }
+    };
 
-    }
-    console.log('2332323dss2131212', data);
+    axios.request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+            setLatitude(0);
+            setLongitude(0);
+            setLatitude(response.data[0].lat);
+            setLongitude(response.data[0].lon);
+            setMapVisible(true)
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+    // const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(userInfo?.location)}&key=${apiKey}`);
+    // const data = await response.json()
+    // if (data.results.length > 0) {
+    //   const locationData = data.results[0].geometry.location;
+    //   console.log('duy23y723y8y328', locationData);
+    //   setLatitude(0);
+    //   setLongitude(0);
+    //   setLatitude(locationData.lat);
+    //   setLongitude(locationData.lng);
+    //   setMapVisible(true)
+    // } else {
+    //   console.error(`No results found for the provided location: ${userInfo?.location}`);
+
+    // }
+    // console.log('2332323dss2131212', data);
     setPreciseLocation(userInfo?.location)
     getEventCoords(userInfo?.location)
 
@@ -389,7 +492,7 @@ const Map = ({ navigation }) => {
     getEventCoords()
     getCoordinatesForLocation(userInfo.location)
   }
-
+// I have uploaded new ios build with version 3.0.0(19) on TestFlight. In this version we have completed all the feedback shared by you. Please check and let me know in case of any quereis. Thanks!
   return (
     <SafeAreaView style={{ flex: 1 }}>
       {/* <Text style=
@@ -406,7 +509,7 @@ const Map = ({ navigation }) => {
                 latitude: latitude,
                 longitude: longitude,
                 latitudeDelta: 0.1,
-                longitudeDelta: 0.08,
+                longitudeDelta: 0.1,
               }}
             >
               {
@@ -498,7 +601,7 @@ const Map = ({ navigation }) => {
                 setAuto(true);
               },
               placeholderTextColor: colors.textBlack,
-              style:{fontFamily:fonts.SfPro_Regular,width:"90%",paddingLeft:10,height:45},
+              style:{ fontFamily:fonts.SfPro_Regular, width:"100%", paddingLeft:10, height: 45, fontSize: 14},
               errorStyle: { color: 'red' }
             }}
             onPress={(data, details = null) => {
@@ -549,6 +652,20 @@ const Map = ({ navigation }) => {
           </KeyboardAwareScrollView>
         </View>
       </BottomSheet>
+
+      { eventCoords.length == 0 &&
+        <View style={{
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+         <ActivityIndicator size={'large'} color={colors.orange_dark}/>
+        </View>
+      }
     </SafeAreaView>
   );
 };

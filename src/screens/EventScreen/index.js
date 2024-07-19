@@ -56,7 +56,7 @@ const EventScreen = () => {
 
 
   useEffect(() => {
-    console.log("dsdwedadaddasddassaasdqwafq2wesC", route.params.item);
+    console.log("dsdwedadaddssdasddassaasdqwafq2wesC", route.params.item);
 
     if(route?.params?.item?.eventTickets && route?.params?.item?.eventTickets?.length!=0){
       console.log('dsajhhkhkdadsasadassahkdadsdjhakjhkj');
@@ -83,7 +83,7 @@ const EventScreen = () => {
   };
 
   const manageEvent =async()=> {
-    console.log('dsadsadsasdasdasds',route.params?.item);
+    console.log('dsadsadsasdsaasdasdasds',route.params?.item?.id);
     let url = `${Url.MANAGE_EVENT}/${route.params?.item?.id}`
     let res = await services.get(url)
     if(res?.status) {
@@ -96,7 +96,7 @@ const EventScreen = () => {
         setTicketsArr(res?.eventTickets || [])
       }
     }
-    console.log('resssddddddssss', res);
+    console.log('resssdfdsdeqdddddssss', JSON.stringify(res));
   }
 
   const getCoordinates = async () => {

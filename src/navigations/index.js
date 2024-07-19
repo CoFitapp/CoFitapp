@@ -6,6 +6,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Image, Linking, StatusBar } from "react-native";
 import LoginScreen from "../screens/Login/index";
 import OnBoardingScreen from "../screens/OnBoarding";
@@ -53,11 +54,25 @@ import OrderDetails from "../screens/OrderDetails";
 import AddCard from "../screens/AddCard";
 import ViewTicket from "../screens/ViewTicket";
 import ChoosePaymentOption from "../screens/ChoosePaymentOption";
+import CreateAccount1 from "../screens/SignUp";
+import SignUp from "../screens/SignUp";
+import SignUp1 from "../screens/SignUp1";
+import AddProfile from "../screens/AddProfile";
+import AddProfilePhoto from "../screens/AddProfilePhoto";
+import LoginNew from "../screens/LoginNew";
+import ChooseActivity from "../screens/ChooseActivity";
+import ChooseLocation from "../screens/ChooseLocation";
+import TermService from "../screens/TermService";
+import PrivacyPolicy from "../screens/PrivacyPolicy";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export const SignedInStack = () => {
+  const { bottom } = useSafeAreaInsets()
+  const bottomCheck = bottom == 0 ? 10 : bottom
+  console.log('fdsadasdasdasdas', bottomCheck);
+  console.log('bottombottombottom', bottom)
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -68,14 +83,18 @@ export const SignedInStack = () => {
           borderTopWidth: 0,
           shadowColor: '#000',
           shadowOffset: { width: 0, height: 3 },
-          shadowOpacity: 0.7,
+          shadowOpacity: 1,
           shadowRadius: 5,
+          // paddingVertical: 20
+          height: 45 + bottomCheck
         },
         tabBarLabelStyle: {
           fontSize: 12,
           fontFamily: fonts.SfPro_Regular,
           paddingBottom: 5,
         },
+        // tabBarActiveTintColor: colors.green,
+        // tabBarInactiveTintColor: colors.green
       })}
     >
       <Tab.Screen
@@ -83,19 +102,21 @@ export const SignedInStack = () => {
         component={DashboardScreen}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
-            <View style={{ alignItems: "center", justifyContent: "center" }}>
+            <View style={{ alignItems: "center", justifyContent: "center", paddingTop: 10 }}>
               <Image
                 style={{
-                  height: 23,
-                  width: 23,
+                  height: 20,
+                  width: 20,
                   resizeMode: "contain",
                 }}
-                source={focused ? images.home3 : images.home2}
+                source={focused ? images.home5 : images.home4}
               ></Image>
               <Text
                 style={{
-                  fontFamily: fonts.SfPro_Regular,
-                  color: focused ? colors.orange_dark : "#020A23",
+                  fontFamily: focused ? fonts.SfPro_Semibold : fonts.SfPro_Regular,
+                  fontSize: 12,
+                  color: focused ? colors.orange_dark : "#676767",
+                  paddingTop: 3
                 }}
               >
                 Home
@@ -109,19 +130,21 @@ export const SignedInStack = () => {
         component={MapScreen}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
-            <View style={{ alignItems: "center", justifyContent: "center" }}>
+            <View style={{ alignItems: "center", justifyContent: "center", paddingTop: 10 }}>
               <Image
                 style={{
-                  height: 23,
-                  width: 23,
+                  height: 20,
+                  width: 20,
                   resizeMode: "contain",
                 }}
-                source={focused ? images.map_active : images.map}
+                source={focused ? images.map3 : images.map2}
               />
               <Text
                 style={{
-                  fontFamily: fonts.SfPro_Regular,
-                  color: focused ? colors.orange_dark : "#020A23",
+                  fontFamily: focused ? fonts.SfPro_Semibold : fonts.SfPro_Regular,
+                  fontSize: 12,
+                  color: focused ? colors.orange_dark : "#676767",
+                  paddingTop: 3
                 }}
               >
                 Map
@@ -130,7 +153,7 @@ export const SignedInStack = () => {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="MyEvents"
         component={MyEvents}
         options={{
@@ -146,8 +169,10 @@ export const SignedInStack = () => {
               ></Image>
               <Text
                 style={{
-                  fontFamily: fonts.SfPro_Regular,
-                  color: focused ? colors.orange_dark : "#020A23",
+                  fontFamily: focused ? fonts.SfPro_Semibold : fonts.SfPro_Regular,
+                  fontSize: 14,
+                  color: focused ? colors.orange_dark : "#676767",
+                  paddingTop: 3
                 }}
               >
                 My Events
@@ -155,26 +180,28 @@ export const SignedInStack = () => {
             </View>
           ),
         }}
-      />
+      /> */}
 
       <Tab.Screen
         name="Profile"
         component={Profile}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
-            <View style={{ alignItems: "center", justifyContent: "center" }}>
+            <View style={{ alignItems: "center", justifyContent: "center", paddingTop: 10 }}>
               <Image
                 style={{
-                  height: 23,
-                  width: 23,
+                  height: 20,
+                  width: 20,
                   resizeMode: "contain",
                 }}
-                source={focused ? images.profile_active : images.profile}
+                source={focused ? images.profile5 : images.profile4}
               ></Image>
               <Text
                 style={{
-                  fontFamily: fonts.SfPro_Regular,
-                  color: focused ? colors.orange_dark : "#020A23",
+                  fontFamily: focused ? fonts.SfPro_Semibold : fonts.SfPro_Regular,
+                  fontSize: 12,
+                  color: focused ? colors.orange_dark : "#676767",
+                  paddingTop: 3
                 }}
               >
                 Profile
@@ -269,6 +296,15 @@ export default function navigation() {
         <Stack.Screen name="AddCard" component={AddCard} />
         <Stack.Screen name="ViewTicket" component={ViewTicket} />
         <Stack.Screen name="ChoosePaymentOption" component={ChoosePaymentOption} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="SignUp1" component={SignUp1} />
+        <Stack.Screen name="AddProfile" component={AddProfile} />
+        <Stack.Screen name="AddProfilePhoto" component={AddProfilePhoto} />
+        <Stack.Screen name="LoginNew" component={LoginNew} />
+        <Stack.Screen name="ChooseActivity" component={ChooseActivity} />
+        <Stack.Screen name="ChooseLocation" component={ChooseLocation} />
+        <Stack.Screen name="TermService" component={TermService} />
+        <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
       </Stack.Navigator>
     </NavigationContainer>
   );

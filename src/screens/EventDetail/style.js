@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     },
     eventText: {
         marginHorizontal: '3%',
-        fontFamily:fonts.SfPro_Bold,
+        fontFamily:fonts.SfPro_Semibold,
         fontSize: 16,
         color: colors.textBlack
     },
@@ -208,18 +208,18 @@ const styles = StyleSheet.create({
         marginTop: '5%',
         marginBottom:10,
         marginHorizontal: '3%',
-        fontFamily: fonts.SfPro_Bold,
+        fontFamily: fonts.SfPro_Semibold,
         fontSize: 18,
         color: "#363C49"
     },
 
     flatListView: {
         borderTopWidth: 0,
-        borderWidth: 1,
+        // borderWidth: 1,
         borderRadius: 40,
         borderBottomRightRadius: 20,
         borderBottomLeftRadius: 20,
-        borderColor: "#DCE1E9",
+        // borderColor: "#DCE1E9",
         marginHorizontal: width * .03,
         marginTop: 10
     },
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     kmbutton: {
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: "#25C3F4",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
         height: 30,
         borderRadius: 8,
         paddingHorizontal: 5,
@@ -263,8 +263,8 @@ const styles = StyleSheet.create({
     dateView: {
         flexDirection: "row",
         alignItems: "center",
-        marginLeft: width * .04,
-        marginTop: 10,
+        // marginLeft: width * .04,
+        marginTop: 5,
         // marginBottom:10
     },
     clockIcon: {
@@ -277,14 +277,14 @@ const styles = StyleSheet.create({
         color:colors.textRegular,
         fontFamily: fonts.SfPro_Regular,
         fontSize:12,
-        marginLeft: 10
+        // marginLeft: 10
     },
     summaryText: {
         color: colors.textBlack,
-        fontFamily: fonts.SfPro_Bold,
-        marginLeft: 10,
+        fontFamily: fonts.SfPro_Semibold,
+        // marginLeft: 10,
         fontSize: 16,
-        marginLeft: width * .04,
+        // marginLeft: width * .04,
         marginRight: width * .1,
         marginTop: 10
     },
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     locText: {
         color: colors.textRegular,
         fontFamily: fonts.SfPro_Regular,
-        paddingHorizontal: 15,
+        // paddingHorizontal: 15,
         fontSize:12
     },
     view3: {
@@ -431,7 +431,7 @@ const styles = StyleSheet.create({
         fontSize: 22,
         color: colors.textBlack,
         marginHorizontal: 12,
-        fontFamily: fonts.SfPro_Bold,
+        fontFamily: fonts.SfPro_Semibold,
         marginTop:20
     },
     locationinput: {
@@ -627,8 +627,75 @@ const styles = StyleSheet.create({
         fontSize:14,
         fontFamily:fonts.SfPro_Regular,
         color:colors.textBlack,
-    }
-
+    },
+    modal: {
+        justifyContent: "center",
+      },
+      modalContainer: {
+        backgroundColor: "white",
+        paddingBottom: 20,
+        // paddingHorizontal: 16,
+        borderRadius: 8,
+        // alignItems: "center",
+        // alignSelf: "center",
+        // width: "100%",
+      },
+      status: {
+        fontFamily: fonts.SfPro_Bold,
+        fontSize: 20,
+        marginTop: 20,
+        marginBottom: 10,
+        textAlign: "center",
+        color: colors.textBlack
+      },
+      detailsText: {
+        fontFamily: fonts.SfPro_Regular,
+        fontSize: 14,
+        marginBottom: 10,
+        textAlign: "center",
+        lineHeight:20,
+        paddingHorizontal: 15,
+        color: colors.textRegular
+      },
+      deleteAccountView:{
+        flexDirection:"row",
+        // marginHorizontal:'5%',
+        justifyContent:"space-between",
+        marginTop:10
+    },
+    emailInputView:{
+        width:"100%",
+        height:45,
+        backgroundColor:"#fff",
+        borderWidth:1,
+        borderColor:"#A1A5AC",
+        borderRadius:11
+      },
+      CancelBtn: {
+        backgroundColor: colors.orange_dark,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '47%',
+        borderRadius: 8,
+        height: 40,
+        // marginLeft:'5%'
+    },
+    DeleteBtn:{
+        borderColor: colors.orange_dark,
+        borderWidth:1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '47%',
+        borderRadius: 8,
+        height: 40,
+    },
+    button: {
+        borderWidth: 1,
+        borderColor: colors.orange_dark,
+        backgroundColor: colors.background,
+      }
 })
 
 export default styles;

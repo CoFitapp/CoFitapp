@@ -20,10 +20,10 @@ const { StatusBarManager } = NativeModules;
 const statusBarHeight = StatusBarManager.HEIGHT;
 
 GoogleSignin.configure({
-  scopes: ['https://www.googleapis.com/auth/drive.readonly', 'https://www.googleapis.com/auth/calendar.events.readonly'], // what API you want to access on behalf of the user, default is email and profile
+  scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
 
   // androidClientId: '1065079397050-c0q82knpg0ckeacgkgvlvn4jck731i2f.apps.googleusercontent.com',
-  webClientId: '1065079397050-qcatpbr4j8014mv8khmv7nspt3j6m25f.apps.googleusercontent.com',
+  webClientId: '1065079397050-7q3rbeb6gjh5mj0sbgabk65i4747v0o1.apps.googleusercontent.com',
   offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
   forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
   iosClientId: '1065079397050-7q3rbeb6gjh5mj0sbgabk65i4747v0o1.apps.googleusercontent.com', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
@@ -35,53 +35,62 @@ const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
 
-  // useEffect(() => {
-  //   GoogleSignin.configure({
-  //     scopes: ['https://www.googleapis.com/auth/drive.readonly', 'https://www.googleapis.com/auth/calendar.events.readonly'], // what API you want to access on behalf of the user, default is email and profile
+  useEffect(() => {
+    GoogleSignin.configure();
 
-  //     androidClientId: '1065079397050-c0q82knpg0ckeacgkgvlvn4jck731i2f.apps.googleusercontent.com',
-  //     webClientId: '1065079397050-qcatpbr4j8014mv8khmv7nspt3j6m25f.apps.googleusercontent.com',
-  //     offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-  //     forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
-  //     iosClientId: '1065079397050-7q3rbeb6gjh5mj0sbgabk65i4747v0o1.apps.googleusercontent.com', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+  }, [])
+
+  // useEffect(() => {
+  //   const unsubscribe = Hub.listen("auth", ({ payload: { event, data } }) => {
+  //     console.log('sdasdsdasdasdadsadsadas', JSON.stringify(data));
+  //     // console.log('dsnu8g23dxszs238gdsafdfds32d23d23', data.signInUserSession.idToken.payload.profile);
+  //     console.log('event', event);
+  //     switch (event) {
+  //       case "signIn":
+  //         console.log('dadgqwgdu8821gdssa87dsd1278t128',data.signInUserSession.idToken.payload.given_name);
+  //         let userObject = {
+  //           "name":data.signInUserSession.idToken.payload.given_name + " " + data.signInUserSession.idToken.payload.family_name,
+  //           "first_name":data.signInUserSession.idToken.payload.given_name,
+  //           "last_name":data.signInUserSession.idToken.payload.family_name,
+  //           "email":data.signInUserSession.idToken.payload.email,
+  //           "google_id":data.username
+  //       }
+  //         // dispatch(login(true))
+  //         navigation.navigate("SelectLocation",{userDetails:userObject})
+  //         break;
+  //       case "cognitoHostedUI":
+  //         // dispatch(login(true))
+  //         // navigation.navigate("SelectLocation")
+  //         break;
+  //       case "signOut":
+  //         break;
+  //       case "customOAuthState":
+  //     }
   //   });
 
-  // }, [])
-
-  useEffect(() => {
-    const unsubscribe = Hub.listen("auth", ({ payload: { event, data } }) => {
-      console.log('sdasdsdasdasdadsadsadas', JSON.stringify(data));
-      // console.log('dsnu8g23dxszs238gdsafdfds32d23d23', data.signInUserSession.idToken.payload.profile);
-      console.log('event', event);
-      switch (event) {
-        case "signIn":
-          console.log('dadgqwgdu8821gdssa87dsd1278t128',data.signInUserSession.idToken.payload.given_name);
-          let userObject = {
-            "name":data.signInUserSession.idToken.payload.given_name + " " + data.signInUserSession.idToken.payload.family_name,
-            "first_name":data.signInUserSession.idToken.payload.given_name,
-            "last_name":data.signInUserSession.idToken.payload.family_name,
-            "email":data.signInUserSession.idToken.payload.email,
-            "google_id":data.username
-        }
-          // dispatch(login(true))
-          navigation.navigate("SelectLocation",{userDetails:userObject})
-          break;
-        case "cognitoHostedUI":
-          // dispatch(login(true))
-          // navigation.navigate("SelectLocation")
-          break;
-        case "signOut":
-          break;
-        case "customOAuthState":
-      }
-    });
-
-    return unsubscribe;
-  }, []);
+  //   return unsubscribe;
+  // }, []);
 
   const googleLogin = async () => {
-    // await Auth.signOut();
-    // return;
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log('USER INFOOOOOOOOO', userInfo);
+      // setState({ userInfo });
+    } catch (error) {
+      console.log('ERRORRRRRRRRRRRRRR', error);
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+
+    return;
     await Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Google})
   }
 

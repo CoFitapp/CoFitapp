@@ -5,7 +5,7 @@ import images from '../../constants/images'
 import colors from '../../constants/colors'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useDispatch,useSelector } from 'react-redux'
-import { logout, updateUser } from '../../redux/slices/userSlice'
+import { logout, updateUser, setSavedPaymentMethod } from '../../redux/slices/userSlice'
 import { useFocusEffect } from '@react-navigation/native'
 import { Auth } from 'aws-amplify'
 import { useState } from 'react'
@@ -31,6 +31,7 @@ const Profile = ({navigation}) => {
   const dispatch = useDispatch()
   const userInfo = useSelector((state) => state.user.userInfo);
   console.log('userInforrzxczrrr',userInfo);
+
   useEffect(()=>{
     getUserDetails();
   },[])
@@ -58,11 +59,11 @@ const Profile = ({navigation}) => {
 }
 
 const onConfirmLogout=async()=>{
-    Auth.signOut()
+    // Auth.signOut()
     dispatch(logout())
-    dispatch(savedPaymentMethod(''))
+    dispatch(setSavedPaymentMethod(''))
 
-    navigation.navigate("LoginScreen")
+    navigation.navigate("SignUp")
 }
 
 const onUpdate=async()=>{
@@ -222,7 +223,7 @@ source={
  <TouchableOpacity onPress={()=>navigation.navigate("EditProfile")} style={styles.view2}>
   <View style={styles.profileMainView}>
   <Image source={images.profile3} style={styles.profileIcon}/>
-  <Text style={styles.profileText}>View Profile</Text>
+  <Text style={styles.profileText}>Edit Profile</Text>
   </View>
   <View style={{width:"15%",}}>
     <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
@@ -230,7 +231,7 @@ source={
  </TouchableOpacity>
  <View style={styles.lineSeperator}/>
 
- <TouchableOpacity onPress={()=>navigation.navigate("Payment&PayoutMethod")} style={styles.view2}>
+ {/* <TouchableOpacity onPress={()=>navigation.navigate("Payment&PayoutMethod")} style={styles.view2}>
   <View style={styles.profileMainView}>
   <Image source={images.payment} style={styles.profileIcon}/>
   <Text style={styles.profileText}>Payments and Payouts</Text>
@@ -239,9 +240,9 @@ source={
     <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
   </View>
  </TouchableOpacity>
- <View style={styles.lineSeperator}/>
+ <View style={styles.lineSeperator}/> */}
 
- <TouchableOpacity onPress={()=>navigation.navigate("TransactionHistory")} style={styles.view2}>
+ {/* <TouchableOpacity onPress={()=>navigation.navigate("TransactionHistory")} style={styles.view2}>
   <View style={styles.profileMainView}>
   <Image source={images.transaction} style={styles.profileIcon}/>
   <Text style={styles.profileText}>Transaction History</Text>
@@ -250,9 +251,9 @@ source={
     <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
   </View>
  </TouchableOpacity>
- <View style={styles.lineSeperator}/>
+ <View style={styles.lineSeperator}/> */}
 
- <TouchableOpacity style={styles.view2}>
+ {/* <TouchableOpacity style={styles.view2}>
   <View style={styles.profileMainView}>
   <Image source={images.refer} style={styles.profileIcon}/>
   <Text style={styles.profileText}>Refer a Friend</Text>
@@ -272,9 +273,9 @@ source={
     <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
   </View>
  </TouchableOpacity>
- <View style={styles.lineSeperator}/>
+ <View style={styles.lineSeperator}/> */}
 
- <TouchableOpacity style={styles.view2}>
+ <TouchableOpacity onPress={()=> navigation.navigate('TermService')} style={styles.view2}>
   <View style={styles.profileMainView}>
   <Image source={images.term} style={styles.profileIcon}/>
   <Text style={styles.profileText}>Terms of Use</Text>
@@ -285,7 +286,18 @@ source={
  </TouchableOpacity>
  <View style={styles.lineSeperator}/>
 
- <TouchableOpacity onPress={()=>navigation.navigate("EditProfile")} style={styles.view2}>
+ <TouchableOpacity onPress={() => navigation.navigate('PrivacyPolicy')} style={styles.view2}>
+  <View style={styles.profileMainView}>
+  <Image source={images.privacy} style={styles.profileIcon}/>
+  <Text style={styles.profileText}>Privacy Policy</Text>
+  </View>
+  <View style={{width:"15%",}}>
+    <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
+  </View>
+ </TouchableOpacity>
+ <View style={styles.lineSeperator}/>
+
+ {/* <TouchableOpacity onPress={()=>navigation.navigate("EditProfile")} style={styles.view2}>
   <View style={styles.profileMainView}>
   <Image source={images.settings} style={styles.profileIcon}/>
   <Text style={styles.profileText}>Settings</Text>
@@ -294,9 +306,9 @@ source={
     <Image source={images.arrNew1} style={styles.nextArrowIcon}/>
   </View>
  </TouchableOpacity>
- <View style={styles.lineSeperator}/>
+ <View style={styles.lineSeperator}/> */}
 
- <TouchableOpacity onPress={()=>onLogout()} style={[styles.bottomBtn,{marginVertical:20}]}>
+ <TouchableOpacity onPress={()=>onLogout()} style={[styles.bottomBtn,{marginVertical:50}]}>
 <Text style={styles.btnText}>Log Out</Text>
 </TouchableOpacity>
 
