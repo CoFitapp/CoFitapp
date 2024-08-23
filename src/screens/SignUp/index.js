@@ -1,5 +1,5 @@
 import { NativeModules, StyleSheet, Text, View, useWindowDimensions, Image, TouchableOpacity, TextInput, ImageBackground, Platform, Alert } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './style'
 import images from '../../constants/images'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -16,21 +16,57 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin'
 import Toast from 'react-native-simple-toast';
 import { location, login } from "../../redux/slices/userSlice";
 import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication';
+// import moment from 'moment'
 
 const { StatusBarManager } = NativeModules;
 const statusBarHeight = StatusBarManager.HEIGHT;
 const mailFormat = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 GoogleSignin.configure({
-  scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
+  // scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
 
   // androidClientId: '1065079397050-c0q82knpg0ckeacgkgvlvn4jck731i2f.apps.googleusercontent.com',
-  webClientId: '1065079397050-7q3rbeb6gjh5mj0sbgabk65i4747v0o1.apps.googleusercontent.com',
+  webClientId: '809945505628-vif52k6aie79821cahnqjjoatmfcooke.apps.googleusercontent.com',
   offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
   forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
-  iosClientId: '1065079397050-7q3rbeb6gjh5mj0sbgabk65i4747v0o1.apps.googleusercontent.com', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+  iosClientId: '809945505628-vif52k6aie79821cahnqjjoatmfcooke.apps.googleusercontent.com', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
 });
 
 const SignUp = ({ navigation }) => {
+  const isLoggedIn = useSelector((state) => state.user.status);
+
+  // useEffect(()=>{
+  //   const arr1 = {
+  //     duration: 45,
+  //     timeslot_length: 30,
+  //     timesheet_arr:{
+  //       startTime: '08:00', endTime: '18:00'
+  //     }
+  //   }
+  //   let date = moment().format('DD MMM YYYY')
+  //   const dateWithTime = date + ' ' + arr1.timesheet_arr.startTime
+  //   let startTimeTimeStamp = moment(dateWithTime).unix()
+
+  //   const durationInMil = arr1.duration * 60
+  //   const timeSlotLengthInMil = arr1.timeslot_length * 60
+  //   console.log('timeSlotLengthInMil', timeSlotLengthInMil);
+  //   const endTimeWithDate = date + ' ' + arr1.timesheet_arr.endTime
+  //   const endTimeTimeStamp = moment(endTimeWithDate).unix()
+
+  //   let slots = []
+  //   while(startTimeTimeStamp + durationInMil <= endTimeTimeStamp) {
+  //       let slot = {
+  //         start: moment.unix(startTimeTimeStamp).format('HH:mm') ,
+  //         end: moment.unix(startTimeTimeStamp + durationInMil).format('HH:mm')
+  //       }
+  //       slots.push(slot)
+  //       startTimeTimeStamp = startTimeTimeStamp + timeSlotLengthInMil
+  //       console.log('startTimeTimeStamp', startTimeTimeStamp);
+
+  //   }
+  //   console.log('9328ye3y923', slots);
+  // },[])
+
+
   const bottomSheet = useRef();
   const { height, width } = useWindowDimensions();
   const [email, setEmail] = useState('')
@@ -47,6 +83,7 @@ const SignUp = ({ navigation }) => {
 
   }
 
+
   const onPressGoogleLogin =async()=> {
     try {
       await GoogleSignin.hasPlayServices();
@@ -56,7 +93,8 @@ const SignUp = ({ navigation }) => {
             "email":userInfo.user.email,
             "googleId":userInfo.user.id,
             'provider': 'google',
-            'access_token': userInfo.idToken
+            'access_token': userInfo.idToken,
+            'useNewClientId': true
         }
         console.log('bodybodybody', body)
       let response = await services.post(Url.GOOGLE_LOGIN, "", body, "json");
@@ -73,7 +111,12 @@ const SignUp = ({ navigation }) => {
         navigation.navigate("SignedInStack", { screen: "Home" })
       }
     }else{
-      alert(response?.error)
+      if(response.message) {
+        alert(response.message)
+      } else {
+        alert(response?.error)
+      }
+
     }
 
       // setState({ userInfo });
@@ -101,7 +144,7 @@ const SignUp = ({ navigation }) => {
       })
       const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
       console.log('appleAuthRequestResponse111', appleAuthRequestResponse)
-      const { email, fullName, identityToken, user } = appleAuthRequestResponse
+      const { email, fullName, identityToken, user  } = appleAuthRequestResponse
       let data = {
         "provider": 'apple',
         'email': email,
@@ -114,7 +157,7 @@ const SignUp = ({ navigation }) => {
       if (response.status) {
         dispatch(login(response.user, response.status));
         if(response.newUser) {
-          navigation.navigate("AddProfile")
+          navigation.navigate("AddProfile", {firstName: fullName.givenName, lastName: fullName.familyName})
         } else {
           navigation.navigate("SignedInStack", { screen: "Home" })
         }
@@ -133,7 +176,7 @@ const SignUp = ({ navigation }) => {
             <Image source={images.arrNew1} style={[styles.nextArrowIcon, { transform: [{ rotate: "180deg" }] }]} />
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=> navigation.navigate("SignedInStack", { screen: "Home" })}>
             <Text  style={styles.skip}>Skip</Text>
           </TouchableOpacity>
         </View>

@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginLeft:5,
         fontFamily: fonts.SfPro_Bold,
-       maxWidthwidth:'80%'
+       maxWidth:'90%'
     },
     locicon: {
         height: 24,

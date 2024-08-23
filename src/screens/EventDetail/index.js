@@ -232,9 +232,9 @@ const EventDetail = () => {
                 <TouchableOpacity onPress={() => onShareEvent()} style={[styles.backImageView, { marginRight: 15 }]}>
                   <FastImage source={images.share} style={styles.backImageIcon} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.backImageView}>
+                {/* <TouchableOpacity style={styles.backImageView}>
                   <FastImage source={images.heart} style={styles.backImageIcon} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             </View>
           </View>

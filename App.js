@@ -6,17 +6,17 @@ import persistStore from "redux-persist/es/persistStore";
 import { Provider } from "react-redux";
 import { store } from "./src/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
-import mobileAds from 'react-native-google-mobile-ads';
+// import mobileAds from 'react-native-google-mobile-ads';
 import SplashScreen from 'react-native-splash-screen'
-import { StripeProvider } from '@stripe/stripe-react-native';
+// import { StripeProvider } from '@stripe/stripe-react-native';
 
 const persistor = persistStore(store);
 LogBox.ignoreAllLogs()
-mobileAds()
-  .initialize()
-  .then(adapterStatuses => {
-    console.log('statua11111',adapterStatuses);
-  });
+// mobileAds()
+//   .initialize()
+//   .then(adapterStatuses => {
+//     console.log('statua11111',adapterStatuses);
+//   });
 
 // Amplify.configure({
 //   Auth: {
@@ -50,17 +50,17 @@ export default function App() {
 
   return (
     <>
-    <StripeProvider
+    {/* <StripeProvider
       publishableKey="pk_test_CWOYTf4SJERP6VyJTChjifbg"
       merchantIdentifier="merchant.com.cofitnew.app"
-    >
+    > */}
       <Provider store={store}>
         <PersistGate persistor={persistor}>
           <MainApp />
           <StatusBar />
         </PersistGate>
       </Provider>
-      </StripeProvider>
+      {/* </StripeProvider> */}
     </>
 
   )

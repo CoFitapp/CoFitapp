@@ -30,7 +30,9 @@ const Profile = ({navigation}) => {
   const [profileImage,setProfileImage]=useState('')
   const dispatch = useDispatch()
   const userInfo = useSelector((state) => state.user.userInfo);
-  console.log('userInforrzxczrrr',userInfo);
+  const isLoggedIn = useSelector((state) => state.user.status);
+
+  console.log('userInforfsffsdrzxczrrr',isLoggedIn);
 
   useEffect(()=>{
     getUserDetails();
@@ -51,6 +53,10 @@ const Profile = ({navigation}) => {
   }
 
   const onLogout=async()=>{
+    if(!isLoggedIn) {
+      navigation.navigate("SignUp")
+      return
+    }
     Alert.alert("Log Out",
     "Are you sure you want to logout",[
       {'text':"Cancel",style:"cancel",onPress:()=>console.log('cancel pressed')},
@@ -68,10 +74,6 @@ const onConfirmLogout=async()=>{
 
 const onUpdate=async()=>{
 
-  // return;
-  console.log('dsajdgh878912981',name);
-  console.log('dsajdgh878912981',email);
-  console.log('dsajdgh878912981',phoneNo);
    if(name.trim().length==0 || email.length==0 || phoneNo.trim().length==0){
     alert("Please fill all the field")
    }
@@ -197,6 +199,15 @@ const updateProfileImage=async(imageFile)=>{
 
       }
 
+  const onPressEditProfile=async()=>{
+    if(isLoggedIn) {
+      navigation.navigate("EditProfile")
+    } else {
+      alert("It looks like you're currently browsing as a guest. To edit your profile, please sign up or log in.")
+    }
+
+  }
+
   return (
     <View style={styles.mainView}>
 
@@ -216,11 +227,11 @@ source={
 }}
 />
 </View>
-<Text style={styles.name}>{userInfo?.first_name + " " + userInfo?.last_name}</Text>
+<Text style={styles.name}>{isLoggedIn ? userInfo?.first_name + " " + userInfo?.last_name : "Guest User"}</Text>
 
         </ImageBackground>
 
- <TouchableOpacity onPress={()=>navigation.navigate("EditProfile")} style={styles.view2}>
+ <TouchableOpacity onPress={()=> onPressEditProfile()} style={styles.view2}>
   <View style={styles.profileMainView}>
   <Image source={images.profile3} style={styles.profileIcon}/>
   <Text style={styles.profileText}>Edit Profile</Text>
@@ -309,7 +320,7 @@ source={
  <View style={styles.lineSeperator}/> */}
 
  <TouchableOpacity onPress={()=>onLogout()} style={[styles.bottomBtn,{marginVertical:50}]}>
-<Text style={styles.btnText}>Log Out</Text>
+<Text style={styles.btnText}>{ isLoggedIn ? 'Log Out' : 'Log In'}</Text>
 </TouchableOpacity>
 
 </KeyboardAwareScrollView>

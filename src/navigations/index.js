@@ -47,13 +47,13 @@ import EnterDescription from "../screens/EnterDescription";
 import EditProfile from "../screens/EditProfile";
 import TransactionHistory from "../screens/TransactionHistory";
 import PaymentMethod from "../screens/Payment&PayoutMethod";
-import PaymentMethod1 from "../screens/PaymentMethods";
+// import PaymentMethod1 from "../screens/PaymentMethods";
 import PayoutMethod from "../screens/PayoutMethods";
 import AttendeeRegistration from "../screens/AttendeeRegistration";
-import OrderDetails from "../screens/OrderDetails";
-import AddCard from "../screens/AddCard";
+// import OrderDetails from "../screens/OrderDetails";
+// import AddCard from "../screens/AddCard";
 import ViewTicket from "../screens/ViewTicket";
-import ChoosePaymentOption from "../screens/ChoosePaymentOption";
+// import ChoosePaymentOption from "../screens/ChoosePaymentOption";
 import CreateAccount1 from "../screens/SignUp";
 import SignUp from "../screens/SignUp";
 import SignUp1 from "../screens/SignUp1";
@@ -289,13 +289,13 @@ export default function navigation() {
         <Stack.Screen name="EditProfile" component={EditProfile} />
         <Stack.Screen name="TransactionHistory" component={TransactionHistory} />
         <Stack.Screen name="Payment&PayoutMethod" component={PaymentMethod} />
-        <Stack.Screen name="PaymentMethod1" component={PaymentMethod1} />
+        {/* <Stack.Screen name="PaymentMethod1" component={PaymentMethod1} /> */}
         <Stack.Screen name="PayoutMethod" component={PayoutMethod} />
         <Stack.Screen name="AttendeeRegistration" component={AttendeeRegistration} />
-        <Stack.Screen name="OrderDetails" component={OrderDetails} />
-        <Stack.Screen name="AddCard" component={AddCard} />
+        {/* <Stack.Screen name="OrderDetails" component={OrderDetails} /> */}
+        {/* <Stack.Screen name="AddCard" component={AddCard} /> */}
         <Stack.Screen name="ViewTicket" component={ViewTicket} />
-        <Stack.Screen name="ChoosePaymentOption" component={ChoosePaymentOption} />
+        {/* <Stack.Screen name="ChoosePaymentOption" component={ChoosePaymentOption} /> */}
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="SignUp1" component={SignUp1} />
         <Stack.Screen name="AddProfile" component={AddProfile} />

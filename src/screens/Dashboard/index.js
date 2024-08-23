@@ -16,16 +16,16 @@ import { useDispatch } from 'react-redux'
 import * as services from '../../constants/services'
 import * as Url from '../../constants/url'
 import BottomSheet from 'react-native-gesture-bottom-sheet';
-import { logout, updateUser } from '../../redux/slices/userSlice'
-import {
-  BannerAd,
-  BannerAdSize,
-  InterstitialAd,
-  TestIds,
-  AdEventType,
-  RewardedAd,
-  RewardedAdEventType,
-} from 'react-native-google-mobile-ads';
+import { logout, updateUser, location, login } from '../../redux/slices/userSlice'
+// import {
+//   BannerAd,
+//   BannerAdSize,
+//   InterstitialAd,
+//   TestIds,
+//   AdEventType,
+//   RewardedAd,
+//   RewardedAdEventType,
+// } from 'react-native-google-mobile-ads';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image';
 import { useRef } from 'react';
@@ -36,7 +36,7 @@ import { TextRegular } from '../../components/AppText';
 import { AnimatedScrollView } from '@kanelloc/react-native-animated-header-scroll-view';
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-const adUnitId = 'ca-app-pub-3940256099942544/2435281174'
+// const adUnitId = 'ca-app-pub-3940256099942544/2435281174'
 
 const { StatusBarManager } = NativeModules;
 const statusBarHeight = StatusBarManager.HEIGHT;
@@ -50,6 +50,7 @@ const Dashboard = () => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.user.status);
   const userLocation = useSelector(state => state.user.location)
   const userInfo = useSelector((state) => state.user.userInfo);
   const searchLocation = userInfo && userInfo.search_location ? userInfo.search_location : userInfo?.location
@@ -162,6 +163,9 @@ const Dashboard = () => {
      console.log('3128731297129da312979', city);
          let location = city + ", " + state
           setPreciseLocation(location)
+          if(!isLoggedIn) {
+            dispatch(updateUser({...userInfo, location: location }))
+          }
           getEvents(location, position.coords.latitude, position.coords.longitude)
      })
     .catch((error) => {
@@ -471,6 +475,11 @@ const Dashboard = () => {
 
   const onChooseLocation = async (data) => {
     setSearchCity('')
+    if(!isLoggedIn) {
+      dispatch(updateUser({...userInfo, search_location: data}))
+      bottomSheet?.current.close()
+      return;
+    }
     let body = {searchLocation: data }
     let url = `${Url.ADD_PROFILE}/${userInfo.id}`
     let response = await services.post(url, "", body, 'json')
@@ -508,7 +517,7 @@ const Dashboard = () => {
          <View style={{ flexDirection: 'row', width: "90%" }}>
            <TouchableOpacity onPress={() => bottomSheet?.current.show()} style={{ flexDirection: "row", marginTop: 5, alignItems: "center" }}>
 
-             <Text style={styles.newJersyText}>{searchLocation}</Text>
+             <Text numberOfLines={1} style={styles.newJersyText}>{searchLocation || 'Please select'}</Text>
              <Image source={images.bottom} style={styles.locicon} />
            </TouchableOpacity>
 
@@ -669,7 +678,7 @@ const Dashboard = () => {
                       </View>
                     </View>
                   </TouchableOpacity>
-                  {
+                  {/* {
                     (newEvents?.length != 0 && index == Math.round(newEvents?.length / 2)) &&
                     <View style={{ marginVertical: 10 }}>
                       <BannerAd
@@ -680,7 +689,7 @@ const Dashboard = () => {
                         }}
                       />
                     </View>
-                  }
+                  } */}
 
                 </View>
 

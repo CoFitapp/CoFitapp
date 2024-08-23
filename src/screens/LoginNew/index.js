@@ -85,7 +85,8 @@ const LoginNew = ({ navigation }) => {
             "email":userInfo.user.email,
             "googleId":userInfo.user.id,
             'provider': 'google',
-            'access_token': userInfo.idToken
+            'access_token': userInfo.idToken,
+            'useNewClientId': true
         }
         console.log('bodybodybody', body)
       let response = await services.post(Url.GOOGLE_LOGIN, "", body, "json");
@@ -143,7 +144,7 @@ const LoginNew = ({ navigation }) => {
       if (response.status) {
         dispatch(login(response.user, response.status));
         if(response.newUser) {
-          navigation.navigate("AddProfile")
+          navigation.navigate("AddProfile", {firstName: fullName.givenName, lastName: fullName.familyName})
         } else {
           navigation.navigate("SignedInStack", { screen: "Home" })
         }
@@ -162,7 +163,7 @@ const LoginNew = ({ navigation }) => {
             <Image source={images.arrNew1} style={[styles.nextArrowIcon, { transform: [{ rotate: "180deg" }] }]} />
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=> navigation.navigate("SignedInStack", { screen: "Home" })}>
             <Text  style={styles.skip}>Skip</Text>
           </TouchableOpacity>
         </View>

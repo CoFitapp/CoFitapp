@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, FlatList } from 'react-native'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import styles from './style'
 import Header from '../../components/Header'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -20,7 +20,7 @@ import { login, updateUser } from '../../redux/slices/userSlice'
 import * as services from '../../constants/services'
 import * as Url from '../../constants/url'
 
-const AddProfile = ({navigation}) => {
+const AddProfile = ({navigation, route}) => {
   const bottomSheet = useRef();
   const [dob, setDob] = useState('')
   const dispatch = useDispatch()
@@ -35,7 +35,9 @@ const AddProfile = ({navigation}) => {
   const [open, setOpen] = useState(false);
   const userInfo = useSelector((state) => state.user.userInfo);
   console.log('userInfouserInfo', userInfo)
-  const isDisable = firstName.trim().length == 0 || lastName.trim().length == 0 || selectedDate.trim().length ==0 || selectedGender.trim().length ==0 || phoneNumber.trim().length == 0 || !isChecked
+
+  // const isDisable = firstName.trim().length == 0 || lastName.trim().length == 0 || selectedDate.trim().length ==0 || selectedGender.trim().length ==0 || phoneNumber.trim().length == 0 || !isChecked
+  const isDisable = firstName.trim().length == 0 || lastName.trim().length == 0 || !isChecked
   const gender = [
     {id: 1, name: 'Female', image: images.female},
     {id: 2, name: 'Male', image: images.male},
@@ -43,27 +45,46 @@ const AddProfile = ({navigation}) => {
     {id: 4, name: 'Other', image: images.other},
     {id: 5, name: 'Prefer not to say', image: images.prohibition},
   ]
-  console.log('isDisableisDisable', isDisable);
+
+   useEffect(()=>{
+     if(route?.params?.firstName && route?.params.firstName != null) {
+      setFirstName(route?.params.firstName)
+     }
+     if(route?.params?.lastName && route?.params.lastName != null) {
+      setLastName(route?.params.lastName)
+     }
+   },[])
 
   const onContinue =async()=> {
     if (!firstName.trim().length) {
       Toast.show('Please enter first name.')
-    } else if (!lastName.trim().length) {
+    }
+    else if (!lastName.trim().length) {
       Toast.show('Please enter last name.')
-    } else if (!selectedDate.length) {
-      Toast.show('Please select your date of birth.')
-    } else if (!selectedGender.length) {
-      Toast.show('Please select your gender.')
-    } else if (!phoneNumber.length) {
-      Toast.show('Please enter phone number.')
-    } else {
+    }
+    // else if (!selectedDate.length) {
+    //   Toast.show('Please select your date of birth.')
+    // }
+    // else if (!selectedGender.length) {
+    //   Toast.show('Please select your gender.')
+    // }
+    // else if (!phoneNumber.length) {
+    //   Toast.show('Please enter phone number.')
+    // }
+    else {
       setIsLoading(true)
       const data = new FormData()
       data.append('firstName', firstName)
       data.append('lastName', lastName)
-      data.append('dob', selectedDate)
-      data.append('gender', selectedGender)
-      data.append('phoneNo', phoneNumber)
+      if(selectedDate.length) {
+        data.append('dob', selectedDate)
+      }
+      if(selectedGender.length) {
+        data.append('gender', selectedGender)
+      }
+      if(phoneNumber.length){
+        data.append('phoneNo', phoneNumber)
+      }
 
       console.log('bodyyyyy', data);
       let url = `${Url.ADD_PROFILE}/${userInfo.id}`

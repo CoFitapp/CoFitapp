@@ -34,15 +34,6 @@ import getDistance from "../../api/getDistance";
 import { ActivityIndicator } from "react-native";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/slices/userSlice";
-import {
-  BannerAd,
-  BannerAdSize,
-  InterstitialAd,
-  TestIds,
-  AdEventType,
-  RewardedAd,
-  RewardedAdEventType,
-} from "react-native-google-mobile-ads";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRef } from "react";
 import Geolocation from "react-native-geolocation-service";
