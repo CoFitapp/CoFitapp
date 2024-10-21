@@ -10,7 +10,7 @@ To get started with this project, follow these instructions:
 
 Make sure you have the following software installed on your machine:
 
-- Node.js (16.13.0)
+- Node.js (16.13.1)
 - npm (Node Package Manager)
 - React Native CLI
 - JDK (11)
