@@ -22,7 +22,7 @@ Make sure you have the following software installed on your machine:
 1. Clone the repository from the below link
 
 ```sh
-git clone https://github.com/SaurabhBrst/MyChallengeCreator_Latest_May1
+git clone https://github.com/CoFitapp/CoFitapp.git
 ```
 2. Navigate into the project directory and then install dependencies
 ```sh
