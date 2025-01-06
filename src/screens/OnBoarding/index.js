@@ -55,7 +55,7 @@ const OnBoardingScreen = () => {
                 }
               });
             return
-            const url = 'https://cofitapp.com/uploads/tickle.mp3';
+            const url = 'https://api.cofitapp.com/uploads/tickle.mp3';
             const destinationPath = `${RNFetchBlob.fs.dirs.DocumentDir}/tickle.mp3`; // Set the destination path
           let a =   RNFetchBlob.fs.dirs.DocumentDir
           console.log('dsaddsdsdsdsasadsa', a);

@@ -181,9 +181,11 @@ const styles = StyleSheet.create({
     socialView: {
       flexDirection: 'row',
       flex: 1,
-      paddingHorizontal: '30%',
-      justifyContent: 'space-between',
-      paddingTop: 10
+      // paddingHorizontal: '30%',
+      justifyContent: 'center',
+      paddingTop: 10,
+      // backgroundColor:'red'
+      alignItems:'center'
     },
     socialView1: {
       height: 50,

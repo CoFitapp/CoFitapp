@@ -287,7 +287,15 @@ const AddEvent = ({ navigation }) => {
     //   setLocation(data.description)
     // }, 2000);
   };
-
+  const formatResult = (data) => {
+    const terms = data.terms;
+    if (terms && terms.length >= 2) {
+      const city = terms[0].value;
+      const state = terms[1].value;
+      return `${city}, ${state}`;
+    }
+    return data.description; // Fallback to original description
+  };
   return (
     <View
       style={{
@@ -576,6 +584,11 @@ const AddEvent = ({ navigation }) => {
                     }}
                   />
                 )}
+                renderRow={(data) => (
+                  <View style={styles.resultRow}>
+                    <Text style={styles.resultText}>{formatResult(data)}</Text>
+                  </View>
+                )}
                 textInputProps={{
                   onFocus: () => {
                     setAuto(false);
@@ -592,6 +605,8 @@ const AddEvent = ({ navigation }) => {
                 query={{
                   key: "AIzaSyBpVX6Xl4OEftECYrN-wauMw7dpUyl6GiI",
                   language: "en",
+                  components: 'country:us',
+                  types: '(cities)',
                 }}
               />
             </View>

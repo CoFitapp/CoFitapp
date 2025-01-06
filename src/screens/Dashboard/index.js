@@ -29,7 +29,9 @@ import { logout, updateUser, location, login } from '../../redux/slices/userSlic
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image';
 import { useRef } from 'react';
-import Geolocation from 'react-native-geolocation-service';
+// import Geolocation from 'react-native-geolocation-service';
+import Geolocation from '@react-native-community/geolocation';
+
 import Geocoder from 'react-native-geocoding';
 import colors from '../../constants/colors';
 import { TextRegular } from '../../components/AppText';
@@ -54,7 +56,6 @@ const Dashboard = () => {
   const userLocation = useSelector(state => state.user.location)
   const userInfo = useSelector((state) => state.user.userInfo);
   const searchLocation = userInfo && userInfo.search_location ? userInfo.search_location : userInfo?.location
-  console.log('cxjhghasgjdsassdsadaadagjgasjg', userInfo);
   const { height, width } = useWindowDimensions();
   const [searchText, setSearchText] = useState('')
   const [newEvents, setNewEvents] = useState([])
@@ -96,7 +97,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     // if (isFocused) {
-      // getEvents();
+      getEvents();
       console.log('fsksjjlkasjlkla');
       getCurrentLocation();
     // }
@@ -139,11 +140,21 @@ const Dashboard = () => {
 
   const getCurrentLocation = async () => {
     console.log('dasdhqiuwajkb');
-    let cityName = ""
-    let state = ""
-    if (Platform.OS == 'ios') {
-      await Geolocation.requestAuthorization('always')
-    }
+
+    // if (Platform.OS === 'ios') {
+    //   Geolocation.requestAuthorization('always').then(res=> {
+    //     console.log('riueyrweyryiuwyiyiwyiy', res);
+    //     if(res == 'denied' || res == 'disabled' || res == 'restricted') {
+    //       getEvents()
+    //     }
+    //   })
+    //   .catch(err =>{
+    //     console.log('ew9uuewqoiue8923eu8923eu2', err);
+
+    //   })
+    // }
+    // console.log('49832774897897982379792');
+
     Geolocation.getCurrentPosition((position) => {
       console.log('dshjgsasasasasasafsdgjhs', position.coords);
       try {
@@ -151,7 +162,7 @@ const Dashboard = () => {
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: `https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`,
+        url: `https://nominatim.openstreetmap.org/reverse?lat=${parseFloat(position.coords.latitude)}&lon=${parseFloat(position.coords.longitude)}&format=json`,
         };
 
      axios.request(config)
@@ -173,6 +184,8 @@ const Dashboard = () => {
      });
 
       } catch (error) {
+        console.log('ryyryiewuyryweiyuiwyeywi');
+
         alert('Error while getting user location', error?.message)
       }
       // Geocoder.from(position.coords.latitude, position.coords.longitude)
@@ -201,6 +214,7 @@ const Dashboard = () => {
       //     console.log('error in getting location', err);
       //   })
     })
+   console.log('439287yey3ey38yey28y');
 
   }
 
@@ -222,6 +236,7 @@ const Dashboard = () => {
       let data2 = JSON.stringify({
         "city_name": searchLocation
       });
+console.log('sssssss',data2);
 
       let config3 = {
         method: 'post',
@@ -229,6 +244,8 @@ const Dashboard = () => {
         url: Url.BASE_URL + Url.GET_EVENTS,
         headers: {
           'Content-Type': 'application/json'
+          // 'Content-Type': 'multipart/form-data'
+
         },
         data: data2
       };
@@ -260,7 +277,7 @@ const Dashboard = () => {
               console.log('lat111111111', Number(item.latitude) , 'lat222222', Number(item.longitude));
               console.log('lat23333333', Number(userLat) , 'lat44444444', Number(userLong));
               console.log('329813217371927919', item);
-              const disInMiles = `${(distance1 / 1609.34).toFixed(0)}`
+              const disInMiles = `${(distance1 / 1609.34).toFixed(0)} mi`
               console.log('DISTANCE IN MILES1111', disInMiles);
               item.distance = disInMiles
             } else {
@@ -528,10 +545,10 @@ const Dashboard = () => {
          <FastImage
            style={styles.profileImg}
            source={
-             (userInfo.profile_image == null || userInfo.profile_image == 'null')
-               ?
-               images.backimg
-               :
+            //  (userInfo.profile_image == null || userInfo.profile_image == 'null')
+            //    ?
+            //    images.backimg
+            //    :
                {
                  uri: userInfo.profile_image,
                  priority: FastImage.priority.high,
@@ -543,7 +560,9 @@ const Dashboard = () => {
      </View>
 
      <View style={styles.searchView}>
-       <View style={styles.searchView1}>
+       <View
+       style={styles.searchView1}
+       >
          <Image source={images.search1} style={styles.searchIcon} />
          <TextInput
            placeholder='Search for events'
@@ -653,7 +672,7 @@ const Dashboard = () => {
                         source={item?.image.startsWith("no image") ? imageArr[index % imageArr.length].image : { uri: item.image }}>
                           <View style={styles.kmbutton}>
                             {/* <FastImage source={images.car} style={styles.carImg} /> */}
-                            <Text style={styles.kmText}>{`${item.distance} mi`}</Text>
+                            <Text style={styles.kmText}>{`${item.distance}`}</Text>
                           </View>
                         </FastImage>
                       </View>
@@ -714,7 +733,7 @@ const Dashboard = () => {
 
 
       <BottomSheet draggable={false} ref={bottomSheet} height={height * 0.8} width={100} sheetBackgroundColor={"#fff"}>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, marginTop: Platform.OS === 'ios' ? 0 : 60 }}>
           <View style={styles.handle}/>
           <Text style={styles.pickCity}>Pick a city</Text>
           <View style={styles.seperator} />

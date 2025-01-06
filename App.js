@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, StatusBar, LogBox } from 'react-native'
+import { StyleSheet, Text, View, StatusBar, LogBox,Platform,PermissionsAndroid } from 'react-native'
 import React, { useEffect, useState } from "react";
 import MainApp from "./src/navigations/index"
 import { Amplify, Auth } from 'aws-amplify';
@@ -6,9 +6,23 @@ import persistStore from "redux-persist/es/persistStore";
 import { Provider } from "react-redux";
 import { store } from "./src/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
+
 // import mobileAds from 'react-native-google-mobile-ads';
 import SplashScreen from 'react-native-splash-screen'
-// import { StripeProvider } from '@stripe/stripe-react-native';
+// import { StripeProvider } from '@stripe/stripe-react-native'; 
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+
+GoogleSignin.configure({
+  // scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
+
+  // androidClientId: '809945505628-cjj77mrft9m3q2lt93rnctficqp34hgn.apps.googleusercontent.com',
+  webClientId: '809945505628-j2kh6ptj2dbgm7oibj55g9lf2jlvqn6n.apps.googleusercontent.com',
+  // webClientId: '809945505628-vif52k6aie79821cahnqjjoatmfcooke.apps.googleusercontent.com',
+
+  offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+  forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
+  iosClientId: '809945505628-vif52k6aie79821cahnqjjoatmfcooke.apps.googleusercontent.com', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+});
 
 const persistor = persistStore(store);
 LogBox.ignoreAllLogs()
@@ -36,17 +50,20 @@ LogBox.ignoreAllLogs()
 //       redirectSignOut: 'cofit://',
 //       responseType: 'token',
 //     },
-//   },
+//   }
 // });
 
-export default function App() {
 
+export default function App() {
   useEffect(()=>{
     setTimeout(() => {
       SplashScreen.hide()
     }, 1000);
 
   },[])
+
+
+
 
   return (
     <>

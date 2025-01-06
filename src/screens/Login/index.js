@@ -19,15 +19,15 @@ import { useDispatch } from 'react-redux'
 const { StatusBarManager } = NativeModules;
 const statusBarHeight = StatusBarManager.HEIGHT;
 
-GoogleSignin.configure({
-  // scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
-
-  // androidClientId: '1065079397050-c0q82knpg0ckeacgkgvlvn4jck731i2f.apps.googleusercontent.com',
-  webClientId: '809945505628-vif52k6aie79821cahnqjjoatmfcooke.apps.googleusercontent.com',
-  offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-  forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
-  iosClientId: '809945505628-vif52k6aie79821cahnqjjoatmfcooke.apps.googleusercontent.com', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
-});
+// GoogleSignin.configure({
+//   scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
+//   // scopes: ['email', 'profile'],
+//   // androidClientId: '809945505628-cjj77mrft9m3q2lt93rnctficqp34hgn.apps.googleusercontent.com',
+//   // webClientId: '809945505628-cjj77mrft9m3q2lt93rnctficqp34hgn.apps.googleusercontent.com',
+//   // offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+//   forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
+//   iosClientId: '809945505628-vif52k6aie79821cahnqjjoatmfcooke.apps.googleusercontent.com', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+// });
 
 const LoginScreen = ({ navigation }) => {
   const { height, width } = useWindowDimensions();
@@ -35,10 +35,10 @@ const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
 
-  useEffect(() => {
-    GoogleSignin.configure();
+  // useEffect(() => {
+  //   GoogleSignin.configure();
 
-  }, [])
+  // }, [])
 
   // useEffect(() => {
   //   const unsubscribe = Hub.listen("auth", ({ payload: { event, data } }) => {

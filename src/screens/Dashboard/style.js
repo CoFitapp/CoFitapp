@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     searchView: {
         flexDirection: "row",
         marginHorizontal: width * .03,
-        justifyContent: "space-between",
+        justifyContent: "center",
         alignItems: "center",
         marginTop: 20
     },
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         marginHorizontal: width * .03,
         justifyContent: "space-between",
         alignItems: "center",
-        // marginTop: 20
+        marginTop: 20
     },
     searchView3: {
         flexDirection: "row",
@@ -73,9 +73,10 @@ const styles = StyleSheet.create({
         width: width * .94,
         flexDirection: "row",
         borderRadius: 10,
-        height: 37,
+        height: 45,
         backgroundColor: "#F2F2F2",
-        alignItems: "center"
+        alignItems: "center",
+        justifyContent:'center'
     },
     searchIcon: {
         height: 20,
@@ -88,7 +89,8 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         fontFamily: fonts.SfPro_Regular,
         fontSize:14,
-        color: "#49454F"
+        color: "#49454F",
+        
     },
     filterView: {
         paddingHorizontal: 10,

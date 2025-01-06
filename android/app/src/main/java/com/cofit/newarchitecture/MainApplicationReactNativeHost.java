@@ -1,4 +1,4 @@
-package com.cofit.newarchitecture;
+package com.cofitnew.app.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.cofit.BuildConfig;
-import com.cofit.newarchitecture.components.MainComponentsRegistry;
-import com.cofit.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.cofitnew.app.BuildConfig;
+import com.cofitnew.app.newarchitecture.components.MainComponentsRegistry;
+import com.cofitnew.app.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

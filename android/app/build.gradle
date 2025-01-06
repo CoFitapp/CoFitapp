@@ -1,4 +1,6 @@
 apply plugin: "com.android.application"
+// apply plugin: 'com.google.gms.google-services'
+
 
 import com.android.build.OutputFile
 import org.apache.tools.ant.taskdefs.condition.Os
@@ -135,7 +137,7 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.cofit"
+        applicationId "com.cofitnew.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -228,6 +230,20 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('my_release_key.keystore')
+            storePassword 'brst981'
+            keyAlias 'my_key_alias'
+            keyPassword 'brst981'
+        }
+    //     release {
+    //     if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+    //         storeFile file(MYAPP_UPLOAD_STORE_FILE)
+    //         storePassword MYAPP_UPLOAD_STORE_PASSWORD
+    //         keyAlias MYAPP_UPLOAD_KEY_ALIAS
+    //         keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+    //     }
+    // }
     }
     buildTypes {
         debug {
@@ -236,7 +252,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -265,7 +281,10 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
+// implementation 'com.google.android.gms:play-services-location:21.0.1'
+// implementation 'com.google.android.gms:play-services-gcm:8.3.0'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+implementation "androidx.browser:browser:1.2.0"
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'

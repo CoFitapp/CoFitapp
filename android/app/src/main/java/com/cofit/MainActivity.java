@@ -1,4 +1,4 @@
-package com.cofit;
+package com.cofitnew.app;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;

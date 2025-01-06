@@ -1,4 +1,4 @@
-package com.cofit.newarchitecture.components;
+package com.cofitnew.app.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

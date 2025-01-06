@@ -56,6 +56,7 @@ const EventDetail = () => {
     { 'id': 4, 'image': require("../../assets/images/stockImage4.jpg") },
     { 'id': 5, 'image': require("../../assets/images/stockImage5.jpg") },
   ])
+console.log('undefined0000000000',route?.params?.event);
 
   useEffect(() => {
     getCoordinates();
@@ -221,7 +222,7 @@ const EventDetail = () => {
     <View style={styles.mainView}>
       <AnimatedScrollView
         HeaderNavbarComponent={
-          <View style={{ width: "100%", height: 90, marginTop: height * 0.13, }}>
+          <View style={{ width: "100%", height: 90, marginTop:Platform.OS == 'ios' ? height * 0.13 : height * 0.07, }}>
             <View style={styles.topHeaderView}>
               <View style={{ width: "47.5%" }}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backImageView}>
@@ -446,7 +447,9 @@ const EventDetail = () => {
                         <ImageBackground imageStyle={{ borderRadius: 6 }} style={styles.flatListImg} resizeMode="stretch" source={item?.image.startsWith("no image") ? imageArr[index % imageArr.length].image : { uri: item.image }}>
                           <View style={styles.kmbutton}>
                             {/* <Image source={images.car} style={styles.carImg} /> */}
-                            <Text style={styles.kmText}>{`${item.distance} mi`}</Text>
+                            {/* <Text style={styles.kmText}>{`${item.distance} mi`}</Text> */}
+                            <Text style={styles.kmText}>{`${item.distance}`}</Text>
+
                           </View>
                         </ImageBackground>
                       </View>

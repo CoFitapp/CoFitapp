@@ -10,7 +10,7 @@ To get started with this project, follow these instructions:
 
 Make sure you have the following software installed on your machine:
 
-- Node.js (16.13.1)
+- Node.js (16.13.0)
 - npm (Node Package Manager)
 - React Native CLI
 - JDK (11)
@@ -22,7 +22,7 @@ Make sure you have the following software installed on your machine:
 1. Clone the repository from the below link
 
 ```sh
-git clone https://github.com/CoFitapp/CoFitapp.git
+git clone https://github.com/SaurabhBrst/MyChallengeCreator_Latest_May1
 ```
 2. Navigate into the project directory and then install dependencies
 ```sh

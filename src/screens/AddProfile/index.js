@@ -169,7 +169,7 @@ const AddProfile = ({navigation, route}) => {
             isChecked={isChecked}
           />
          <View style={styles.terms}>
-          <Text>I have read and accept CoFit’s </Text>
+          <Text style={styles.term1}>I have read and accept CoFit’s </Text>
           <TouchableOpacity onPress={()=> navigation.navigate('TermService')}>
           <Text style={styles.term2}>Terms of Use </Text>
           </TouchableOpacity>

@@ -48,7 +48,7 @@ const SelectLocation = ({ navigation, route }) => {
 
   useEffect(() => {
     if (isFocused) {
-      if (Platform.OS == "android") {
+      if (Platform.OS === "android") {
         requestLocationPermission();
       }
     }

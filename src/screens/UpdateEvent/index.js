@@ -138,6 +138,16 @@ const UpdateEvent = ({ navigation }) => {
 
   };
 
+  const formatResult = (data) => {
+    const terms = data.terms;
+    if (terms && terms.length >= 2) {
+      const city = terms[0].value;
+      const state = terms[1].value;
+      return `${city}, ${state}`;
+    }
+    return data.description; // Fallback to original description
+  };
+
   const chooseFromGallery = async () => {
     bottomSheet?.current.close()
     setTimeout(async () => {
@@ -468,6 +478,11 @@ const UpdateEvent = ({ navigation }) => {
                   renderLeftButton={() => (
                     <Image source={images.location} style={{ alignSelf: 'center', width: 15, height: 25, marginHorizontal: '3%', resizeMode: 'contain' }} />
                   )}
+                  renderRow={(data) => (
+                    <View style={styles.resultRow}>
+                      <Text style={styles.resultText}>{formatResult(data)}</Text>
+                    </View>
+                  )}
                   textInputProps={{
                     onFocus: () => {
                       setAuto(false);
@@ -483,6 +498,8 @@ const UpdateEvent = ({ navigation }) => {
                   query={{
                     key: "AIzaSyBpVX6Xl4OEftECYrN-wauMw7dpUyl6GiI",
                     language: 'en',
+                    components: "country:us",
+                    type: '(cities)'
                   }}
                 />
               </View>

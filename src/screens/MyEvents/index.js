@@ -266,7 +266,7 @@ const MyEvents = () => {
     let config3 = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "https://cofitapp.com/api/get-event",
+      url: "https://api.cofitapp.com/api/get-event",
       headers: {
         "Content-Type": "application/json",
       },

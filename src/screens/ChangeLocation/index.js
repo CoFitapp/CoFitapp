@@ -4,7 +4,9 @@ import styles from './style'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import images from '../../constants/images'
 import colors from '../../constants/colors'
-import Geolocation from 'react-native-geolocation-service';
+// import Geolocation from 'react-native-geolocation-service';
+import Geolocation from '@react-native-community/geolocation';
+
 import Geocoder from 'react-native-geocoding';
 import { logout, updateUser } from '../../redux/slices/userSlice'
 import { useIsFocused } from '@react-navigation/native';
@@ -52,18 +54,27 @@ const SelectLocation = ({ navigation, route }) => {
     navigation.navigate("SignedInStack")
     setCurrent(true)
   }
+  const formatResult = (data) => {
+    const terms = data.terms;
+    if (terms && terms.length >= 2) {
+      const city = terms[0].value;
+      const state = terms[1].value;
+      return `${city}, ${state}`;
+    }
+    return data.description; // Fallback to original description
+  };
 
   const getLocationInIos = async () => {
     console.log('dsajdgsajdgjkagkagkgjasgj');
     let cityName = ""
-    if (Platform.OS == 'ios') {
-      await Geolocation.requestAuthorization('always');
-    }
+    // if (Platform.OS == 'ios') {
+    //   await Geolocation.requestAuthorization('always');
+    // }
     Geolocation.getCurrentPosition(
       (position) => {
         console.log('wqh78dey237dy23yd2', position);
-        setLatitude(position.coords.latitude);
-        setLongitude(position.coords.longitude);
+        setLatitude(parseFloat(position.coords.latitude));
+        setLongitude(parseFloat(position.coords.longitude));
         console.log("dsads", latitude)
         console.log("sdfsd", longitude)
         Geocoder.from(position.coords.latitude, position.coords.longitude)
@@ -109,8 +120,8 @@ const SelectLocation = ({ navigation, route }) => {
         console.log('Location permission granted.');
         Geolocation.getCurrentPosition(
           (position) => {
-            setLatitude(position.coords.latitude);
-            setLongitude(position.coords.longitude);
+            setLatitude(parseFloat(position.coords.latitude));
+            setLongitude(parseFloat(position.coords.longitude));
             Geocoder.from(position.coords.latitude, position.coords.longitude)
               .then((json) => {
                 console.log("asnbmbmbnmbmbnkljmbmnbmdasd", json.results[0].address_components)
@@ -219,6 +230,11 @@ const SelectLocation = ({ navigation, route }) => {
                     },
                     container: {}
                   }}
+                  renderRow={(data) => (
+                    <View style={styles.resultRow}>
+                      <Text style={styles.resultText}>{formatResult(data)}</Text>
+                    </View>
+                  )}
                   renderLeftButton={() => (
                     <Image source={images.location} style={{ alignSelf: 'center', width: 15, height: 25, marginHorizontal: '3%', resizeMode: 'contain' }} />
                   )}

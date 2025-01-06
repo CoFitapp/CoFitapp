@@ -15,7 +15,9 @@ import Header1 from '../../components/Header1'
 import { FlatList } from 'react-native'
 import fonts from '../../constants/fonts'
 import { TextInput } from 'react-native'
-import Geolocation from "react-native-geolocation-service";
+// import Geolocation from "react-native-geolocation-service";
+import Geolocation from '@react-native-community/geolocation';
+
 import Geocoder from "react-native-geocoding";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useDispatch, useSelector } from 'react-redux'
@@ -36,23 +38,33 @@ const ChooseLocation = ({navigation}) => {
   const [auto, setAuto] = useState(true);
   const [selectedLocation, setSelectedLocation] = useState('')
 
-  const getLocationInIos = async () => {
-    let cityName = "";
-    if (Platform.OS == "ios") {
-      await Geolocation.requestAuthorization("always");
+  const formatResult = (data) => {
+    const terms = data.terms;
+    if (terms && terms.length >= 2) {
+      const city = terms[0].value;
+      const state = terms[1].value;
+      return `${city}, ${state}`;
     }
+    return data.description; // Fallback to original description
+  };
+
+  const getLocationInIos = async () => {
+    // let cityName = "";
+    // if (Platform.OS == "ios") {
+    //   await Geolocation.requestAuthorization("always");
+    // }
 
     Geolocation.getCurrentPosition(async(position) => {
       console.log("wqh78dey237dy23yd2", position);
-      setLatitude(position.coords.latitude);
-      setLongitude(position.coords.longitude);
+      setLatitude(parseFloat(position.coords.latitude));
+      setLongitude(parseFloat(position.coords.longitude));
       console.log("dsads", latitude);
       console.log("sdfsd", longitude);
 
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: `https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`,
+        url: `https://nominatim.openstreetmap.org/reverse?lat=${parseFloat(position.coords.latitude)}&lon=${parseFloat(position.coords.longitude)}&format=json`,
         };
 
      axios.request(config)
@@ -190,15 +202,24 @@ const ChooseLocation = ({navigation}) => {
                       // marginTop: 10,
                       backgroundColor: colors.gray1,
                     },
+                    // row: {
+                    //   backgroundColor: 'red',
+                    // },
                     textInput: {
-                      color: "black",
+                      color: "#000",
                       fontSize: 16,
                       marginLeft: 5,
                       fontFamily: fonts.SfPro_Regular,
                       width: "85%",
                       backgroundColor: colors.gray1,
-                      height: 45
+                      height: 45,
                     },
+                    // description: {
+                    //   color: '#yellow'
+                    // },
+                    // predefinedPlacesDescription:{
+                    //   color: '#000'
+                    // },
                     container: {},
                   }}
                   renderLeftButton={() => (
@@ -207,7 +228,14 @@ const ChooseLocation = ({navigation}) => {
                       style={styles.search}
                     />
                   )}
+                  renderRow={(data) => (
+                    <View style={styles.resultRow}>
+                      <Text style={{color: '#000', fontFamily: fonts.SfPro_Medium}}>{formatResult(data)}</Text>
+                    </View>
+                  )}
                   textInputProps={{
+                    placeholderTextColor: '#000',
+                    // style: {color: 'green'},
                     onFocus: () => {
                       setAuto(false);
                     },

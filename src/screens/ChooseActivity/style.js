@@ -1,5 +1,6 @@
 import { Dimensions, NativeModules, StyleSheet } from "react-native";
 import colors from "../../constants/colors";
+import fonts from "../../constants/fonts";
 
 const { height, width } = Dimensions.get('window')
 const { StatusBarManager } = NativeModules;
@@ -27,7 +28,8 @@ export default styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: fonts.SfPro_Semibold,
     paddingLeft: 15,
-    paddingTop: 20
+    paddingTop: 20,
+    color: colors.black
   },
   headerView:{
     flexDirection:"row",

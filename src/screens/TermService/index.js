@@ -31,7 +31,7 @@ const { width } = useWindowDimensions()
       <RenderHtml
                       contentWidth={width}
                     //   systemFonts={systemFonts}
-                    //   baseStyle={ textStyles }
+                      baseStyle={ textStyles }
                       source={ { html: terms } }
                     />
 </ScrollView>
@@ -43,6 +43,6 @@ export default index
 
 const textStyles = {
     fontFamily: fonts.SfPro_Regular,
-    fontSize: 20,
+    fontSize: 14,
     color: '#000'
   }

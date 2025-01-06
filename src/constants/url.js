@@ -1,4 +1,4 @@
-export const BASE_URL = "https://cofitapp.com";
+export const BASE_URL = "https://api.cofitapp.com";
 export const REGISTER = "/api/register";
 export const GET_EVENTS = "/api/get-event"
 export const GET_USER_DETAILS = "/api/get-user-details";

@@ -161,13 +161,15 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         fontWeight: "800",
         textAlign: "center",
+        color: colors.black
       },
       detailsText: {
         fontFamily: "SFProText-Regular",
         fontSize: 14,
         marginBottom: 20,
         textAlign: "center",
-        lineHeight:20
+        lineHeight:20,
+        color: colors.black
       },
       inviteBtn: {
         alignItems: "center",

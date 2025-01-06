@@ -20,7 +20,9 @@ import DatePicker from "react-native-date-picker";
 import moment from "moment";
 import FastImage from "react-native-fast-image";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import Geolocation from "react-native-geolocation-service";
+// import Geolocation from "react-native-geolocation-service";
+import Geolocation from '@react-native-community/geolocation';
+
 import Geocoder from "react-native-geocoding";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
@@ -95,6 +97,16 @@ const PickLocation = () => {
     }
   }
 
+  const formatResult = (data) => {
+    const terms = data.terms;
+    if (terms && terms.length >= 2) {
+      const city = terms[0].value;
+      const state = terms[1].value;
+      return `${city}, ${state}`;
+    }
+    return data.description; // Fallback to original description
+  };
+
   const getAllCities = async () => {
     let res = await services.get(Url.GET_ALL_CITIES)
     console.log('GET ALL CITIES RESPONSEEEEE111', res);
@@ -120,9 +132,9 @@ const PickLocation = () => {
   };
   const getCurrentLocation = async () => {
     let cityName = "";
-    if (Platform.OS == "ios") {
-      await Geolocation.requestAuthorization("always");
-    }
+    // if (Platform.OS == "ios") {
+    //   await Geolocation.requestAuthorization("always");
+    // }
     Geolocation.getCurrentPosition((position) => {
       console.log("dshjgfsdgjhs", position.coords);
       setLatitude(0);
@@ -132,8 +144,8 @@ const PickLocation = () => {
         longitude: position.coords.longitude,
       };
       setPreciseCoords(coords);
-      setLatitude(position.coords.latitude);
-      setLongitude(position.coords.longitude);
+      setLatitude(parseFloat(position.coords.latitude));
+      setLongitude(parseFloat(position.coords.longitude));
       // setMapVisible(true);
       // setAuto(true);
       Geocoder.from(position.coords.latitude, position.coords.longitude).then(
@@ -572,6 +584,11 @@ const PickLocation = () => {
                     style={styles.leftIcon}
                   ></FastImage>
                 )}
+                renderRow={(data) => (
+                  <View style={styles.resultRow}>
+                    <Text style={styles.resultText}>{formatResult(data)}</Text>
+                  </View>
+                )}
                 textInputProps={{
                   onFocus: () => {
                     setAuto(false);
@@ -597,6 +614,8 @@ const PickLocation = () => {
                 query={{
                   key: "AIzaSyBpVX6Xl4OEftECYrN-wauMw7dpUyl6GiI",
                   language: "en",
+                  components: 'country:us',
+                  types: '(cities)',
                   // components: "country:us",
                 }}
               />

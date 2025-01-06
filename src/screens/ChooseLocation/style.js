@@ -28,7 +28,8 @@ export default styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: fonts.SfPro_Semibold,
     paddingLeft: 15,
-    paddingTop: 20
+    paddingTop: 20,
+    color: colors.black
   },
   headerView:{
     flexDirection:"row",

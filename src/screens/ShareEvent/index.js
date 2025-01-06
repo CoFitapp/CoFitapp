@@ -50,8 +50,8 @@ const ShareEvent = () => {
       if (data.results.length > 0) {
         const locationData = data.results[0].geometry.location;
         console.log('duy23y723y8y328', locationData);
-        setLatitude(locationData.lat);
-        setLongitude(locationData.lng);
+        setLatitude(parseFloat(locationData.lat));
+        setLongitude(parseFloat(locationData.lng));
         setIsMapVisible(true)
       } else {
         console.error(`No results found for the provided location: ${event?.location}`);

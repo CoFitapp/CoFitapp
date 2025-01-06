@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View,Platform } from 'react-native'
 import React, { useState } from 'react'
 import styles from './style'
 import Header from '../../components/Header'
@@ -53,7 +53,7 @@ const SignUp1 = ({navigation, route}) => {
       setIsLoading(true)
       const data = {
         'email': email1,
-        'password': password
+        'password': password,
       }
       const response = await services.post(Url.SIGN_UP, "", data, 'json')
       setIsLoading(false)

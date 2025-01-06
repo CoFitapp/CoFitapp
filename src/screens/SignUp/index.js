@@ -1,4 +1,4 @@
-import { NativeModules, StyleSheet, Text, View, useWindowDimensions, Image, TouchableOpacity, TextInput, ImageBackground, Platform, Alert } from 'react-native'
+import { NativeModules, StyleSheet, Text, View, useWindowDimensions, Image, TouchableOpacity, TextInput, ImageBackground, Platform, Alert ,PermissionsAndroid} from 'react-native'
 import React, { useEffect } from 'react'
 import styles from './style'
 import images from '../../constants/images'
@@ -12,24 +12,31 @@ import FastImage from 'react-native-fast-image'
 import { TextRegular } from '../../components/AppText'
 import { TextInputComponent } from '../../components/TextInput'
 import { AppMainButton, AppSocialButton } from '../../components/AppButton'
-import { GoogleSignin } from '@react-native-google-signin/google-signin'
+import { GoogleSignin,statusCodes } from '@react-native-google-signin/google-signin'
 import Toast from 'react-native-simple-toast';
 import { location, login } from "../../redux/slices/userSlice";
 import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication';
+import { isIOS } from '../../utils/platform'
+// import Geolocation from "react-native-geolocation-service";
+import { useIsFocused } from '@react-navigation/native';
+
+
 // import moment from 'moment'
 
 const { StatusBarManager } = NativeModules;
 const statusBarHeight = StatusBarManager.HEIGHT;
 const mailFormat = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-GoogleSignin.configure({
-  // scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
+// GoogleSignin.configure({
+//   // scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
 
-  // androidClientId: '1065079397050-c0q82knpg0ckeacgkgvlvn4jck731i2f.apps.googleusercontent.com',
-  webClientId: '809945505628-vif52k6aie79821cahnqjjoatmfcooke.apps.googleusercontent.com',
-  offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-  forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
-  iosClientId: '809945505628-vif52k6aie79821cahnqjjoatmfcooke.apps.googleusercontent.com', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
-});
+//   // androidClientId: '809945505628-cjj77mrft9m3q2lt93rnctficqp34hgn.apps.googleusercontent.com',
+//   webClientId: '809945505628-j2kh6ptj2dbgm7oibj55g9lf2jlvqn6n.apps.googleusercontent.com',
+//   // webClientId: '809945505628-vif52k6aie79821cahnqjjoatmfcooke.apps.googleusercontent.com',
+
+//   offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+//   forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
+//   iosClientId: '809945505628-vif52k6aie79821cahnqjjoatmfcooke.apps.googleusercontent.com', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+// });
 
 const SignUp = ({ navigation }) => {
   const isLoggedIn = useSelector((state) => state.user.status);
@@ -82,19 +89,78 @@ const SignUp = ({ navigation }) => {
     }
 
   }
+  const isFocused = useIsFocused();
 
+  // useEffect(() => {
+  //   if (isFocused) {
+  //     if (Platform.OS == "android") {
+  //       requestLocationPermission();
+  //     }
+  //   }
+  // }, [isFocused]);
+
+  // const requestLocationPermission = async() =>{
+  //   try {
+  //     const granted = await PermissionsAndroid.request(
+  //       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+  //       {
+  //         title: "Location Permission",
+  //         message:
+  //           "This app needs access to your location to provide location-based services.",
+  //         buttonNeutral: "Ask Me Later",
+  //         buttonNegative: "Cancel",
+  //         buttonPositive: "OK",
+  //       }
+  //     );
+
+  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //       console.log("Location permission granted.");
+  //       Geolocation.getCurrentPosition((position) => {
+  //         // setLatitude(position.coords.latitude);
+  //         // setLongitude(position.coords.longitude);
+  //         Geocoder.from(position.coords.latitude, position.coords.longitude)
+  //           .then((json) => {
+  //             console.log(
+  //               "asnbmbmbnmbmbnkljmbmnbmdasd",
+  //               json.results[0].address_components
+  //             );
+  //             const addressComponent = json.plus_code.compound_code;
+  //             console.log("sdfsfs", addressComponent);
+  //             // setAddress(addressComponent);
+  //             // setMapVisible(true);
+  //             // setLoader(false);
+  //           })
+  //           .catch((error) => {
+  //             console.warn("Geocoder error:", error);
+  //             // setLoader(false);
+  //           });
+
+  //       });
+  //     } else {
+  //       console.log("Location permission denied.");
+  //     }
+  //   } catch (err) {
+  //     console.warn(err);
+  //   }
+  // }
 
   const onPressGoogleLogin =async()=> {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       console.log('USER INFOOOOOOOOO', userInfo);
+      const getToken = await GoogleSignin.getTokens()
+      console.log('dddddddd',getToken);
+      const platform = Platform.OS === 'ios'
+      
               let body = {
             "email":userInfo.user.email,
             "googleId":userInfo.user.id,
             'provider': 'google',
             'access_token': userInfo.idToken,
-            'useNewClientId': true
+            'useNewClientId': true,
+            'platform': platform === 'ios' ? 'ios' : 'android'
+
         }
         console.log('bodybodybody', body)
       let response = await services.post(Url.GOOGLE_LOGIN, "", body, "json");
@@ -197,7 +263,11 @@ const SignUp = ({ navigation }) => {
           <View style={styles.line}></View>
         </View>
         <AppSocialButton image={images.google} title="Continue with Google" onPress={onPressGoogleLogin}/>
+        {isIOS ?
         <AppSocialButton image={images.apple} title="Continue with Apple" onPress={onPressAppleLogin}/>
+        :
+        <></>
+        }
         {/* <AppSocialButton image={images.facebook} title="Continue with Facebook"/> */}
         <View style={styles.haveAccount}>
         <TextRegular text="Already have an account? "/>

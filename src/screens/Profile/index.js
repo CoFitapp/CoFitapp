@@ -53,10 +53,10 @@ const Profile = ({navigation}) => {
   }
 
   const onLogout=async()=>{
-    if(!isLoggedIn) {
-      navigation.navigate("SignUp")
-      return
-    }
+    // if(!isLoggedIn) {
+    //   navigation.navigate("SignUp")
+    //   return
+    // }
     Alert.alert("Log Out",
     "Are you sure you want to logout",[
       {'text':"Cancel",style:"cancel",onPress:()=>console.log('cancel pressed')},
@@ -219,6 +219,8 @@ const updateProfileImage=async(imageFile)=>{
 style={styles.profileImage}
 source={
   (userInfo.profile_image==null || userInfo.profile_image=='null')
+  // (userInfo.profile_image)
+
   ?
   images.backimg
   :
@@ -319,7 +321,7 @@ source={
  </TouchableOpacity>
  <View style={styles.lineSeperator}/> */}
 
- <TouchableOpacity onPress={()=>onLogout()} style={[styles.bottomBtn,{marginVertical:50}]}>
+ <TouchableOpacity onPress={()=>{isLoggedIn === null ? navigation.navigate('LoginNew'): onLogout()}} style={[styles.bottomBtn,{marginVertical:50}]}>
 <Text style={styles.btnText}>{ isLoggedIn ? 'Log Out' : 'Log In'}</Text>
 </TouchableOpacity>
 
