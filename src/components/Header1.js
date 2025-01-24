@@ -20,7 +20,10 @@ const Header1 = (props) => {
         <FastImage source={images.backArrow} style={{height:15,width:15,resizeMode:"contain"}}/>
       </TouchableOpacity>
       <View style={{width:"70%",}}>
-      {/* <Text style={{textAlign:'center',fontFamily:fonts.SfPro_Semibold,fontSize:20,color:colors.black}}>{title}</Text> */}
+        {/* {
+          props?.title1 &&
+          <Text style={{textAlign:'center',fontFamily:fonts.SfPro_Semibold,fontSize:20,color:colors.black}}>{props?.title1}</Text>
+        } */}
       </View>
       <TouchableOpacity activeOpacity={1} onPress={props.onPress} style={{width:"15%"}}>
       <TextRegular text="Skip" styles={{color: colors.orange_dark}}/>

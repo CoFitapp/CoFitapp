@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     },
     headerView:{
      flexDirection:"row",
-     marginTop:statusBarHeight+25,
+     marginTop:Platform.OS == 'ios' ? statusBarHeight+25 : statusBarHeight,
      alignItems:"center",
      justifyContent:"space-between",
      marginHorizontal:"5%"
@@ -343,11 +343,11 @@ searchView1: {
   borderRadius: 10,
   height: 37,
   backgroundColor: "#F2F2F2",
-  alignItems: "center"
+  alignItems: "center",
 },
 searchIcon: {
-  height: 20,
-  width: 20,
+  height:Platform.OS == 'ios' ? 20 : 16,
+  width: Platform.OS == 'ios' ? 20 : 16,
   resizeMode: "contain",
   marginLeft: 10
 },
@@ -356,7 +356,8 @@ searchTextInput: {
   paddingLeft: 10,
   fontFamily: fonts.SfPro_Regular,
   fontSize:14,
-  color: "#49454F"
+  color: "#49454F",
+  // height: 37
 },
 seperator1: {
   height: 1,

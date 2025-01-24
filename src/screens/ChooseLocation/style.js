@@ -1,4 +1,4 @@
-import { Dimensions, NativeModules, StyleSheet } from "react-native";
+import { Dimensions, NativeModules, Platform, StyleSheet } from "react-native";
 import colors from "../../constants/colors";
 import fonts from "../../constants/fonts";
 
@@ -33,7 +33,7 @@ export default styles = StyleSheet.create({
   },
   headerView:{
     flexDirection:"row",
-    marginTop:statusBarHeight+25,
+    marginTop: Platform.OS == 'ios' ? statusBarHeight+25 : statusBarHeight,
     alignItems:"center",
     justifyContent:"space-between",
     marginHorizontal:"5%"

@@ -732,8 +732,8 @@ console.log('sssssss',data2);
         </View> */}
 
 
-      <BottomSheet draggable={false} ref={bottomSheet} height={height * 0.8} width={100} sheetBackgroundColor={"#fff"}>
-        <View style={{ flex: 1, marginTop: Platform.OS === 'ios' ? 0 : 60 }}>
+      <BottomSheet draggable={false} ref={bottomSheet} height={Platform.OS == 'ios' ? height * 0.8 : height * 0.7} width={100} sheetBackgroundColor={"#fff"}>
+        <View style={{ flex: 1 }}>
           <View style={styles.handle}/>
           <Text style={styles.pickCity}>Pick a city</Text>
           <View style={styles.seperator} />

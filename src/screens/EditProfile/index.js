@@ -363,7 +363,7 @@ const EditProfile = ({ navigation }) => {
               value={lastName}
               onChangeText={(val) => setLastName(val)}
               placeholderTextColor={"#020A23"}
-              style={{ flex: 1, paddingLeft: 10, fontFamily: fonts.SfPro_Medium }}
+              style={{ flex: 1, paddingLeft: 10, fontFamily: fonts.SfPro_Medium,color: "#020A23" }}
             />
           </View>
         </View>
@@ -482,8 +482,8 @@ const EditProfile = ({ navigation }) => {
         </View>
       </BottomSheet> */}
 
-      <BottomSheet draggable={false} ref={bottomSheet1} height={height * 0.8} width={100} sheetBackgroundColor={"#fff"}>
-        <View style={{ flex: 1 }}>
+      <BottomSheet draggable={false} ref={bottomSheet1} height={Platform.OS == 'ios' ? height * 0.8 : height * 0.7} width={100} sheetBackgroundColor={"#fff"}>
+        <View style={{ flex: 1, }}>
           <View style={styles.handle} />
           <Text style={styles.pickCity}>Change Home Location</Text>
           <View style={styles.seperator} />
@@ -561,16 +561,16 @@ const EditProfile = ({ navigation }) => {
           <View style={{ height: '60%', borderRadius: 10, marginHorizontal: '2%', backgroundColor: "#fff", }}>
 
             <TouchableOpacity onPress={() => takeAphoto()} style={{ marginHorizontal: '2%', backgroundColor: "#fff", height: '50%', alignItems: 'center', justifyContent: 'center', borderBottomColor: colors.placeholderColor, borderBottomWidth: 0.5 }}>
-              <Text style={{ fontSize: 18, fontFamily: fonts.SfPro_Medium, color: colors.current }}>Take a photo</Text>
+              <Text style={{ fontSize: 18, fontFamily: fonts.SfPro_Medium, color: colors.black }}>Take a photo</Text>
 
             </TouchableOpacity>
             <TouchableOpacity onPress={() => chooseFromGallery()} style={{ marginHorizontal: '2%', backgroundColor: "#fff", height: '50%', alignItems: 'center', justifyContent: 'center', }}>
-              <Text style={{ fontSize: 18, fontFamily: fonts.SfPro_Medium, color: colors.current }}>Choose Existing photo</Text>
+              <Text style={{ fontSize: 18, fontFamily: fonts.SfPro_Medium, color: colors.black }}>Choose Existing photo</Text>
 
             </TouchableOpacity>
             <TouchableOpacity onPress={() => bottomSheet.current.close()} style={{ height: '45%', marginTop: '5%', }}>
               <View style={{ backgroundColor: colors.white, borderRadius: 10, height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                <Text style={{ fontSize: 18, fontFamily: fonts.SfPro_Medium, color: colors.current }}>Cancel</Text>
+                <Text style={{ fontSize: 18, fontFamily: fonts.SfPro_Medium, color: colors.black }}>Cancel</Text>
 
               </View>
             </TouchableOpacity>
