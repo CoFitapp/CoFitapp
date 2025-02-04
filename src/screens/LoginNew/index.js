@@ -36,16 +36,6 @@ const LoginNew = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch()
 
-  // GoogleSignin.configure({
-  //   scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
-  
-  //   // serverClientId: '809945505628-cjj77mrft9m3q2lt93rnctficqp34hgn.apps.googleusercontent.com',
-  //   webClientId: '809945505628-j2kh6ptj2dbgm7oibj55g9lf2jlvqn6n.apps.googleusercontent.com',
-  //   offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-  //   forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
-  //   iosClientId: '809945505628-vif52k6aie79821cahnqjjoatmfcooke.apps.googleusercontent.com', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
-  // });
-
   const onPress =async()=> {
     // alert('yes')
     // navigation.navigate("SignUp1")
@@ -59,7 +49,7 @@ const LoginNew = ({ navigation }) => {
         'email': email.toLowerCase(),
         'password': password
       }
-      
+
       const response = await services.post(Url.LOGIN, '', data, 'json', )
       console.log('response111>>>>>', response);
       Toast.show(response.message)

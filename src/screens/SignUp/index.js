@@ -26,17 +26,6 @@ import { useIsFocused } from '@react-navigation/native';
 const { StatusBarManager } = NativeModules;
 const statusBarHeight = StatusBarManager.HEIGHT;
 const mailFormat = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-// GoogleSignin.configure({
-//   // scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
-
-//   // androidClientId: '809945505628-cjj77mrft9m3q2lt93rnctficqp34hgn.apps.googleusercontent.com',
-//   webClientId: '809945505628-j2kh6ptj2dbgm7oibj55g9lf2jlvqn6n.apps.googleusercontent.com',
-//   // webClientId: '809945505628-vif52k6aie79821cahnqjjoatmfcooke.apps.googleusercontent.com',
-
-//   offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-//   forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
-//   iosClientId: '809945505628-vif52k6aie79821cahnqjjoatmfcooke.apps.googleusercontent.com', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
-// });
 
 const SignUp = ({ navigation }) => {
   const isLoggedIn = useSelector((state) => state.user.status);
@@ -152,7 +141,7 @@ const SignUp = ({ navigation }) => {
       const getToken = await GoogleSignin.getTokens()
       console.log('dddddddd',getToken);
       const platform = Platform.OS === 'ios'
-      
+
               let body = {
             "email":userInfo.user.email,
             "googleId":userInfo.user.id,
@@ -187,7 +176,8 @@ const SignUp = ({ navigation }) => {
 
       // setState({ userInfo });
     } catch (error) {
-      console.log('ERRORRRRRRRRRRRRRR', error);
+      console.log('ERRORRRRRRRRRRRRRRaaa', error);
+      alert(error)
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
       } else if (error.code === statusCodes.IN_PROGRESS) {

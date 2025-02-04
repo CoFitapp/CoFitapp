@@ -9,7 +9,7 @@ import { PersistGate } from "redux-persist/integration/react";
 
 // import mobileAds from 'react-native-google-mobile-ads';
 import SplashScreen from 'react-native-splash-screen'
-// import { StripeProvider } from '@stripe/stripe-react-native'; 
+// import { StripeProvider } from '@stripe/stripe-react-native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 GoogleSignin.configure({
@@ -26,6 +26,7 @@ GoogleSignin.configure({
 
 const persistor = persistStore(store);
 LogBox.ignoreAllLogs()
+
 // mobileAds()
 //   .initialize()
 //   .then(adapterStatuses => {
